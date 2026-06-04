@@ -8,40 +8,40 @@ const config = {
     sections: {
         one: {
             frameCount: 122, // 0 to 121
-            path: 'Media/Section One/Scene 1_Cloud Entry  Cinematic Intro_',
+            path: 'assets/Section One/Scene 1_Cloud Entry  Cinematic Intro_',
             padding: 5
         },
         two: {
             frameCount: 122, // 0 to 121
-            path: 'Media/Section One/Scene 2_Drone Descent  Reveal from Sky_',
+            path: 'assets/Section One/Scene 2_Drone Descent  Reveal from Sky_',
             padding: 5
         },
-        section2Base: 'Media/Section Two/Scene 2.2_Select Building.png',
+        section2Base: 'assets/Section Two/Scene 2.2_Select Building.png',
         section2Hover: {
-            left: 'Media/Section Two/Scene 2.2_Select Building_Showroom on Hover.png',
-            center: 'Media/Section Two/Scene 2.2_Select Building_tower on Hover.png',
-            right: 'Media/Section Two/Scene 2.2_Select Building_Manufaturing Unit on Hover.png'
+            left: 'assets/Section Two/Scene 2.2_Select Building_Showroom on Hover.png',
+            center: 'assets/Section Two/Scene 2.2_Select Building_tower on Hover.png',
+            right: 'assets/Section Two/Scene 2.2_Select Building_Manufaturing Unit on Hover.png'
         },
         section3: {
             frameCount: 355,
-            path: 'Media/Section Two Click on Left most building B/Scene 3.2 Factoy enter_',
+            path: 'assets/Section Two Click on Left most building B/Scene 3.2 Factoy enter_',
             padding: 5
         },
         section4Hover: [
-            'Media/Services Hover from Building Left/Industries Hover Cards/1. Hover on Healthcare.jpg',
-            'Media/Services Hover from Building Left/Industries Hover Cards/2. Hover on RealEstate.jpg',
-            'Media/Services Hover from Building Left/Industries Hover Cards/3. Hover on Energy.jpg',
-            'Media/Services Hover from Building Left/Industries Hover Cards/4. Hover on Government.jpg',
-            'Media/Services Hover from Building Left/Industries Hover Cards/5. Hover on CPG.jpg',
-            'Media/Services Hover from Building Left/Industries Hover Cards/6. Hover on Retail  Ecommerce.jpg',
-            'Media/Services Hover from Building Left/Industries Hover Cards/7. Hover on Shipping, Ports & Logistics.jpg',
-            'Media/Services Hover from Building Left/Industries Hover Cards/8. Hover on Other.jpg',
-            'Media/Services Hover from Building Left/Industry Agnostic Business Domains Hover Cards/1. Hover on Executive.jpg',
-            'Media/Services Hover from Building Left/Industry Agnostic Business Domains Hover Cards/2. Hover on Procurement.jpg',
-            'Media/Services Hover from Building Left/Industry Agnostic Business Domains Hover Cards/3. Hover on Finance.jpg',
-            'Media/Services Hover from Building Left/Industry Agnostic Business Domains Hover Cards/4. Hover on Human Capital.jpg',
-            'Media/Services Hover from Building Left/Industry Agnostic Business Domains Hover Cards/5. Hover on Operations Quality.jpg',
-            'Media/Services Hover from Building Left/Industry Agnostic Business Domains Hover Cards/6. Hover on Sales & Customer Experience.jpg'
+            'assets/Services Hover from Building Left/Industries Hover Cards/1. Hover on Healthcare.jpg',
+            'assets/Services Hover from Building Left/Industries Hover Cards/2. Hover on RealEstate.jpg',
+            'assets/Services Hover from Building Left/Industries Hover Cards/3. Hover on Energy.jpg',
+            'assets/Services Hover from Building Left/Industries Hover Cards/4. Hover on Government.jpg',
+            'assets/Services Hover from Building Left/Industries Hover Cards/5. Hover on CPG.jpg',
+            'assets/Services Hover from Building Left/Industries Hover Cards/6. Hover on Retail  Ecommerce.jpg',
+            'assets/Services Hover from Building Left/Industries Hover Cards/7. Hover on Shipping, Ports & Logistics.jpg',
+            'assets/Services Hover from Building Left/Industries Hover Cards/8. Hover on Other.jpg',
+            'assets/Services Hover from Building Left/Industry Agnostic Business Domains Hover Cards/1. Hover on Executive.jpg',
+            'assets/Services Hover from Building Left/Industry Agnostic Business Domains Hover Cards/2. Hover on Procurement.jpg',
+            'assets/Services Hover from Building Left/Industry Agnostic Business Domains Hover Cards/3. Hover on Finance.jpg',
+            'assets/Services Hover from Building Left/Industry Agnostic Business Domains Hover Cards/4. Hover on Human Capital.jpg',
+            'assets/Services Hover from Building Left/Industry Agnostic Business Domains Hover Cards/5. Hover on Operations Quality.jpg',
+            'assets/Services Hover from Building Left/Industry Agnostic Business Domains Hover Cards/6. Hover on Sales & Customer Experience.jpg'
         ]
     }
 };
@@ -344,6 +344,69 @@ const screenLanding = document.getElementById('screen-landing');
 const screenClinical = document.getElementById('screen-clinical');
 const screenDeepDive = document.getElementById('screen-deep-dive');
 
+// --- URL Routing Logic --- //
+function updateUrlHash(params, skip = false) {
+    if (skip) return;
+    const currentParams = new URLSearchParams(window.location.hash.replace('#', '?'));
+    for (const [key, value] of Object.entries(params)) {
+        if (value === null) {
+            currentParams.delete(key);
+        } else {
+            currentParams.set(key, value);
+        }
+    }
+    const newHash = currentParams.toString();
+    const newUrl = newHash ? '#' + newHash : window.location.pathname;
+    if (window.location.hash !== '#' + newHash) {
+        history.pushState(null, '', newUrl);
+    }
+}
+
+function restoreStateFromHash() {
+    const hash = window.location.hash;
+    if (!hash || hash === '#' || hash === '#/') {
+        goToHome(true);
+        return;
+    }
+    
+    const params = new URLSearchParams(hash.replace('#', '?'));
+    const screen = params.get('screen');
+    const tab = params.get('tab');
+    const model = params.get('model');
+    const deepdive = params.get('deepdive');
+    const practice = params.get('practice');
+
+    if (screen === 'landing') {
+        if (deepdive) {
+            openDeepDiveScreen(deepdive, true);
+        } else {
+            openScreen('screen-landing', true);
+            if (tab) {
+                const btn = document.querySelector(`.hc-master-tab[onclick*="${tab}"]`);
+                if (btn) switchHcMainTab(tab, btn, true);
+            }
+            if (model) {
+                const btn = document.querySelector(`li[onclick*="${model}"]`);
+                if (btn) showDataModel(model, btn, true);
+            }
+        }
+    } else if (screen === 'practices') {
+        openScreen('screen-frameworks', true);
+        if (practice) {
+            // Find practice element containing the practice name or click the first one if not easily selectable
+            const btn = Array.from(document.querySelectorAll('#practices-list li')).find(el => el.innerText.includes(practice)) || document.querySelector('#practices-list li');
+            if (btn) selectPractice(btn, true);
+        }
+    } else if (screen === 'clinical') {
+        openScreen('screen-clinical', true);
+    } else {
+        goToHome(true);
+    }
+}
+
+window.addEventListener('hashchange', restoreStateFromHash);
+document.addEventListener('DOMContentLoaded', restoreStateFromHash);
+
 const backToShowroomBtns = document.querySelectorAll('.back-btn');
 const btnPrevLanding = document.getElementById('btn-prev-landing');
 
@@ -351,7 +414,7 @@ function hideAllScreens() {
     if (screenLanding) screenLanding.classList.add('hidden');
     if (screenClinical) screenClinical.classList.add('hidden');
     if (screenDeepDive) screenDeepDive.classList.add('hidden');
-    const placeholders = ['screen-data-models', 'screen-frameworks', 'screen-best-practices', 'screen-healthcare-frameworks'];
+    const placeholders = ['screen-frameworks', 'screen-best-practices'];
     placeholders.forEach(id => {
         const el = document.getElementById(id);
         if (el) el.classList.add('hidden');
@@ -359,21 +422,192 @@ function hideAllScreens() {
 }
 
 const useCaseData = [
-    { id: 'uc-1', title: 'Automated Patient Intake', desc: 'Extract data from referral forms and IDs.', domain: 'hospital', tech: 'computer-vision', project: 'production', impact: '60% Faster Processing', image: 'Media/Card Images/Card Image 1.jpg' },
-    { id: 'uc-2', title: 'Medical Coding Automation', desc: 'Suggest billing codes based on unstructured physician notes.', domain: 'clinic', tech: 'nlp', project: 'production', impact: '99% Accuracy', image: 'Media/Card Images/Card Image 2.jpg' },
-    { id: 'uc-3', title: 'Care Gap Analysis', desc: 'Identify missing documentation to improve patient outcomes.', domain: 'hospital', tech: 'predictive-ml', project: 'mvp', impact: '20% Risk Reduction', image: 'Media/Card Images/Card Image 3.jpg' },
-    { id: 'uc-4', title: 'Audit Trail Generation', desc: 'Maintain compliance by generating automated audit logs.', domain: 'insurance', tech: 'generative-ai', project: 'poc', impact: '100% Compliance', image: 'Media/Card Images/Card Image 4.jpg' },
-    { id: 'uc-5', title: 'Readmission Prediction', desc: 'Identify high-risk patients before discharge.', domain: 'hospital', tech: 'predictive-ml', project: 'production', impact: '30% Less Readmits', image: 'Media/Card Images/Card Image 5.jpg' },
-    { id: 'uc-6', title: 'Resource Allocation', desc: 'Predict staffing and bed needs based on patient influx.', domain: 'clinic', tech: 'predictive-ml', project: 'mvp', impact: 'Optimized Staffing', image: 'Media/Card Images/Card Image 1.jpg' },
-    { id: 'uc-7', title: 'Denial Prevention', desc: 'Predict and prevent insurance claim denials.', domain: 'insurance', tech: 'predictive-ml', project: 'production', impact: '40% Fewer Denials', image: 'Media/Card Images/Card Image 2.jpg' },
-    { id: 'uc-8', title: '24/7 Appointment Scheduling', desc: 'Automated booking and rescheduling for patients.', domain: 'clinic', tech: 'generative-ai', project: 'production', impact: '24/7 Availability', image: 'Media/Card Images/Card Image 3.jpg' },
-    { id: 'uc-9', title: 'Symptom Checker', desc: 'AI-driven initial symptom assessment and triage.', domain: 'pharmacy', tech: 'nlp', project: 'mvp', impact: 'Faster Triage', image: 'Media/Card Images/Card Image 4.jpg' },
-    { id: 'uc-10', title: 'Billing Explanations', desc: 'Help patients understand their bills via chat.', domain: 'hospital', tech: 'generative-ai', project: 'poc', impact: 'Higher Satisfaction', image: 'Media/Card Images/Card Image 5.jpg' },
-    { id: 'uc-11', title: 'Automated Screening', desc: 'Highlight potential anomalies in X-rays and MRIs.', domain: 'hospital', tech: 'computer-vision', project: 'production', impact: 'Faster Diagnosis', image: 'Media/Card Images/Card Image 1.jpg' },
-    { id: 'uc-12', title: 'Scan Prioritization', desc: 'Route urgent scans to top of radiologist queue.', domain: 'clinic', tech: 'predictive-ml', project: 'production', impact: 'Priority Routing', image: 'Media/Card Images/Card Image 2.jpg' },
-    { id: 'uc-13', title: 'Claim Scrubbing', desc: 'Automatically validate claims against payer rules before submission.', domain: 'insurance', tech: 'nlp', project: 'production', impact: 'Zero Errors', image: 'Media/Card Images/Card Image 3.jpg' },
-    { id: 'uc-14', title: 'Prior Authorization', desc: 'Automate prior authorization requests from EHR data.', domain: 'hospital', tech: 'generative-ai', project: 'mvp', impact: 'Instant Approvals', image: 'Media/Card Images/Card Image 4.jpg' },
-    { id: 'uc-15', title: 'Genomic Profiling', desc: 'Match patient profiles to targeted therapies.', domain: 'pharmacy', tech: 'predictive-ml', project: 'poc', impact: 'Targeted Therapy', image: 'Media/Card Images/Card Image 5.jpg' }
+    {
+        id: 'uc-1', title: 'AI Symptom Checker & Patient Care Bot',
+        desc: 'Track symptoms, book appointments, receive post-discharge support, and get AI-powered health guidance through voice and text.',
+        domain: 'healthcare', tech: 'ai', tags: ['AI', 'Digital', 'Healthcare'],
+        project: 'production', impact: 'Smarter Patient Engagement',
+        image: 'assets/Use Cases Footages/Care Sync AI/Care Sync_Mockup.png',
+        deepDive: {
+            subtitle: "An AI-powered healthcare assistant that helps patients track symptoms, describe health concerns through voice or text, book appointments, receive post-discharge support, and stay connected through an AI-powered healthcare community.",
+            executiveSummary: "An advanced AI-driven patient care assistant designed to support symptom checking, appointment booking, post-discharge care, medication reminders, and condition-specific patient engagement.",
+            problem: "Patients need a single platform for symptom checking, appointment booking, post-discharge support, and medication reminders. Existing care journeys are fragmented across multiple touchpoints, reducing care continuity and increasing patient confusion.",
+            solution: "Integrated multi-model AI agents for medical analysis, report generation, voice-enabled interaction, and text-based support. Built using scalable Azure services and HIPAA/GDPR-compliant security frameworks.",
+            outcome: "A one-stop digital health assistant that improves accessibility, care continuity, compliance, and family-centered patient engagement through AI-powered automation.",
+            kpis: [
+                { label: "Accessibility", value: "Voice-Enabled", desc: "Hands-free symptom description through natural voice interaction." },
+                { label: "Care Continuity", value: "Post-Discharge", desc: "Follow-up prompts and medication reminders after discharge." },
+                { label: "Compliance", value: "HIPAA & GDPR", desc: "Secure privacy-first healthcare data handling." },
+                { label: "Engagement", value: "Family-Centered", desc: "Enables family members to share updates and stay involved." }
+            ],
+            media: [
+                { type: 'image', src: 'assets/Use Cases Footages/Care Sync AI/Care Sync_Mockup.png' },
+                { type: 'image', src: 'assets/Use Cases Footages/Care Sync AI/Care Sync_Mockup.png' },
+                { type: 'image', src: 'assets/Use Cases Footages/Care Sync AI/Care Sync_Mockup.png' },
+                { type: 'video', src: 'https://www.w3schools.com/html/mov_bbb.mp4' }
+            ],
+            architecture: {
+                title: "AI Symptom Checker & Patient Care Bot — Architecture",
+                desc: "High-level architecture showing how patient intake documents move through upload channels, OCR processing, AI extraction, validation, review workflow, and downstream healthcare systems.",
+                img: "assets/Use Cases Footages/Care Sync AI/Technical Arc_Architecture.png"
+            },
+            engineMap: {
+                title: "AI Symptom Checker & Patient Care Bot — Engine Map / AI Flow",
+                desc: "AI flow showing how intake data is extracted, classified, validated, routed for exception handling, and converted into structured output for system entry.",
+                img: "assets/Use Cases Footages/Care Sync AI/Mockup_Engine_Map_AI_Flow.png"
+            }
+        }
+    },
+    {
+        id: 'uc-2',
+        title: 'Data Warehousing & Social Media Analytics',
+        desc: 'Consolidate social media, web analytics, and sales data into a Microsoft Fabric warehouse for faster marketing intelligence and reliable dashboards.',
+        domain: 'retail',
+        tech: 'data',
+        tags: ['Data', 'Cloud', 'Microsoft Fabric', 'Retail'],
+        project: 'production',
+        impact: 'Improved Marketing Intelligence',
+        image: 'assets/Card Images/Card Image 2.jpg',
+        client: 'Huda Beauty',
+        deepDive: {
+            subtitle: "A Microsoft Fabric-based Data Warehouse consolidating social media ad platforms, web analytics, and sales reports — delivering automated pipelines, consistent dashboards, and significantly improved refresh performance for marketing intelligence.",
+            executiveSummary: "A modern data warehousing and analytics platform designed to unify Huda Beauty's marketing, web, and sales data into a governed Microsoft Fabric environment for faster, more reliable decision-making.",
+            problem: "Scattered data sources across social media platforms, analytics tools, and sales systems caused inconsistent insights, frequent manual updates, and delays — requiring a comprehensive migration to Microsoft Fabric.",
+            solution: "Applied Medallion Architecture on Microsoft Fabric, configured automated ingestion pipelines, developed a centralized data model in Lakehouse, and migrated existing dashboards to the new environment.",
+            outcome: "A unified marketing analytics foundation that improves dashboard performance, strengthens data reliability, enables faster refresh cycles, and gives business users more confidence in campaign and sales insights.",
+            kpis: [
+                { label: "Dashboard Performance", value: "Significantly Improved", desc: "Migration to Fabric's Delta Data Warehouse and optimized refresh processes reduced downtime." },
+                { label: "Data Reliability", value: "Error-Free Transfers", desc: "Automated data connectivity enhanced efficient and error-free transfers across all business functions." },
+                { label: "Decision Confidence", value: "Data-Driven", desc: "Unified reference data model empowered the client to make data-driven decisions with greater depth." },
+                { label: "Data Freshness", value: "Incremental Updates", desc: "Automated incremental updates ensured consistently fresh and accurate data for timely insights." }
+            ]
+        }
+    },
+    {
+        id: 'uc-3',
+        title: 'Enterprise AI Agent Orchestration Platform',
+        desc: 'Manage, coordinate, and govern multiple AI agents through a centralized orchestration layer with observability, traceability, and scalable deployment.',
+        domain: 'real-estate',
+        tech: 'ai',
+        tags: ['AI', 'Digital', 'Cloud', 'Real Estate'],
+        project: 'production',
+        impact: 'Governed Enterprise AI Operations',
+        image: 'assets/Card Images/Card Image 3.jpg',
+        client: 'Aldar',
+        deepDive: {
+            subtitle: "A centralized AI orchestration platform using the Agno framework — managing, coordinating, and governing multiple AI agents with full observability, secure agent creation via MCP, and scalable enterprise deployment.",
+            executiveSummary: "An enterprise-grade AI agent orchestration platform created to help Aldar govern, monitor, and scale multiple AI agents across business workflows with secure automation and full traceability.",
+            problem: "No centralized platform existed to manage multiple AI agents across workflows, with limited observability into agent execution, no secure authenticated agent creation, and no scalable deployment architecture.",
+            solution: "Deployed a centralized AI orchestration platform using Agno with full observability, MCP-authenticated agent creation, controlled automation, traceability mechanisms, and scalable deployment standards.",
+            outcome: "A governed enterprise AI operating model that provides full visibility over AI agents, strengthens compliance, enables proactive monitoring, and accelerates the onboarding of new AI use cases.",
+            kpis: [
+                { label: "Governance Control", value: "Full Visibility", desc: "Centralized governance layer provided full control and visibility over all AI agent operations." },
+                { label: "Issue Resolution", value: "Proactive Monitoring", desc: "Full observability enabled proactive monitoring, faster issue resolution, and continuous agent improvement." },
+                { label: "Compliance", value: "Strengthened", desc: "Controlled automation and traceability mechanisms provided an auditable record of all AI-driven actions." },
+                { label: "Scalability", value: "Rapid Agent Onboarding", desc: "Scalable architecture enabled rapid onboarding of new agents and use cases at enterprise scale." }
+            ]
+        }
+    },
+    {
+        id: 'uc-4',
+        title: 'Caregiver Assistant Platform',
+        desc: 'Enable caregivers to access approved organizational knowledge through a secure conversational platform with role-based access and governed responses.',
+        domain: 'healthcare',
+        tech: 'ai',
+        tags: ['AI', 'Digital', 'Healthcare'],
+        project: 'production',
+        impact: 'Faster Knowledge Access',
+        image: 'assets/Card Images/Card Image 4.jpg',
+        client: 'CCAD',
+        deepDive: {
+            subtitle: "An intelligent, secure conversational platform enabling caregivers to access approved organizational knowledge through a centralized interface — with role-based access, retrieval-augmented responses, and full administrative governance.",
+            executiveSummary: "A secure caregiver assistant designed to simplify knowledge discovery across healthcare systems, enabling faster access to accurate information through a centralized AI-powered conversational experience.",
+            problem: "Caregivers needed a unified secure interface for organizational knowledge dispersed across multiple systems, with no structured orchestration for query handling, absent admin governance, and unmet compliance requirements.",
+            solution: "Designed a centralized conversational platform with intelligent request routing, multi-source response consolidation, and comprehensive admin controls for user management, knowledge repositories, audit logging, and retention policies.",
+            outcome: "A governed caregiver knowledge platform that reduces time spent searching across systems, improves decision speed, eliminates information silos, and provides a scalable foundation for future healthcare knowledge expansion.",
+            kpis: [
+                { label: "Workflow Efficiency", value: "Streamlined", desc: "Reduced time spent searching across multiple systems, enabling faster access to accurate information." },
+                { label: "Decision Speed", value: "Accelerated", desc: "Consolidated real-time responses from multiple knowledge sources helped users make informed decisions faster." },
+                { label: "Knowledge Accessibility", value: "Silos Eliminated", desc: "Internal repositories and approved external sources in a single platform significantly improved knowledge access." },
+                { label: "Governance", value: "Scalable & Auditable", desc: "Scalable architecture with RBAC, audit logs, and retention policies supports future expansion." }
+            ]
+        }
+    },
+    {
+        id: 'uc-5',
+        title: 'Enterprise Data Platform — Project OneLake',
+        desc: 'Centralize Retail and Residential data on Microsoft Fabric and OneLake with governed self-service analytics, standardized KPIs, and faster reporting.',
+        domain: 'real-estate',
+        tech: 'data',
+        tags: ['Data', 'Cloud', 'Microsoft Fabric', 'Governance'],
+        project: 'production',
+        impact: 'Trusted Cross-Functional Reporting',
+        image: 'assets/Card Images/Card Image 5.jpg',
+        client: 'DHAM',
+        deepDive: {
+            subtitle: "A centralized Microsoft Fabric and OneLake enterprise data platform for Retail and Residential business units — delivering governed self-service analytics, a reusable semantic KPI layer, and consistent cross-functional reporting.",
+            executiveSummary: "A future-ready enterprise data platform built for DHAM to unify fragmented Retail and Residential data, standardize KPIs, improve governance, and enable trusted self-service analytics through Microsoft Fabric and OneLake.",
+            problem: "Fragmented data warehouses across Retail and Residential business units, mismatched KPI definitions, complex multi-source integration, and the need for role-based security and data quality reconciliation created reporting inconsistency.",
+            solution: "Established Microsoft Fabric and OneLake with Medallion Architecture, built standardized ingestion pipelines, applied Silver layer business rules, created a semantic model layer, and implemented security-by-design with RBAC and RLS.",
+            outcome: "A governed OneLake platform that simplifies data access, improves dashboard performance, standardizes KPIs, strengthens lineage visibility, and creates an AI-ready foundation for future analytics use cases.",
+            kpis: [
+                { label: "Dashboard Performance", value: "Near-Import Speed", desc: "Direct Lake mode enabled near-import performance with lightweight refresh behavior at scale." },
+                { label: "Data Governance", value: "End-to-End Lineage", desc: "Microsoft Purview and Fabric improved data lineage visibility and governance across all source systems." },
+                { label: "Metric Consistency", value: "Standardized KPIs", desc: "Semantic KPI layer prevented redefinition of metrics ensuring consistent insights across Retail and Residential." },
+                { label: "Operational Model", value: "Future-Ready", desc: "Medallion separation supported maintainable operations with controlled change management and AI-ready foundation." }
+            ]
+        }
+    },
+    { 
+        id: 'uc-6', title: 'Resource Allocation', desc: 'Predict staffing and bed needs based on patient influx.', 
+        domain: 'clinic', tech: 'predictive-ml', project: 'mvp', impact: 'Optimized Staffing', image: 'assets/Card Images/Card Image 1.jpg',
+        deepDive: { subtitle: "", executiveSummary: "", problem: "", solution: "", outcome: "", kpis: [] }
+    },
+    { 
+        id: 'uc-7', title: 'Denial Prevention', desc: 'Predict and prevent insurance claim denials.', 
+        domain: 'insurance', tech: 'predictive-ml', project: 'production', impact: '40% Fewer Denials', image: 'assets/Card Images/Card Image 2.jpg',
+        deepDive: { subtitle: "", executiveSummary: "", problem: "", solution: "", outcome: "", kpis: [] }
+    },
+    { 
+        id: 'uc-8', title: '24/7 Appointment Scheduling', desc: 'Automated booking and rescheduling for patients.', 
+        domain: 'clinic', tech: 'generative-ai', project: 'production', impact: '24/7 Availability', image: 'assets/Card Images/Card Image 3.jpg',
+        deepDive: { subtitle: "", executiveSummary: "", problem: "", solution: "", outcome: "", kpis: [] }
+    },
+    { 
+        id: 'uc-9', title: 'Symptom Checker', desc: 'AI-driven initial symptom assessment and triage.', 
+        domain: 'pharmacy', tech: 'nlp', project: 'mvp', impact: 'Faster Triage', image: 'assets/Card Images/Card Image 4.jpg',
+        deepDive: { subtitle: "", executiveSummary: "", problem: "", solution: "", outcome: "", kpis: [] }
+    },
+    { 
+        id: 'uc-10', title: 'Billing Explanations', desc: 'Help patients understand their bills via chat.', 
+        domain: 'hospital', tech: 'generative-ai', project: 'poc', impact: 'Higher Satisfaction', image: 'assets/Card Images/Card Image 5.jpg',
+        deepDive: { subtitle: "", executiveSummary: "", problem: "", solution: "", outcome: "", kpis: [] }
+    },
+    { 
+        id: 'uc-11', title: 'Automated Screening', desc: 'Highlight potential anomalies in X-rays and MRIs.', 
+        domain: 'hospital', tech: 'computer-vision', project: 'production', impact: 'Faster Diagnosis', image: 'assets/Card Images/Card Image 1.jpg',
+        deepDive: { subtitle: "", executiveSummary: "", problem: "", solution: "", outcome: "", kpis: [] }
+    },
+    { 
+        id: 'uc-12', title: 'Scan Prioritization', desc: 'Route urgent scans to top of radiologist queue.', 
+        domain: 'clinic', tech: 'predictive-ml', project: 'production', impact: 'Priority Routing', image: 'assets/Card Images/Card Image 2.jpg',
+        deepDive: { subtitle: "", executiveSummary: "", problem: "", solution: "", outcome: "", kpis: [] }
+    },
+    { 
+        id: 'uc-13', title: 'Claim Scrubbing', desc: 'Automatically validate claims against payer rules before submission.', 
+        domain: 'insurance', tech: 'nlp', project: 'production', impact: 'Zero Errors', image: 'assets/Card Images/Card Image 3.jpg',
+        deepDive: { subtitle: "", executiveSummary: "", problem: "", solution: "", outcome: "", kpis: [] }
+    },
+    { 
+        id: 'uc-14', title: 'Prior Authorization', desc: 'Automate prior authorization requests from EHR data.', 
+        domain: 'hospital', tech: 'generative-ai', project: 'mvp', impact: 'Instant Approvals', image: 'assets/Card Images/Card Image 4.jpg',
+        deepDive: { subtitle: "", executiveSummary: "", problem: "", solution: "", outcome: "", kpis: [] }
+    },
+    { 
+        id: 'uc-15', title: 'Genomic Profiling', desc: 'Match patient profiles to targeted therapies.', 
+        domain: 'pharmacy', tech: 'predictive-ml', project: 'poc', impact: 'Targeted Therapy', image: 'assets/Card Images/Card Image 5.jpg',
+        deepDive: { subtitle: "", executiveSummary: "", problem: "", solution: "", outcome: "", kpis: [] }
+    }
 ];
 
 let currentPage = 1;
@@ -396,12 +630,19 @@ function goBackOneScreen() {
     }
 }
 
-function openScreen(screenId) {
+function openScreen(screenId, skipHashUpdate = false) {
     hideAllScreens();
     const screen = document.getElementById(screenId);
     if (screen) {
         screen.classList.remove('hidden');
         window.scrollTo(0, 0);
+    }
+    if (screenId === 'screen-landing') {
+        updateUrlHash({ screen: 'landing', deepdive: null }, skipHashUpdate);
+    } else if (screenId === 'screen-clinical') {
+        updateUrlHash({ screen: 'clinical', tab: null, model: null, deepdive: null }, skipHashUpdate);
+    } else if (screenId === 'screen-frameworks') {
+        updateUrlHash({ screen: 'practices', tab: null, model: null, deepdive: null }, skipHashUpdate);
     }
 }
 
@@ -466,8 +707,10 @@ function renderUseCases() {
                 <h3>${uc.title}</h3>
                 <p>${uc.desc}</p>
                 <div class="card-tags">
+                    ${uc.tags ? uc.tags.map(t => `<span class="tag-pill">${t.toUpperCase()}</span>`).join('') : `
                     <span class="tag-pill domain">${uc.domain.toUpperCase()}</span>
                     <span class="tag-pill tech">${uc.tech.replace('-', ' ').toUpperCase()}</span>
+                    `}
                 </div>
                 
                 <div class="card-footer-impact">
@@ -546,17 +789,104 @@ const btnNextPage = document.getElementById('page-next');
 if (btnNextPage) btnNextPage.addEventListener('click', () => { currentPage++; renderUseCases(); });
 
 
-function openDeepDiveScreen(ucId) {
+function openDeepDiveScreen(ucId, skipHashUpdate = false) {
     hideAllScreens();
     if (screenDeepDive) {
         screenDeepDive.classList.remove('hidden');
         window.scrollTo(0, 0);
+        populateDeepDive(ucId);
+        updateUrlHash({ screen: 'landing', deepdive: ucId }, skipHashUpdate);
     }
+}
 
-    // We navigate to Automated Patient Intake by default as requested.
-    // Breadcrumbs update
-    const bcUsecaseName = document.getElementById('bc-usecase-name');
-    if (bcUsecaseName) bcUsecaseName.innerText = 'Automated Patient Intake';
+function populateDeepDive(ucId) {
+    // Find Use Case Data
+    const uc = useCaseData.find(item => item.id === ucId);
+
+    if (uc) {
+        // Breadcrumbs update
+        const bcUsecaseName = document.getElementById('bc-usecase-name');
+        if (bcUsecaseName) bcUsecaseName.innerText = uc.title;
+
+        // Populate Deep Dive HTML
+        const titleEl = document.getElementById('deep-dive-title');
+        if (titleEl) titleEl.innerText = uc.title;
+
+        const subtitleEl = document.getElementById('deep-dive-subtitle');
+        if (subtitleEl) subtitleEl.innerText = uc.deepDive?.subtitle || uc.desc;
+
+        const tagsContainer = document.getElementById('dd-tags-container');
+        if (tagsContainer) {
+            tagsContainer.innerHTML = '';
+            if (uc.tags) {
+                uc.tags.forEach(t => {
+                    tagsContainer.innerHTML += `<button class="action-btn" style="padding: 6px 12px; font-size: 0.8rem;">${t}</button>`;
+                });
+            } else {
+                tagsContainer.innerHTML += `<button class="action-btn" style="padding: 6px 12px; font-size: 0.8rem;">${uc.domain.toUpperCase()}</button>`;
+                tagsContainer.innerHTML += `<button class="action-btn" style="padding: 6px 12px; font-size: 0.8rem;">${uc.tech.toUpperCase()}</button>`;
+            }
+        }
+
+        // Breakdown content
+        const execSum = document.getElementById('dd-exec-summary');
+        if (execSum) execSum.innerHTML = `<p>${uc.deepDive?.executiveSummary || "Details coming soon..."}</p>`;
+
+        const problemEl = document.getElementById('dd-problem');
+        if (problemEl) problemEl.innerHTML = `<p>${uc.deepDive?.problem || "Details coming soon..."}</p>`;
+
+        const solutionEl = document.getElementById('dd-solution');
+        if (solutionEl) solutionEl.innerHTML = `<p>${uc.deepDive?.solution || "Details coming soon..."}</p>`;
+
+        const outcomeEl = document.getElementById('dd-outcome');
+        if (outcomeEl) outcomeEl.innerHTML = `<p>${uc.deepDive?.outcome || "Details coming soon..."}</p>`;
+
+        // KPIs
+        const kpiContainer = document.getElementById('dd-kpi-container');
+        if (kpiContainer) {
+            kpiContainer.innerHTML = '';
+            if (uc.deepDive?.kpis) {
+                uc.deepDive.kpis.forEach(kpi => {
+                    kpiContainer.innerHTML += `
+                        <div class="metric-card" style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+                            <div class="mc-label" style="font-size: 0.9rem; color: #aaa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;">${kpi.label}</div>
+                            <div class="mc-number" style="font-size: 1.2rem; margin-bottom: 15px; color: #e94c17; font-weight: bold;">${kpi.value}</div>
+                            <p style="font-size: 0.95rem; line-height: 1.5; color: #eee;">${kpi.desc}</p>
+                        </div>
+                    `;
+                });
+            }
+        }
+
+        // Overview Gallery
+        const galleryContainer = document.getElementById('dd-gallery');
+        if (galleryContainer) {
+            galleryContainer.innerHTML = '';
+            if (uc.deepDive?.media && uc.deepDive.media.length > 0) {
+                new LightboxGallery('dd-gallery', uc.deepDive.media);
+            }
+        }
+
+        // Architecture
+        const archTitle = document.getElementById('dd-arch-title');
+        if (archTitle) archTitle.innerText = uc.deepDive?.architecture?.title || (uc.title + " — Architecture");
+        const archDesc = document.getElementById('dd-arch-desc');
+        if (archDesc) archDesc.innerText = uc.deepDive?.architecture?.desc || "Architecture details coming soon...";
+        const archImg = document.getElementById('dd-arch-img');
+        if (archImg) {
+            archImg.src = uc.deepDive?.architecture?.img || "assets/Healthcare Services/tech_architecture.png";
+        }
+
+        // Engine Map
+        const engineTitle = document.getElementById('dd-engine-title');
+        if (engineTitle) engineTitle.innerText = uc.deepDive?.engineMap?.title || (uc.title + " — Engine Map / AI Flow");
+        const engineDesc = document.getElementById('dd-engine-desc');
+        if (engineDesc) engineDesc.innerText = uc.deepDive?.engineMap?.desc || "Engine map details coming soon...";
+        const engineImg = document.getElementById('dd-engine-img');
+        if (engineImg) {
+            engineImg.src = uc.deepDive?.engineMap?.img || "assets/Healthcare Services/ai_engine_map.png";
+        }
+    }
 
     // Set tabs back to overview
     const tabs = document.querySelectorAll('.dd-tab');
@@ -1145,15 +1475,21 @@ function selectPractice(element) {
 }
 
 // --- Navigation Fixes --- //
-function goToHome() {
+function goToHome(skipHashUpdate = false) {
     hideAllScreens();
     const healthcareUiContainer = document.getElementById('healthcare-ui-container');
     if (healthcareUiContainer) healthcareUiContainer.classList.add('hidden');
 
     const mainContainer = document.getElementById('main-container');
     if (mainContainer) mainContainer.classList.remove('hidden');
-
-    document.body.style.overflowY = 'auto';
+    
+    // Enable Lenis scrolling
+    if (typeof lenis !== 'undefined') lenis.start();
+    
+    // Reset to start of page
+    window.scrollTo(0, 0);
+    
+    updateUrlHash({ screen: null, tab: null, model: null, deepdive: null, practice: null }, skipHashUpdate);
 }
 
 function showBestPracticesDetails() {
@@ -1166,32 +1502,28 @@ function showBestPracticesDetails() {
     openPracticesTab('practice-tab-best-practices');
 }
 
-// --- Healthcare Frameworks Navigation --- //
-function openHcPracticesTab(tabId) {
-    openScreen('screen-healthcare-frameworks');
-    const tabBtn = document.querySelector('#screen-healthcare-frameworks .practice-tab[data-target="' + tabId + '"]');
-    if (tabBtn) tabBtn.click();
+// --- Healthcare Master Tabs --- //
+function switchHcMainTab(tabId, btnElement, skipHashUpdate = false) {
+    const allTabs = document.querySelectorAll('.hc-master-tab');
+    allTabs.forEach(t => t.classList.remove('active'));
+    if (btnElement) btnElement.classList.add('active');
+    
+    const allPanes = document.querySelectorAll('.hc-main-pane');
+    allPanes.forEach(p => p.classList.add('hidden'));
+    
+    const targetPane = document.getElementById('hc-main-tab-' + tabId);
+    if (targetPane) {
+        targetPane.classList.remove('hidden');
+        targetPane.classList.add('active');
+        targetPane.style.opacity = '0';
+        setTimeout(() => {
+            targetPane.style.opacity = '1';
+            targetPane.style.transition = 'opacity 0.3s ease';
+        }, 50);
+    }
+    
+    updateUrlHash({ tab: tabId, deepdive: null, model: null }, skipHashUpdate);
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-    // Tab Switching for Healthcare Frameworks
-    const hcTabs = document.querySelectorAll('#screen-healthcare-frameworks .practice-tab');
-    hcTabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            hcTabs.forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-
-            const targetId = tab.getAttribute('data-target');
-            const allPanes = document.querySelectorAll('#screen-healthcare-frameworks .practice-pane');
-            allPanes.forEach(pane => {
-                pane.classList.remove('active');
-                if (pane.id === targetId) {
-                    pane.classList.add('active');
-                }
-            });
-        });
-    });
-});
 
 // --- Lightbox Zoom & Pan Logic --- //
 let currentZoom = 1;
@@ -1453,16 +1785,9 @@ function openLightbox(src, type, isFromGallery = false) {
 // --- Initialize Galleries --- //
 document.addEventListener('DOMContentLoaded', () => {
     const aiPracticeMedia = [
-        { type: 'image', src: 'Media/Card Images/Card Image 1.jpg' },
-        { type: 'image', src: 'Media/Card Images/Card Image 2.jpg' },
-        { type: 'image', src: 'Media/Card Images/Card Image 3.jpg' },
-        { type: 'video', src: 'https://www.w3schools.com/html/mov_bbb.mp4' }
-    ];
-
-    const patientIntakeMedia = [
-        { type: 'image', src: 'Media/Healthcare Services/3. Shawroom- Overview.jpg' },
-        { type: 'image', src: 'Media/Card Images/Card Image 2.jpg' },
-        { type: 'image', src: 'Media/Card Images/Card Image 3.jpg' },
+        { type: 'image', src: 'assets/Card Images/Card Image 1.jpg' },
+        { type: 'image', src: 'assets/Card Images/Card Image 2.jpg' },
+        { type: 'image', src: 'assets/Card Images/Card Image 3.jpg' },
         { type: 'video', src: 'https://www.w3schools.com/html/mov_bbb.mp4' }
     ];
 
@@ -1473,10 +1798,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('hc-ai-practice-gallery')) {
         new LightboxGallery('hc-ai-practice-gallery', aiPracticeMedia);
     }
-
-    if (document.getElementById('patient-intake-gallery')) {
-        new LightboxGallery('patient-intake-gallery', patientIntakeMedia);
-    }
 });
 
 
@@ -1486,34 +1807,64 @@ const dataModels = {
     'model-1': {
         title: 'Patient Journey Analytics',
         desc: 'Comprehensive data architecture mapping the end-to-end patient lifecycle, integrating clinical, financial, and operational touchpoints for holistic predictive modeling.',
-        img: 'Media/Healthcare Services/tech_architecture.png'
+        img: 'assets/Healthcare Services/tech_architecture.png'
     },
     'model-2': {
         title: 'Clinical Risk Stratification',
         desc: 'Advanced statistical and machine learning models designed to identify at-risk patient populations early, enabling proactive care interventions and resource allocation.',
-        img: 'Media/Healthcare Services/ai_engine_map.png'
+        img: 'assets/Healthcare Services/ai_engine_map.png'
     },
     'model-3': {
         title: 'Revenue Cycle Optimization',
         desc: 'Data model predicting claim denials and identifying revenue leakage points by analyzing historical billing patterns, payer rules, and clinical documentation.',
-        img: 'Media/Healthcare Services/tech_architecture.png'
+        img: 'assets/Healthcare Services/tech_architecture.png'
     },
     'model-4': {
         title: 'Supply Chain Demand Forecasting',
         desc: 'Predictive models for optimizing inventory levels of critical medical supplies, minimizing stockouts, and reducing holding costs through automated procurement triggers.',
-        img: 'Media/Healthcare Services/ai_engine_map.png'
+        img: 'assets/Healthcare Services/ai_engine_map.png'
     }
 };
 
-function showDataModel(modelId, element) {
-    // Update active class on nav
+function filterDataModels() {
+    const input = document.getElementById('data-model-search');
+    if (!input) return;
+    const filter = input.value.toLowerCase();
+    const ul = document.getElementById('data-models-nav');
+    if (!ul) return;
+    const li = ul.getElementsByTagName('li');
+    for (let i = 0; i < li.length; i++) {
+        const text = li[i].textContent || li[i].innerText;
+        if (text.toLowerCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+        } else {
+            li[i].style.display = "none";
+        }
+    }
+}
+
+function showDataModel(modelId, element, skipHashUpdate = false) {
+    // 1) Remove active class from all nav items
     const navItems = document.querySelectorAll('#data-models-nav li');
     navItems.forEach(item => item.classList.remove('active'));
+
+    // 2) Add active class to clicked item
     if (element) {
         element.classList.add('active');
     }
 
-    // Update content
+    // 3) Hide all model contents
+    const models = document.querySelectorAll('.model-content');
+    models.forEach(model => model.classList.remove('active'));
+
+    // 4) Show the selected model content
+    const selectedModel = document.getElementById(modelId);
+    if (selectedModel) {
+        selectedModel.classList.add('active');
+    }
+    
+    updateUrlHash({ tab: 'data', model: modelId }, skipHashUpdate);
+    
     const model = dataModels[modelId];
     if (model) {
         document.getElementById('data-model-title').innerText = model.title;
@@ -1521,7 +1872,7 @@ function showDataModel(modelId, element) {
         document.getElementById('data-model-img').src = model.img;
 
         // Add a small fade animation
-        const contentArea = document.querySelector('#screen-data-models .practices-main-content');
+        const contentArea = document.querySelector('#hc-main-tab-data .practices-main-content');
         if (contentArea) {
             contentArea.style.opacity = '0.5';
             setTimeout(() => {

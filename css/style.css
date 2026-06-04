@@ -868,10 +868,11 @@ body {
     flex-direction: column;
     flex-grow: 1;
     z-index: 2;
+    margin-bottom: -13px;
 }
 
 .card-content h3 {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     font-weight: 500;
     margin-bottom: 10px;
     color: #fff;
@@ -2593,8 +2594,8 @@ select:focus-visible,
 }
 
 .impact-value {
-    font-size: 1.6rem;
-    font-weight: 700;
+    font-size: 1.1rem;
+    font-weight: 500;
     color: #e94c17;
     line-height: 1;
     margin-bottom: 4px;
@@ -2967,7 +2968,7 @@ select:focus-visible,
 .card-tags {
     display: flex;
     gap: 8px;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
     flex-wrap: wrap;
 }
 
@@ -6056,7 +6057,7 @@ html {
 
 .card-tags {
     gap: 6px !important;
-    margin-bottom: 10px !important;
+    margin-bottom: 20px !important;
 }
 
 .tag-pill {
@@ -6916,7 +6917,7 @@ html {
 }
 
 .mc-number {
-    font-size: 2.8rem !important;
+    font-size: 2.2 rem !important;
     font-weight: 800 !important;
     color: var(--accent) !important;
     line-height: 1 !important;
