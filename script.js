@@ -28,15 +28,20 @@ const config = {
             padding: 5
         },
         section4Hover: [
-            'Media/Services Hover from Building Left/1. Hover on Healthcare.png',
-            'Media/Services Hover from Building Left/2. Hover on Real Estate.png',
-            'Media/Services Hover from Building Left/3. Hover on Hospitality.png',
-            'Media/Services Hover from Building Left/4. Hover on Tech.png',
-            'Media/Services Hover from Building Left/5. Hover on Public Sector.png',
-            'Media/Services Hover from Building Left/6. Hover on Finance.png',
-            'Media/Services Hover from Building Left/7. Hover on Retail.png',
-            'Media/Services Hover from Building Left/8. Hover on Education.png',
-            'Media/Services Hover from Building Left/9. Hover on More.png'
+            'Media/Services Hover from Building Left/Industries Hover Cards/1. Hover on Healthcare.jpg',
+            'Media/Services Hover from Building Left/Industries Hover Cards/2. Hover on RealEstate.jpg',
+            'Media/Services Hover from Building Left/Industries Hover Cards/3. Hover on Energy.jpg',
+            'Media/Services Hover from Building Left/Industries Hover Cards/4. Hover on Government.jpg',
+            'Media/Services Hover from Building Left/Industries Hover Cards/5. Hover on CPG.jpg',
+            'Media/Services Hover from Building Left/Industries Hover Cards/6. Hover on Retail  Ecommerce.jpg',
+            'Media/Services Hover from Building Left/Industries Hover Cards/7. Hover on Shipping, Ports & Logistics.jpg',
+            'Media/Services Hover from Building Left/Industries Hover Cards/8. Hover on Other.jpg',
+            'Media/Services Hover from Building Left/Industry Agnostic Business Domains Hover Cards/1. Hover on Executive.jpg',
+            'Media/Services Hover from Building Left/Industry Agnostic Business Domains Hover Cards/2. Hover on Procurement.jpg',
+            'Media/Services Hover from Building Left/Industry Agnostic Business Domains Hover Cards/3. Hover on Finance.jpg',
+            'Media/Services Hover from Building Left/Industry Agnostic Business Domains Hover Cards/4. Hover on Human Capital.jpg',
+            'Media/Services Hover from Building Left/Industry Agnostic Business Domains Hover Cards/5. Hover on Operations Quality.jpg',
+            'Media/Services Hover from Building Left/Industry Agnostic Business Domains Hover Cards/6. Hover on Sales & Customer Experience.jpg'
         ]
     }
 };
@@ -48,17 +53,17 @@ const section4Images = []; // Section 4 Service Hovers
 
 let currentFrame = { frame: 0 };
 // Calculate total frames exactly
-let totalFramesToLoad = config.sections.one.frameCount + 
-                        config.sections.two.frameCount + 
-                        4 + // s2 base + 3 hovers
-                        config.sections.section3.frameCount + 
-                        config.sections.section4Hover.length; 
+let totalFramesToLoad = config.sections.one.frameCount +
+    config.sections.two.frameCount +
+    4 + // s2 base + 3 hovers
+    config.sections.section3.frameCount +
+    config.sections.section4Hover.length;
 let loadedFrames = 0;
 let isScrollComplete = false;
 
 // --- Elements --- //
 const canvas = document.getElementById('hero-canvas');
-const ctx = canvas.getContext('2d', { alpha: false }); 
+const ctx = canvas.getContext('2d', { alpha: false });
 const progressBar = document.getElementById('progress-bar');
 const loadingText = document.getElementById('loading-text');
 const loadingScreen = document.getElementById('loading-screen');
@@ -151,13 +156,13 @@ function onLoadingComplete() {
         loadingScreen.classList.add('hidden');
         document.body.style.overflowY = 'auto'; // Re-enable scrolling
         canvas.style.opacity = 1;
-        
+
         // Initial Draw
         renderFrame();
-        
+
         // Setup Scroll Animations
         setupScrollAnimation();
-        
+
         // Setup Section 2 Interactions
         setupSection2Interactions();
     }, 1000);
@@ -165,7 +170,7 @@ function onLoadingComplete() {
 
 // --- Rendering Logic --- //
 function renderFrame() {
-    if (isScrollComplete) return; 
+    if (isScrollComplete) return;
 
     const frameIndex = Math.round(currentFrame.frame);
     if (images[frameIndex]) {
@@ -245,11 +250,11 @@ let section3Tween = null;
 
 function startSection3Entry() {
     section2Hitboxes.classList.add('hidden');
-    
+
     // Disable main scroll interaction
     document.getElementById('scroll-spacer').style.display = 'none';
-    document.body.style.overflowY = 'hidden'; 
-    window.scrollTo(0, 0); 
+    document.body.style.overflowY = 'hidden';
+    window.scrollTo(0, 0);
 
     // Reset frame if starting fresh
     section3Obj.frame = 0;
@@ -269,7 +274,7 @@ function startSection3Entry() {
             // Reached the beginning, back to Section 2
             section2Hitboxes.classList.remove('hidden');
             drawStaticFrame(section2Images.base);
-            
+
             // Re-enable main scroll
             document.getElementById('scroll-spacer').style.display = 'block';
             document.body.style.overflowY = 'auto';
@@ -306,11 +311,11 @@ function disableSection3Wheel() {
 
 // --- Section 4 Services Logic --- //
 function setupSection4UI() {
-    // Show the interactive hitboxes for the 9 services
+    // Show the interactive hitboxes for the 14 services
     section4Services.classList.remove('hidden');
-    
+
     const serviceCards = document.querySelectorAll('.service-card');
-    
+
     serviceCards.forEach(card => {
         card.addEventListener('mouseenter', (e) => {
             const index = parseInt(e.target.getAttribute('data-index')) - 1;
@@ -318,12 +323,12 @@ function setupSection4UI() {
                 drawStaticFrame(section4Images[index]);
             }
         });
-        
+
         card.addEventListener('mouseleave', () => {
             // Restore to the last frame of Section 3
             drawStaticFrame(section3Images[config.sections.section3.frameCount - 1]);
         });
-        
+
         card.addEventListener('click', (e) => {
             const index = parseInt(e.target.getAttribute('data-index'));
             if (index === 1) { // Healthcare
@@ -381,7 +386,7 @@ function goBackOneScreen() {
     } else {
         const p1 = document.getElementById('screen-data-models');
         const p2 = document.getElementById('screen-frameworks');
-        if ((p1 && !p1.classList.contains('hidden')) || 
+        if ((p1 && !p1.classList.contains('hidden')) ||
             (p2 && !p2.classList.contains('hidden'))) {
             hideAllScreens();
             if (screenLanding) screenLanding.classList.remove('hidden');
@@ -394,7 +399,7 @@ function goBackOneScreen() {
 function openScreen(screenId) {
     hideAllScreens();
     const screen = document.getElementById(screenId);
-    if(screen) {
+    if (screen) {
         screen.classList.remove('hidden');
         window.scrollTo(0, 0);
     }
@@ -403,14 +408,14 @@ function openScreen(screenId) {
 function showHealthcareDetails() {
     hideAllScreens();
     if (screenLanding) screenLanding.classList.remove('hidden');
-    
+
     // Show container and hide main app
     if (healthcareUiContainer) healthcareUiContainer.classList.remove('hidden');
     const mainContainer = document.getElementById('main-container');
     if (mainContainer) mainContainer.classList.add('hidden');
-    document.body.style.overflowY = 'hidden'; 
+    document.body.style.overflowY = 'hidden';
     window.scrollTo(0, 0);
-    
+
     // Render capabilities on open
     currentPage = 1;
     renderUseCases();
@@ -421,7 +426,7 @@ function renderUseCases() {
     const grid = document.getElementById('capabilities-grid');
     if (!grid) return;
     grid.innerHTML = '';
-    
+
     const usecaseFilter = document.getElementById('filter-usecase')?.value || 'all';
     const techFilter = document.getElementById('filter-tech')?.value || 'all';
     const domainFilter = document.getElementById('filter-domain')?.value || 'all';
@@ -448,7 +453,7 @@ function renderUseCases() {
         const card = document.createElement('div');
         card.className = 'use-case-card highlight-card';
         card.style.position = 'relative';
-        
+
         card.innerHTML = `
             <div class="card-img" style="background-image: url('${uc.image}');">
                 <div class="card-glass-icon">
@@ -478,11 +483,11 @@ function renderUseCases() {
                 </div>
             </div>
         `;
-        
+
         card.addEventListener('click', () => openDeepDiveScreen(uc.id));
         grid.appendChild(card);
     });
-    
+
     if (paginatedData.length === 0) {
         grid.innerHTML = '<p style="color:#aaa; grid-column:1/-1; text-align:left; padding: 40px 0; font-size:1.1rem;">No use cases found matching your criteria.</p>';
     }
@@ -494,7 +499,7 @@ function renderPagination(totalPages) {
     const pageNumbers = document.getElementById('page-numbers');
     const btnPrev = document.getElementById('page-prev');
     const btnNext = document.getElementById('page-next');
-    if(!pageNumbers) return;
+    if (!pageNumbers) return;
 
     pageNumbers.innerHTML = '';
     btnPrev.disabled = (currentPage === 1);
@@ -515,7 +520,7 @@ function renderPagination(totalPages) {
 // Attach filter listeners
 ['filter-usecase', 'filter-tech', 'filter-domain', 'filter-project', 'search-cards'].forEach(id => {
     const el = document.getElementById(id);
-    if(el) {
+    if (el) {
         el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', () => {
             currentPage = 1;
             renderUseCases();
@@ -524,7 +529,7 @@ function renderPagination(totalPages) {
 });
 
 const clearBtn = document.getElementById('clear-filters');
-if(clearBtn) {
+if (clearBtn) {
     clearBtn.addEventListener('click', () => {
         document.getElementById('filter-usecase').value = 'all';
         document.getElementById('filter-tech').value = 'all';
@@ -536,9 +541,9 @@ if(clearBtn) {
     });
 }
 const btnPrevPage = document.getElementById('page-prev');
-if(btnPrevPage) btnPrevPage.addEventListener('click', () => { if(currentPage > 1) { currentPage--; renderUseCases(); }});
+if (btnPrevPage) btnPrevPage.addEventListener('click', () => { if (currentPage > 1) { currentPage--; renderUseCases(); } });
 const btnNextPage = document.getElementById('page-next');
-if(btnNextPage) btnNextPage.addEventListener('click', () => { currentPage++; renderUseCases(); });
+if (btnNextPage) btnNextPage.addEventListener('click', () => { currentPage++; renderUseCases(); });
 
 
 function openDeepDiveScreen(ucId) {
@@ -547,22 +552,22 @@ function openDeepDiveScreen(ucId) {
         screenDeepDive.classList.remove('hidden');
         window.scrollTo(0, 0);
     }
-    
+
     // We navigate to Automated Patient Intake by default as requested.
     // Breadcrumbs update
     const bcUsecaseName = document.getElementById('bc-usecase-name');
     if (bcUsecaseName) bcUsecaseName.innerText = 'Automated Patient Intake';
-    
+
     // Set tabs back to overview
     const tabs = document.querySelectorAll('.dd-tab');
     const panes = document.querySelectorAll('.tab-pane');
     tabs.forEach(t => t.classList.remove('active'));
     panes.forEach(p => p.classList.add('hidden'));
-    
-    if(tabs.length > 0) tabs[0].classList.add('active');
+
+    if (tabs.length > 0) tabs[0].classList.add('active');
     const overview = document.getElementById('tab-overview');
-    if(overview) overview.classList.remove('hidden');
-    
+    if (overview) overview.classList.remove('hidden');
+
     // Initialize image library carousel if not done
     initImageLibraryCarousel();
 }
@@ -578,7 +583,7 @@ function openLightbox(src, type) {
     const modal = document.getElementById('lightbox-modal');
     const content = document.getElementById('lightbox-content');
     if (!modal || !content) return;
-    
+
     content.innerHTML = '';
     if (type === 'video') {
         const video = document.createElement('video');
@@ -591,7 +596,7 @@ function openLightbox(src, type) {
         img.src = src;
         content.appendChild(img);
     }
-    
+
     modal.classList.remove('hidden');
 }
 
@@ -605,15 +610,15 @@ function closeLightbox() {
 function updateFeaturedImage(element, src, type) {
     // Update active state
     document.querySelectorAll('.library-thumbnail').forEach(t => t.classList.remove('active-thumb'));
-    if(element) element.classList.add('active-thumb');
-    
+    if (element) element.classList.add('active-thumb');
+
     // Update main image display
     const featuredContainer = document.getElementById('featured-image-container');
-    if(!featuredContainer) return;
-    
+    if (!featuredContainer) return;
+
     // Apply fade out animation
     featuredContainer.classList.add('fade-anim');
-    
+
     setTimeout(() => {
         if (type === 'video') {
             featuredContainer.innerHTML = `
@@ -628,7 +633,7 @@ function updateFeaturedImage(element, src, type) {
             `;
             featuredContainer.onclick = () => openLightbox(src, 'image');
         }
-        
+
         // Remove fade out to trigger fade in
         setTimeout(() => {
             featuredContainer.classList.remove('fade-anim');
@@ -638,7 +643,7 @@ function updateFeaturedImage(element, src, type) {
 
 function scrollGallery(direction) {
     const track = document.getElementById('thumbnail-scroll-track');
-    if(track) {
+    if (track) {
         // Scroll by 2 thumbnail widths approx (140px + gap) * 2 = 300px
         track.scrollBy({ left: direction * 300, behavior: 'smooth' });
     }
@@ -659,7 +664,7 @@ document.querySelectorAll('.dd-tab').forEach(tab => {
     tab.addEventListener('click', () => {
         document.querySelectorAll('.dd-tab').forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
-        
+
         document.querySelectorAll('.tab-pane').forEach(p => p.classList.add('hidden'));
         const pane = document.getElementById(`tab-${tab.dataset.tab}`);
         if (pane) pane.classList.remove('hidden');
@@ -687,10 +692,10 @@ const cmsCancel = document.getElementById('cms-cancel');
 function openCMSModal(type, id) {
     document.getElementById('cms-type').value = type;
     document.getElementById('cms-id').value = id || '';
-    
+
     const titleInput = document.getElementById('cms-title');
     const descInput = document.getElementById('cms-desc');
-    
+
     if (type === 'cap') {
         if (cmsUcFields) cmsUcFields.classList.add('hidden');
         if (id) {
@@ -736,7 +741,7 @@ if (cmsForm) {
         const id = document.getElementById('cms-id').value;
         const title = document.getElementById('cms-title').value;
         const desc = document.getElementById('cms-desc').value;
-        
+
         if (type === 'cap') {
             if (id) {
                 const cap = healthcareData.find(c => c.id === id);
@@ -761,7 +766,7 @@ if (cmsForm) {
             const cat = document.getElementById('cms-category').value;
             const work = document.getElementById('cms-workflow').value;
             const sec = document.getElementById('cms-section').value;
-            
+
             if (id) {
                 const uc = cap.useCases.find(u => u.title === id);
                 if (uc) {
@@ -783,14 +788,14 @@ if (cmsForm) {
             saveHealthcareData();
             renderUseCases();
         }
-        
+
         if (cmsModal) cmsModal.classList.add('hidden');
     });
 }
 
 function deleteItem(type, id) {
     if (!confirm('Are you sure you want to delete this item?')) return;
-    
+
     if (type === 'cap') {
         const idx = healthcareData.findIndex(c => c.id === id);
         if (idx > -1) healthcareData.splice(idx, 1);
@@ -816,7 +821,7 @@ function animateKPIs() {
         const target = +kpi.getAttribute('data-val');
         const duration = 2000;
         const start = performance.now();
-        
+
         function update(currentTime) {
             const elapsed = currentTime - start;
             const progress = Math.min(elapsed / duration, 1);
@@ -856,22 +861,22 @@ document.querySelectorAll('.dd-tab[data-tab="overview"]').forEach(tab => {
 });
 
 // --- Carousel & Lightbox Logic ---
-window.scrollCarousel = function(dir) {
+window.scrollCarousel = function (dir) {
     const carousel = document.getElementById('editorial-carousel');
     if (carousel) {
-        const scrollAmount = 600 * dir; 
+        const scrollAmount = 600 * dir;
         carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
 };
 
-window.openLightbox = function(slideEl) {
+window.openLightbox = function (slideEl) {
     const imgEl = slideEl.querySelector('img');
     const captionEl = slideEl.querySelector('.f-caption');
-    
+
     const lightbox = document.getElementById('image-lightbox');
     const lbImg = document.getElementById('lightbox-img');
     const lbCaption = document.getElementById('lightbox-caption');
-    
+
     if (lightbox && lbImg && imgEl) {
         lbImg.src = imgEl.src;
         if (captionEl && lbCaption) {
@@ -982,56 +987,56 @@ document.querySelectorAll('.practice-tab').forEach(tab => {
         document.querySelectorAll('.practice-tab').forEach(t => t.classList.remove('active'));
         // Hide all practice panes
         document.querySelectorAll('.practice-pane').forEach(p => p.classList.add('hidden'));
-        
+
         // Add active to clicked tab
         tab.classList.add('active');
         // Show target pane
         const target = document.getElementById(tab.dataset.target);
-        if(target) target.classList.remove('hidden');
+        if (target) target.classList.remove('hidden');
     });
 });
 
 // AI Practice Gallery Logic
 function updateAiFeaturedImage(element, src, type) {
     const track = document.getElementById('ai-thumbnail-scroll-track');
-    if(!track) return;
-    
+    if (!track) return;
+
     // Update active state
     track.querySelectorAll('.library-thumbnail').forEach(t => t.classList.remove('active-thumb'));
-    if(element) element.classList.add('active-thumb');
-    
+    if (element) element.classList.add('active-thumb');
+
     // Update main image display
     const featuredContainer = document.getElementById('ai-featured-image-container');
-    if(!featuredContainer) return;
-    
+    if (!featuredContainer) return;
+
     // Apply fade out animation
     featuredContainer.classList.add('fade-anim');
-    
+
     // Hide overlay text if clicking anything other than the first process slide
     const overlay = document.getElementById('ai-slide-overlay');
-    if(overlay) {
+    if (overlay) {
         // A simple check: if it's the first thumbnail, show overlay, else hide
         const isFirst = element.querySelector('.thumb-label') && element.querySelector('.thumb-label').innerText.includes('01');
         overlay.style.display = isFirst ? 'flex' : 'none';
     }
-    
+
     setTimeout(() => {
         if (type === 'video') {
             featuredContainer.innerHTML = `
                 <video id="ai-featured-image" src="${src}" autoplay muted loop style="width:100%; height:100%; object-fit:cover; border-radius:12px;"></video>
                 <div class="hover-overlay"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg></div>
             `;
-            if(overlay) featuredContainer.appendChild(overlay);
+            if (overlay) featuredContainer.appendChild(overlay);
             featuredContainer.onclick = () => openLightbox(src, 'video');
         } else {
             featuredContainer.innerHTML = `
                 <img id="ai-featured-image" src="${src}" alt="Featured Image" style="width:100%; height:100%; object-fit:cover; border-radius:12px;">
                 <div class="hover-overlay"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div>
             `;
-            if(overlay) featuredContainer.appendChild(overlay);
+            if (overlay) featuredContainer.appendChild(overlay);
             featuredContainer.onclick = () => openLightbox(src, 'image');
         }
-        
+
         setTimeout(() => {
             featuredContainer.classList.remove('fade-anim');
         }, 50);
@@ -1040,7 +1045,7 @@ function updateAiFeaturedImage(element, src, type) {
 
 function scrollAiGallery(direction) {
     const track = document.getElementById('ai-thumbnail-scroll-track');
-    if(track) {
+    if (track) {
         track.scrollBy({ left: direction * 300, behavior: 'smooth' });
     }
 }
@@ -1048,7 +1053,7 @@ function scrollAiGallery(direction) {
 function openPracticesTab(tabId) {
     openScreen('screen-frameworks');
     const tabBtn = document.querySelector('.practice-tab[data-target="' + tabId + '"]');
-    if(tabBtn) tabBtn.click();
+    if (tabBtn) tabBtn.click();
 }
 
 // Global Event Listeners
@@ -1132,7 +1137,7 @@ function selectPractice(element) {
     const badgeEl = document.getElementById("practice-member-badge");
 
     if (titleEl) titleEl.innerText = practiceName;
-    
+
     if (practiceData[practiceName]) {
         if (descEl) descEl.innerText = practiceData[practiceName].desc;
         if (badgeEl) badgeEl.innerText = practiceData[practiceName].members;
@@ -1144,10 +1149,10 @@ function goToHome() {
     hideAllScreens();
     const healthcareUiContainer = document.getElementById('healthcare-ui-container');
     if (healthcareUiContainer) healthcareUiContainer.classList.add('hidden');
-    
+
     const mainContainer = document.getElementById('main-container');
     if (mainContainer) mainContainer.classList.remove('hidden');
-    
+
     document.body.style.overflowY = 'auto';
 }
 
@@ -1156,8 +1161,8 @@ function showBestPracticesDetails() {
     if (healthcareUiContainer) healthcareUiContainer.classList.remove('hidden');
     const mainContainer = document.getElementById('main-container');
     if (mainContainer) mainContainer.classList.add('hidden');
-    document.body.style.overflowY = 'hidden'; 
-    
+    document.body.style.overflowY = 'hidden';
+
     openPracticesTab('practice-tab-best-practices');
 }
 
@@ -1165,7 +1170,7 @@ function showBestPracticesDetails() {
 function openHcPracticesTab(tabId) {
     openScreen('screen-healthcare-frameworks');
     const tabBtn = document.querySelector('#screen-healthcare-frameworks .practice-tab[data-target="' + tabId + '"]');
-    if(tabBtn) tabBtn.click();
+    if (tabBtn) tabBtn.click();
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1175,12 +1180,12 @@ document.addEventListener('DOMContentLoaded', () => {
         tab.addEventListener('click', () => {
             hcTabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
-            
+
             const targetId = tab.getAttribute('data-target');
             const allPanes = document.querySelectorAll('#screen-healthcare-frameworks .practice-pane');
             allPanes.forEach(pane => {
                 pane.classList.remove('active');
-                if(pane.id === targetId) {
+                if (pane.id === targetId) {
                     pane.classList.add('active');
                 }
             });
@@ -1197,7 +1202,7 @@ let translateX = 0, translateY = 0;
 function zoomLightbox(direction) {
     const content = document.getElementById('lightbox-content');
     if (!content) return;
-    
+
     if (direction === 0) {
         currentZoom = 1;
         translateX = 0;
@@ -1207,7 +1212,7 @@ function zoomLightbox(direction) {
     } else {
         currentZoom = Math.max(currentZoom - 0.5, 0.5); // Min zoom 0.5x
     }
-    
+
     updateLightboxTransform();
 }
 
@@ -1220,22 +1225,22 @@ function updateLightboxTransform() {
 
 document.addEventListener('DOMContentLoaded', () => {
     const content = document.getElementById('lightbox-content');
-    if(content) {
+    if (content) {
         content.addEventListener('mousedown', (e) => {
-            if(currentZoom > 1) {
+            if (currentZoom > 1) {
                 isPanning = true;
                 startX = e.clientX - translateX;
                 startY = e.clientY - translateY;
             }
         });
-        
+
         window.addEventListener('mousemove', (e) => {
-            if(!isPanning) return;
+            if (!isPanning) return;
             translateX = e.clientX - startX;
             translateY = e.clientY - startY;
             updateLightboxTransform();
         });
-        
+
         window.addEventListener('mouseup', () => {
             isPanning = false;
         });
@@ -1268,7 +1273,7 @@ class LightboxGallery {
         btnLeft.className = 'gallery-arrow gallery-arrow-left';
         btnLeft.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>';
         btnLeft.onclick = (e) => { e.stopPropagation(); this.navigate(-1); };
-        
+
         // Track
         this.track = document.createElement('div');
         this.track.className = 'gallery-track';
@@ -1308,7 +1313,7 @@ class LightboxGallery {
         // Render Track
         this.track.innerHTML = '';
         const total = this.mediaItems.length;
-        
+
         // Determine prev and next indices (looping)
         const prevIndex = (this.currentIndex - 1 + total) % total;
         const nextIndex = (this.currentIndex + 1) % total;
@@ -1323,7 +1328,7 @@ class LightboxGallery {
                 video.src = item.src;
                 video.muted = true;
                 video.loop = true;
-                if(posClass === 'active') video.play();
+                if (posClass === 'active') video.play();
                 slide.appendChild(video);
             } else {
                 const img = document.createElement('img');
@@ -1336,7 +1341,7 @@ class LightboxGallery {
                 expand.className = 'slide-expand-overlay';
                 expand.innerHTML = '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>';
                 slide.appendChild(expand);
-                
+
                 // Open global lightbox with ALL items from this gallery
                 slide.onclick = () => {
                     globalGalleryItems = this.mediaItems;
@@ -1360,14 +1365,14 @@ class LightboxGallery {
         this.mediaItems.forEach((item, idx) => {
             const thumb = document.createElement('div');
             thumb.className = 'gallery-thumb' + (idx === this.currentIndex ? ' active' : '');
-            
+
             if (item.type === 'video') {
                 // For video thumb, we can use a poster image if provided, else just load the video element
                 const video = document.createElement('video');
                 video.src = item.src;
                 video.muted = true;
                 thumb.appendChild(video);
-                
+
                 const icon = document.createElement('div');
                 icon.className = 'thumb-video-indicator';
                 icon.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>';
@@ -1377,7 +1382,7 @@ class LightboxGallery {
                 img.src = item.src;
                 thumb.appendChild(img);
             }
-            
+
             thumb.onclick = () => this.goToIndex(idx);
             this.thumbStrip.appendChild(thumb);
         });
@@ -1387,11 +1392,11 @@ class LightboxGallery {
 // --- Enhanced Global Lightbox Navigation --- //
 function navigateLightbox(dir) {
     if (globalGalleryItems.length === 0) return;
-    
+
     currentLightboxIndex += dir;
     if (currentLightboxIndex < 0) currentLightboxIndex = globalGalleryItems.length - 1;
     if (currentLightboxIndex >= globalGalleryItems.length) currentLightboxIndex = 0;
-    
+
     const item = globalGalleryItems[currentLightboxIndex];
     openLightbox(item.src, item.type, false);
 }
@@ -1401,30 +1406,30 @@ function openLightbox(src, type, isFromGallery = false) {
     const modal = document.getElementById('lightbox-modal');
     const content = document.getElementById('lightbox-content');
     if (!modal || !content) return;
-    
-    if(!isFromGallery) {
+
+    if (!isFromGallery) {
         globalGalleryItems = [];
         currentLightboxIndex = -1;
     }
-    
+
     // Toggle navigation arrows visibility
     const leftArrow = document.getElementById('lightbox-nav-left');
     const rightArrow = document.getElementById('lightbox-nav-right');
     const counter = document.getElementById('lightbox-counter');
-    
+
     if (globalGalleryItems.length > 1) {
-        if(leftArrow) leftArrow.classList.remove('hidden');
-        if(rightArrow) rightArrow.classList.remove('hidden');
-        if(counter) {
+        if (leftArrow) leftArrow.classList.remove('hidden');
+        if (rightArrow) rightArrow.classList.remove('hidden');
+        if (counter) {
             counter.classList.remove('hidden');
             counter.innerText = (currentLightboxIndex + 1) + " / " + globalGalleryItems.length;
         }
     } else {
-        if(leftArrow) leftArrow.classList.add('hidden');
-        if(rightArrow) rightArrow.classList.add('hidden');
-        if(counter) counter.classList.add('hidden');
+        if (leftArrow) leftArrow.classList.add('hidden');
+        if (rightArrow) rightArrow.classList.add('hidden');
+        if (counter) counter.classList.add('hidden');
     }
-    
+
     content.innerHTML = '';
     if (type === 'video') {
         const video = document.createElement('video');
@@ -1439,7 +1444,7 @@ function openLightbox(src, type, isFromGallery = false) {
         img.src = src;
         content.appendChild(img);
     }
-    
+
     modal.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
     zoomLightbox(0);
@@ -1461,15 +1466,15 @@ document.addEventListener('DOMContentLoaded', () => {
         { type: 'video', src: 'https://www.w3schools.com/html/mov_bbb.mp4' }
     ];
 
-    if(document.getElementById('ai-practice-gallery')) {
+    if (document.getElementById('ai-practice-gallery')) {
         new LightboxGallery('ai-practice-gallery', aiPracticeMedia);
     }
-    
-    if(document.getElementById('hc-ai-practice-gallery')) {
+
+    if (document.getElementById('hc-ai-practice-gallery')) {
         new LightboxGallery('hc-ai-practice-gallery', aiPracticeMedia);
     }
 
-    if(document.getElementById('patient-intake-gallery')) {
+    if (document.getElementById('patient-intake-gallery')) {
         new LightboxGallery('patient-intake-gallery', patientIntakeMedia);
     }
 });
@@ -1514,7 +1519,7 @@ function showDataModel(modelId, element) {
         document.getElementById('data-model-title').innerText = model.title;
         document.getElementById('data-model-desc').innerText = model.desc;
         document.getElementById('data-model-img').src = model.img;
-        
+
         // Add a small fade animation
         const contentArea = document.querySelector('#screen-data-models .practices-main-content');
         if (contentArea) {
