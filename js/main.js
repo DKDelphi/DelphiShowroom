@@ -41,7 +41,14 @@ const config = {
             'assets/Services Hover from Building Left/Industry Agnostic Business Domains Hover Cards/3. Hover on Finance.jpg',
             'assets/Services Hover from Building Left/Industry Agnostic Business Domains Hover Cards/4. Hover on Human Capital.jpg',
             'assets/Services Hover from Building Left/Industry Agnostic Business Domains Hover Cards/5. Hover on Operations Quality.jpg',
-            'assets/Services Hover from Building Left/Industry Agnostic Business Domains Hover Cards/6. Hover on Sales & Customer Experience.jpg'
+            'assets/Services Hover from Building Left/Industry Agnostic Business Domains Hover Cards/6. Hover on Sales & Customer Experience.jpg',
+            'assets/Services Hover from Building Left/Engins/1. Hover on OCR.jpg',
+            'assets/Services Hover from Building Left/Engins/2. Hover on Agentic RAG.jpg',
+            'assets/Services Hover from Building Left/Engins/3. Hover on AGUI.jpg',
+            'assets/Services Hover from Building Left/Engins/4. Hover on Multi-Agent Orchestration FRamework.jpg',
+            'assets/Services Hover from Building Left/Engins/5. Hover on MCP Authentication Authorization.jpg',
+            'assets/Services Hover from Building Left/Engins/6. Hover on Agent Ops.jpg',
+            'assets/Services Hover from Building Left/Engins/7. Hover on Other.jpg'
         ]
     }
 };
@@ -220,18 +227,59 @@ function setupScrollAnimation() {
 
 // --- Section 2 Hover & Click Logic --- //
 function setupSection2Interactions() {
+    let s2HoverContainer = document.getElementById('s2-hover-container');
+    if (!s2HoverContainer) {
+        s2HoverContainer = document.createElement('div');
+        s2HoverContainer.id = 's2-hover-container';
+        s2HoverContainer.style.position = 'absolute';
+        s2HoverContainer.style.top = '0';
+        s2HoverContainer.style.left = '0';
+        s2HoverContainer.style.width = '100%';
+        s2HoverContainer.style.height = '100%';
+        s2HoverContainer.style.pointerEvents = 'none';
+        s2HoverContainer.style.zIndex = '-1'; 
+        section2Hitboxes.appendChild(s2HoverContainer);
+
+        for (const key of ['left', 'center', 'right']) {
+            const imgObj = section2Images[key];
+            if (imgObj) {
+                imgObj.style.position = 'absolute';
+                imgObj.style.top = '0';
+                imgObj.style.left = '0';
+                imgObj.style.width = '100%';
+                imgObj.style.height = '100%';
+                imgObj.style.objectFit = 'fill';
+                imgObj.style.opacity = '0';
+                imgObj.style.transition = 'opacity 0.4s ease';
+                s2HoverContainer.appendChild(imgObj);
+            }
+        }
+    }
+
     const hitboxes = document.querySelectorAll('#section-2-hitboxes .hitbox');
 
     hitboxes.forEach(hitbox => {
+        const newHitbox = hitbox.cloneNode(true);
+        hitbox.parentNode.replaceChild(newHitbox, hitbox);
+    });
+
+    const newHitboxes = document.querySelectorAll('#section-2-hitboxes .hitbox');
+
+    newHitboxes.forEach(hitbox => {
         hitbox.addEventListener('mouseenter', (e) => {
             if (!isScrollComplete) return;
             const target = e.target.getAttribute('data-target');
-            drawStaticFrame(section2Images[target]);
+            if (section2Images[target]) {
+                section2Images[target].style.opacity = '1';
+            }
         });
 
-        hitbox.addEventListener('mouseleave', () => {
+        hitbox.addEventListener('mouseleave', (e) => {
             if (!isScrollComplete) return;
-            drawStaticFrame(section2Images.base);
+            const target = e.target.getAttribute('data-target');
+            if (section2Images[target]) {
+                section2Images[target].style.opacity = '0';
+            }
         });
 
         hitbox.addEventListener('click', (e) => {
@@ -314,19 +362,54 @@ function setupSection4UI() {
     // Show the interactive hitboxes for the 14 services
     section4Services.classList.remove('hidden');
 
+    let hoverBgContainer = document.getElementById('hover-bg-container');
+    if (!hoverBgContainer) {
+        hoverBgContainer = document.createElement('div');
+        hoverBgContainer.id = 'hover-bg-container';
+        hoverBgContainer.style.position = 'absolute';
+        hoverBgContainer.style.top = '0';
+        hoverBgContainer.style.left = '0';
+        hoverBgContainer.style.width = '100%';
+        hoverBgContainer.style.height = '100%';
+        hoverBgContainer.style.pointerEvents = 'none';
+        hoverBgContainer.style.zIndex = '-1'; 
+        section4Services.appendChild(hoverBgContainer);
+
+        section4Images.forEach((imgObj) => {
+            imgObj.style.position = 'absolute';
+            imgObj.style.top = '0';
+            imgObj.style.left = '0';
+            imgObj.style.width = '100%';
+            imgObj.style.height = '100%';
+            imgObj.style.objectFit = 'fill';
+            imgObj.style.opacity = '0';
+            imgObj.style.transition = 'opacity 0.4s ease';
+            hoverBgContainer.appendChild(imgObj);
+        });
+    }
+
     const serviceCards = document.querySelectorAll('.service-card');
 
     serviceCards.forEach(card => {
+        const newCard = card.cloneNode(true);
+        card.parentNode.replaceChild(newCard, card);
+    });
+
+    const newServiceCards = document.querySelectorAll('.service-card');
+
+    newServiceCards.forEach(card => {
         card.addEventListener('mouseenter', (e) => {
             const index = parseInt(e.target.getAttribute('data-index')) - 1;
             if (section4Images[index]) {
-                drawStaticFrame(section4Images[index]);
+                section4Images[index].style.opacity = '1';
             }
         });
 
-        card.addEventListener('mouseleave', () => {
-            // Restore to the last frame of Section 3
-            drawStaticFrame(section3Images[config.sections.section3.frameCount - 1]);
+        card.addEventListener('mouseleave', (e) => {
+            const index = parseInt(e.target.getAttribute('data-index')) - 1;
+            if (section4Images[index]) {
+                section4Images[index].style.opacity = '0';
+            }
         });
 
         card.addEventListener('click', (e) => {
