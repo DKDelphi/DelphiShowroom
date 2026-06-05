@@ -1,0 +1,1282 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delphi Ecosystem Showroom</title>
+    <!-- General Sans Font -->
+    <link href="https://api.fontshare.com/v2/css?f[]=general-sans@200,300,400,500,600,700&display=swap"
+        rel="stylesheet">
+
+    <!-- Import Maps for Framer Modules -->
+    <script type="importmap">
+    {
+        "imports": {
+            "react": "https://esm.sh/react@18.2.0",
+            "react/jsx-runtime": "https://esm.sh/react@18.2.0/jsx-runtime",
+            "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+            "framer": "https://esm.sh/framer@2.4.1",
+            "framer-motion": "https://esm.sh/framer-motion@10.16.4"
+        }
+    }
+    </script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+
+<body>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loader-content">
+            <img src="assets/Delphi x AI.png" alt="Delphi x AI" class="loader-logo">
+            <div class="progress-bar-container">
+                <div id="progress-bar"></div>
+            </div>
+            <p id="loading-text">Loading Experience 0%</p>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <main id="main-container">
+        <!-- Canvas for Sequence Rendering -->
+        <div class="canvas-container">
+            <canvas id="hero-canvas"></canvas>
+
+            <!-- Interactive Layers overlaying the canvas -->
+
+            <!-- Section 2: Building Hitboxes -->
+            <div id="section-2-hitboxes" class="hidden">
+                <div class="hitbox building-left" data-target="left"><span class="building-label">AI Showroom</span>
+                </div>
+                <div class="hitbox building-center" data-target="center"><span class="building-label">Tower</span></div>
+                <div class="hitbox building-right" data-target="right"><span class="building-label">Manufacturing
+                        Tower</span></div>
+            </div>
+
+            <!-- Section 4: Services UI -->
+            <div id="section-4-services" class="hidden">
+                <div class="service-grid">
+                    <div class="service-card" data-index="1"></div>
+                    <div class="service-card" data-index="2"></div>
+                    <div class="service-card" data-index="3"></div>
+                    <div class="service-card" data-index="4"></div>
+                    <div class="service-card" data-index="5"></div>
+                    <div class="service-card" data-index="6"></div>
+                    <div class="service-card" data-index="7"></div>
+                    <div class="service-card" data-index="8"></div>
+                    <div class="service-card" data-index="9"></div>
+                    <div class="service-card" data-index="10"></div>
+                    <div class="service-card" data-index="11"></div>
+                    <div class="service-card" data-index="12"></div>
+                    <div class="service-card" data-index="13"></div>
+                    <div class="service-card" data-index="14"></div>
+                </div>
+
+                <!-- Action Buttons Container -->
+                <div
+                    style="position: absolute; bottom: 8%; left: 50%; transform: translateX(-50%); z-index: 100; display: flex; gap: 16px; pointer-events: auto;">
+                    <button class="action-btn btn-secondary"
+                        style="font-size: 1.1rem; padding: 12px 24px; display: flex; align-items: center; gap: 8px;"
+                        onclick="showBestPracticesDetails()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-award">
+                            <circle cx="12" cy="8" r="6" />
+                            <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
+                        </svg>
+                        Practices
+                    </button>
+                    <button class="action-btn btn-secondary"
+                        style="font-size: 1.1rem; padding: 12px 24px; display: flex; align-items: center; gap: 8px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-cpu">
+                            <rect width="16" height="16" x="4" y="4" rx="2" />
+                            <rect width="6" height="6" x="9" y="9" rx="1" />
+                            <path d="M15 2v2" />
+                            <path d="M15 20v2" />
+                            <path d="M2 15h2" />
+                            <path d="M2 9h2" />
+                            <path d="M20 15h2" />
+                            <path d="M20 9h2" />
+                            <path d="M9 2v2" />
+                            <path d="M9 20v2" />
+                        </svg>
+                        Engine
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll spacer to allow scrolling for the first section -->
+        <div id="scroll-spacer"></div>
+    </main>
+
+    <!-- Section 5: Healthcare UI Container (Hidden by default) -->
+    <div id="healthcare-ui-container" class="hidden">
+        <!-- Futuristic Particle Background -->
+        <canvas id="particle-canvas"></canvas>
+
+        <!-- Screen 1: Landing Page -->
+        <section id="screen-landing">
+            <header class="universal-header">
+                <!-- Row 1: Global Brand Bar -->
+                <div class="header-brand-bar">
+                    <div class="logo" id="logo-landing" onclick="goToHome()">
+                        <img src="assets/Delphi x AI.png" alt="Delphi x AI">
+                    </div>
+                    <div class="header-actions">
+                        <button class="icon-btn" id="bell-btn-landing" title="Notifications">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                                <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+                            </svg>
+                        </button>
+                        <div class="user-profile-container">
+                            <button class="icon-btn user-profile-btn" title="User Menu">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                    <circle cx="12" cy="7" r="4" />
+                                </svg>
+                            </button>
+                            <div class="profile-dropdown">
+                                <label class="admin-toggle">
+                                    <input type="checkbox" class="admin-checkbox"
+                                        onchange="document.getElementById('btn-admin-toggle').click()">
+                                    <span class="toggle-slider"></span>
+                                    Admin Mode
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Row 2: Contextual Sub-Nav -->
+                <div class="header-subnav">
+                    <button class="back-nav-btn" onclick="goBackOneScreen()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m15 18-6-6 6-6" />
+                        </svg>
+                        <span>Back to Showroom</span>
+                    </button>
+                    <nav class="breadcrumbs">
+                        <span class="bc-crumb bc-link" onclick="goToHome()">Home</span>
+                        <span class="bc-sep">&#8250;</span>
+                        <span class="bc-crumb bc-link" onclick="goToHome()">Industries</span>
+                        <span class="bc-sep">&#8250;</span>
+                        <span class="bc-crumb bc-current">Healthcare</span>
+                    </nav>
+                </div>
+            </header>
+
+            <div class="hc-hero landing-hero no-right-col">
+                <div class="hero-left-col full-width align-left">
+                    <h1>Healthcare Capabilities</h1>
+                    <p>Drive better patient outcomes, smarter operations, secure compliance, and faster digital
+                        transformation across the healthcare ecosystem with AI-powered capabilities.</p>
+                    <div class="quick-links">
+                        <button class="quick-link-btn" onclick="openScreen('screen-data-models')">Data Models</button>
+                        <button class="quick-link-btn" onclick="openHcPracticesTab('hc-tab-frameworks')">Frameworks /
+                            Best practices</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hc-content-area">
+                <div class="capabilities-section">
+                    <div class="cap-header">
+                        <h2><span class="dot"></span> Healthcare Use Cases</h2>
+                    </div>
+
+                    <!-- New Filter Bar -->
+                    <div class="advanced-filter-bar">
+                        <div class="filter-group">
+                            <select id="filter-usecase" class="filter-select">
+                                <option value="all">Use Case</option>
+                                <option value="patient-intake">Patient Intake</option>
+                                <option value="clinical-ops">Clinical Ops</option>
+                                <option value="revenue-cycle">Revenue Cycle</option>
+                            </select>
+                            <select id="filter-tech" class="filter-select">
+                                <option value="all">Technology</option>
+                                <option value="generative-ai">Generative AI</option>
+                                <option value="predictive-ml">Predictive ML</option>
+                                <option value="nlp">NLP</option>
+                                <option value="computer-vision">Computer Vision</option>
+                            </select>
+                            <select id="filter-domain" class="filter-select">
+                                <option value="all">Domain</option>
+                                <option value="hospital">Hospital</option>
+                                <option value="clinic">Clinic</option>
+                                <option value="pharmacy">Pharmacy</option>
+                                <option value="insurance">Insurance</option>
+                            </select>
+                            <select id="filter-project" class="filter-select">
+                                <option value="all">Project Type</option>
+                                <option value="poc">Proof of Concept</option>
+                                <option value="mvp">MVP</option>
+                                <option value="production">Production</option>
+                            </select>
+                        </div>
+                        <div class="search-group">
+                            <div class="search-input-wrapper">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <path d="m21 21-4.3-4.3" />
+                                </svg>
+                                <input type="text" id="search-cards" placeholder="Search use cases...">
+                            </div>
+                            <button id="clear-filters" class="action-btn">Clear Filters</button>
+                        </div>
+                    </div>
+
+                    <div class="cap-grid" id="capabilities-grid">
+                        <!-- Capability cards will be injected by JavaScript -->
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="pagination-container">
+                        <button class="page-btn prev-btn" id="page-prev" disabled>Previous</button>
+                        <div class="page-numbers" id="page-numbers">
+                            <!-- Page numbers injected by JS -->
+                        </div>
+                        <button class="page-btn next-btn" id="page-next">Next</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Placeholder Screens -->
+        <section id="screen-data-models" class="hidden">
+            <header class="universal-header">
+                <div class="header-brand-bar">
+                    <div class="logo" onclick="goToHome()">
+                        <img src="assets/Delphi x AI.png" alt="Delphi x AI">
+                    </div>
+                    <div class="header-actions">
+                        <button class="icon-btn" title="Notifications">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                                <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+                            </svg>
+                        </button>
+                        <div class="user-profile-container">
+                            <button class="icon-btn user-profile-btn" title="User Menu">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                    <circle cx="12" cy="7" r="4" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-subnav">
+                    <button class="back-nav-btn" onclick="goToHome()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m15 18-6-6 6-6" />
+                        </svg>
+                        <span>Back to Showroom</span>
+                    </button>
+                    <nav class="breadcrumbs">
+                        <span class="bc-crumb bc-link" onclick="goToHome()">Home</span>
+                        <span class="bc-sep">&#8250;</span>
+                        <span class="bc-crumb bc-link" onclick="goToHome()">Industries</span>
+                        <span class="bc-sep">&#8250;</span>
+                        <span class="bc-crumb bc-link" onclick="openScreen('screen-landing')">Healthcare</span>
+                        <span class="bc-sep">&#8250;</span>
+                        <span class="bc-crumb bc-current">Data Models</span>
+                    </nav>
+                </div>
+            </header>
+            <div class="practices-layout">
+                <!-- Left Sidebar -->
+                <div class="practices-sidebar">
+                    <div class="sidebar-title">Data Models <span>Library</span></div>
+                    <ul class="sidebar-nav" id="data-models-nav">
+                        <li class="active" onclick="showDataModel('model-1', this)">Patient Journey Analytics</li>
+                        <li onclick="showDataModel('model-2', this)">Clinical Risk Stratification</li>
+                        <li onclick="showDataModel('model-3', this)">Revenue Cycle Optimization</li>
+                        <li onclick="showDataModel('model-4', this)">Supply Chain Demand Forecasting</li>
+                    </ul>
+                </div>
+
+                <!-- Right Main Content -->
+                <div class="practices-main-content">
+                    <div class="practice-header">
+                        <div class="header-title-row">
+                            <h2 id="data-model-title">Patient Journey Analytics</h2>
+                        </div>
+                        <p class="practice-description" id="data-model-desc">Comprehensive data architecture mapping the
+                            end-to-end patient lifecycle, integrating clinical, financial, and operational touchpoints
+                            for holistic predictive modeling.</p>
+                    </div>
+
+                    <div class="diagram-container" style="margin-top: 0;">
+                        <img id="data-model-img" src="assets/Healthcare Services/tech_architecture.png" alt="Data Model"
+                            style="width:100%; max-height: 70vh; object-fit: contain; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer;"
+                            onclick="openLightbox(this.src, 'image')">
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="screen-frameworks" class="hidden screen-practices">
+            <header class="universal-header">
+                <div class="header-brand-bar">
+                    <div class="logo" onclick="goToHome()">
+                        <img src="assets/Delphi x AI.png" alt="Delphi x AI">
+                    </div>
+                    <div class="header-actions">
+                        <button class="icon-btn" title="Notifications">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                                <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+                            </svg>
+                        </button>
+                        <div class="user-profile-container">
+                            <button class="icon-btn user-profile-btn" title="User Menu">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                    <circle cx="12" cy="7" r="4" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-subnav">
+                    <button class="back-nav-btn" onclick="goToHome()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m15 18-6-6 6-6" />
+                        </svg>
+                        <span>Back to Showroom</span>
+                    </button>
+                    <nav class="breadcrumbs">
+                        <span class="bc-crumb bc-link" onclick="goToHome()">Home</span>
+                        <span class="bc-sep">&#8250;</span>
+                        <span class="bc-crumb bc-current">Practices</span>
+                    </nav>
+                </div>
+            </header>
+
+
+            <div class="practices-layout">
+
+                <!-- Left Sidebar -->
+                <aside class="practices-sidebar">
+                    <h3 class="sidebar-title">OUR DISCIPLINES<br><span>Practices</span></h3>
+                    <div class="sidebar-search-container">
+                        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8" />
+                            <path d="m21 21-4.3-4.3" />
+                        </svg>
+                        <input type="text" id="practices-search" class="practices-search-input"
+                            placeholder="Search disciplines..." onkeyup="filterPractices()">
+                    </div>
+                    <ul class="sidebar-nav" id="practices-list">
+                        <li class="active" onclick="selectPractice(this)">Experience Design</li>
+                        <li onclick="selectPractice(this)">Product Owner & Business Analysis</li>
+                        <li onclick="selectPractice(this)">Data Functional</li>
+                        <li onclick="selectPractice(this)">Data Engineering</li>
+                        <li onclick="selectPractice(this)">AI / ML Engineering</li>
+                        <li onclick="selectPractice(this)">Solution Architecture</li>
+                        <li onclick="selectPractice(this)">Quality Engineering</li>
+                        <li onclick="selectPractice(this)">Project Management</li>
+                    </ul>
+                </aside>
+
+                <!-- Right Main Content -->
+                <div class="practices-main-content">
+
+                    <!-- Practice Header -->
+                    <div class="practice-header">
+                        <div class="header-title-row">
+                            <h2 id="practice-main-title">Experience Design</h2>
+                            <span class="member-badge" id="practice-member-badge">12 Members</span>
+                        </div>
+                        <p class="practice-description" id="practice-main-desc">We design enterprise-grade product
+                            experiences that translate complex domain workflows into intuitive interfaces &#8212;
+                            combining research, systems thinking, and AI-native interaction patterns to accelerate
+                            adoption across our clients' organizations.</p>
+                    </div>
+
+                    <!-- Tabs Navigation -->
+                    <div class="practice-tabs">
+                        <button class="practice-tab active" data-target="practice-tab-frameworks">Frameworks</button>
+                        <button class="practice-tab" data-target="practice-tab-best-practices">Best Practices</button>
+                        <button class="practice-tab" data-target="practice-tab-ai">AI Infusion</button>
+                    </div>
+
+                    <!-- Tab Panels Container -->
+                    <div class="practice-tab-content">
+
+                        <!-- TAB 1: Frameworks -->
+                        <div id="practice-tab-frameworks" class="practice-pane active">
+                            <h3 class="sec-heading align-left">Design Frameworks We Own</h3>
+                            <p class="sec-subtitle">Six battle-tested frameworks our team applies across enterprise UX
+                                engagements &#8212; refined through 50+ projects spanning healthcare, financial
+                                services, and government.</p>
+
+                            <div class="framework-list">
+                                <!-- Card 1 -->
+                                <div class="framework-card">
+                                    <div class="fc-number">01.</div>
+                                    <div class="fc-content">
+                                        <h4>Domain-First Research Loop</h4>
+                                        <p>Embed with operators to map actual workflows. Interview 8-12 users per role,
+                                            observe live sessions, and codify findings into a domain dictionary that
+                                            anchors every design decision downstream.</p>
+                                    </div>
+                                    <button class="fc-download"><svg width="24" height="24" viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                            <polyline points="7 10 12 15 17 10" />
+                                            <line x1="12" y1="15" x2="12" y2="3" />
+                                        </svg></button>
+                                </div>
+                                <!-- Card 2 -->
+                                <div class="framework-card">
+                                    <div class="fc-number">02.</div>
+                                    <div class="fc-content">
+                                        <h4>AI-Native Interaction Patterns</h4>
+                                        <p>A library of 30+ patterns covering conversational interfaces, agentic flows,
+                                            human-in-the-loop reviews, and trust-building micro-interactions. Each
+                                            pattern ships with do/don't examples and code-ready specs.</p>
+                                    </div>
+                                    <button class="fc-download"><svg width="24" height="24" viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                            <polyline points="7 10 12 15 17 10" />
+                                            <line x1="12" y1="15" x2="12" y2="3" />
+                                        </svg></button>
+                                </div>
+                                <!-- Card 3 -->
+                                <div class="framework-card">
+                                    <div class="fc-number">03.</div>
+                                    <div class="fc-content">
+                                        <h4>Enterprise Design System Kit</h4>
+                                        <p>Token-driven foundation covering color, type, spacing, motion, and elevation.
+                                            Built on auto-layout with variants for light/dark and density modes.
+                                            Includes production-ready components with Code Connect mappings.</p>
+                                    </div>
+                                    <button class="fc-download"><svg width="24" height="24" viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                            <polyline points="7 10 12 15 17 10" />
+                                            <line x1="12" y1="15" x2="12" y2="3" />
+                                        </svg></button>
+                                </div>
+                                <!-- Card 4 -->
+                                <div class="framework-card">
+                                    <div class="fc-number">04.</div>
+                                    <div class="fc-content">
+                                        <h4>Workflow Decomposition Canvas</h4>
+                                        <p>A structured method to break a complex business process into atomic decision
+                                            points, surface AI intervention opportunities, and prioritize based on
+                                            volume, friction, and accuracy lift.</p>
+                                    </div>
+                                    <button class="fc-download"><svg width="24" height="24" viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                            <polyline points="7 10 12 15 17 10" />
+                                            <line x1="12" y1="15" x2="12" y2="3" />
+                                        </svg></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TAB 2: Best Practices -->
+                        <div id="practice-tab-best-practices" class="practice-pane hidden">
+                            <h3 class="sec-heading align-left">Best Practices We Push For Adoption</h3>
+                            <p class="sec-subtitle">Operating principles every designer in the practice follows &#8212;
+                                refined through repeated client engagements and codified so new hires ramp fast and
+                                outputs stay consistent.</p>
+
+                            <div class="best-practices-list">
+                                <div class="bp-item">
+                                    <div class="bp-icon"><svg width="24" height="24" fill="none" stroke="#e94c17"
+                                            stroke-width="2" viewBox="0 0 24 24">
+                                            <path d="M20 6L9 17l-5-5" />
+                                        </svg></div>
+                                    <div class="bp-content">
+                                        <h4>Start with the operator, not the org chart</h4>
+                                        <p>Every project opens with a minimum 5 days of shadowing actual end-users. No
+                                            persona is drafted without observed behavior to back it up.</p>
+                                    </div>
+                                </div>
+                                <div class="bp-item">
+                                    <div class="bp-icon"><svg width="24" height="24" fill="none" stroke="#e94c17"
+                                            stroke-width="2" viewBox="0 0 24 24">
+                                            <path d="M20 6L9 17l-5-5" />
+                                        </svg></div>
+                                    <div class="bp-content">
+                                        <h4>Ship a clickable prototype within 2 weeks</h4>
+                                        <p>Wireframes lose stakeholder attention. A working prototype &#8212; even rough
+                                            &#8212; closes alignment loops 3x faster and surfaces edge cases earlier.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="bp-item">
+                                    <div class="bp-icon"><svg width="24" height="24" fill="none" stroke="#e94c17"
+                                            stroke-width="2" viewBox="0 0 24 24">
+                                            <path d="M20 6L9 17l-5-5" />
+                                        </svg></div>
+                                    <div class="bp-content">
+                                        <h4>Design tokens before screens</h4>
+                                        <p>Color, type, spacing, motion, and elevation are locked in week one. This
+                                            prevents the late-stage scramble where 40 screens need re-tuning.</p>
+                                    </div>
+                                </div>
+                                <div class="bp-item">
+                                    <div class="bp-icon"><svg width="24" height="24" fill="none" stroke="#e94c17"
+                                            stroke-width="2" viewBox="0 0 24 24">
+                                            <path d="M20 6L9 17l-5-5" />
+                                        </svg></div>
+                                    <div class="bp-content">
+                                        <h4>Accessibility is not a phase</h4>
+                                        <p>WCAG AA contrast, keyboard navigation, and screen reader semantics are
+                                            reviewed in every weekly design crit &#8212; not bolted on at handoff.</p>
+                                    </div>
+                                </div>
+                                <div class="bp-item">
+                                    <div class="bp-icon"><svg width="24" height="24" fill="none" stroke="#e94c17"
+                                            stroke-width="2" viewBox="0 0 24 24">
+                                            <path d="M20 6L9 17l-5-5" />
+                                        </svg></div>
+                                    <div class="bp-content">
+                                        <h4>Document the why, not just the what</h4>
+                                        <p>Every Figma file has a decision log frame. Future designers and AI tools need
+                                            to understand the reasoning behind a pattern to evolve it correctly.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TAB 3: AI Infusion -->
+                        <div id="practice-tab-ai" class="practice-pane hidden">
+                            <h3 class="sec-heading align-left">Impact of AI Infusion</h3>
+
+                            <div class="metrics-grid">
+                                <div class="metric-card">
+                                    <div class="mc-number">3.2x</div>
+                                    <div class="mc-label">FASTER PROTOTYPING</div>
+                                    <p>AI-assisted design generation cuts ideation-to-wireframe cycle from weeks to
+                                        days.</p>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="mc-number">40%</div>
+                                    <div class="mc-label">FEWER REVISIONS</div>
+                                    <p>Domain-trained AI catches usability issues early, reducing costly late-stage
+                                        rework.</p>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="mc-number">92%</div>
+                                    <div class="mc-label">ADOPTION RATE</div>
+                                    <p>Interfaces shaped by AI-native patterns see higher first-month user activation.
+                                    </p>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="mc-number">60%</div>
+                                    <div class="mc-label">TIME SAVED</div>
+                                    <p>Automated design QA and token validation free designers for higher-order
+                                        thinking.</p>
+                                </div>
+                            </div>
+
+                            <div class="ai-gallery-section" style="margin-top: 50px;">
+                                <h3 class="sec-heading align-left">AI Infusion in Experience Design</h3>
+                                <p class="sec-subtitle">A visual walkthrough of how AI shows up in our day-to-day design
+                                    process &#8212; from research synthesis to handoff.</p>
+
+                                <div id="ai-practice-gallery"></div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NEW HEALTHCARE FRAMEWORKS SCREEN -->
+        <section id="screen-healthcare-frameworks" class="hidden screen-practices">
+            <header class="universal-header">
+                <div class="header-brand-bar">
+                    <div class="logo" onclick="goToHome()">
+                        <img src="assets/Delphi x AI.png" alt="Delphi x AI">
+                    </div>
+                    <div class="header-actions">
+                        <button class="icon-btn" title="Notifications">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                                <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+                            </svg>
+                        </button>
+                        <div class="user-profile-container">
+                            <button class="icon-btn user-profile-btn" title="User Menu">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                    <circle cx="12" cy="7" r="4" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-subnav">
+                    <button class="back-nav-btn" onclick="openScreen('screen-landing')">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m15 18-6-6 6-6" />
+                        </svg>
+                        <span>Back to Healthcare</span>
+                    </button>
+                    <nav class="breadcrumbs">
+                        <span class="bc-crumb bc-link" onclick="goToHome()">Home</span>
+                        <span class="bc-sep">&#8250;</span>
+                        <span class="bc-crumb bc-link" onclick="goToHome()">Industries</span>
+                        <span class="bc-sep">&#8250;</span>
+                        <span class="bc-crumb bc-link" onclick="openScreen('screen-landing')">Healthcare</span>
+                        <span class="bc-sep">&#8250;</span>
+                        <span class="bc-crumb bc-current">Frameworks & Best Practices</span>
+                    </nav>
+                </div>
+            </header>
+
+
+            <div class="practices-layout hc-frameworks-layout" style="display: block; padding: 40px;">
+
+                <!-- Left Sidebar -->
+
+
+                <!-- Right Main Content -->
+                <div class="practices-main-content">
+
+                    <!-- Practice Header -->
+                    <div class="practice-header">
+                        <div class="header-title-row">
+                            <h2 id="hc-practice-main-title">Healthcare Frameworks &amp; Best Practices</h2>
+
+                        </div>
+                        <p class="practice-description" id="hc-practice-main-desc">Explore our specialized
+                            methodologies, battle-tested best practices, and AI infusion strategies tailored exclusively
+                            for the healthcare industry. These frameworks drive patient outcomes, streamline clinical
+                            operations, and ensure strict compliance.</p>
+                    </div>
+
+                    <!-- Tabs Navigation -->
+                    <div class="practice-tabs">
+                        <button class="practice-tab active" data-target="hc-tab-frameworks">Frameworks</button>
+                        <button class="practice-tab" data-target="hc-tab-best-practices">Best Practices</button>
+                        <button class="practice-tab" data-target="hc-tab-ai">AI Infusion</button>
+                    </div>
+
+                    <!-- Tab Panels Container -->
+                    <div class="practice-tab-content">
+
+                        <!-- TAB 1: Frameworks -->
+                        <div id="hc-tab-frameworks" class="practice-pane active">
+                            <h3 class="sec-heading align-left">Design Frameworks We Own</h3>
+                            <p class="sec-subtitle">Six battle-tested frameworks our team applies across enterprise UX
+                                engagements &#8212; refined through 50+ projects spanning healthcare, financial
+                                services, and government.</p>
+
+                            <div class="framework-list">
+                                <!-- Card 1 -->
+                                <div class="framework-card">
+                                    <div class="fc-number">01.</div>
+                                    <div class="fc-content">
+                                        <h4>Domain-First Research Loop</h4>
+                                        <p>Embed with operators to map actual workflows. Interview 8-12 users per role,
+                                            observe live sessions, and codify findings into a domain dictionary that
+                                            anchors every design decision downstream.</p>
+                                    </div>
+                                    <button class="fc-download"><svg width="24" height="24" viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                            <polyline points="7 10 12 15 17 10" />
+                                            <line x1="12" y1="15" x2="12" y2="3" />
+                                        </svg></button>
+                                </div>
+                                <!-- Card 2 -->
+                                <div class="framework-card">
+                                    <div class="fc-number">02.</div>
+                                    <div class="fc-content">
+                                        <h4>AI-Native Interaction Patterns</h4>
+                                        <p>A library of 30+ patterns covering conversational interfaces, agentic flows,
+                                            human-in-the-loop reviews, and trust-building micro-interactions. Each
+                                            pattern ships with do/don't examples and code-ready specs.</p>
+                                    </div>
+                                    <button class="fc-download"><svg width="24" height="24" viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                            <polyline points="7 10 12 15 17 10" />
+                                            <line x1="12" y1="15" x2="12" y2="3" />
+                                        </svg></button>
+                                </div>
+                                <!-- Card 3 -->
+                                <div class="framework-card">
+                                    <div class="fc-number">03.</div>
+                                    <div class="fc-content">
+                                        <h4>Enterprise Design System Kit</h4>
+                                        <p>Token-driven foundation covering color, type, spacing, motion, and elevation.
+                                            Built on auto-layout with variants for light/dark and density modes.
+                                            Includes production-ready components with Code Connect mappings.</p>
+                                    </div>
+                                    <button class="fc-download"><svg width="24" height="24" viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                            <polyline points="7 10 12 15 17 10" />
+                                            <line x1="12" y1="15" x2="12" y2="3" />
+                                        </svg></button>
+                                </div>
+                                <!-- Card 4 -->
+                                <div class="framework-card">
+                                    <div class="fc-number">04.</div>
+                                    <div class="fc-content">
+                                        <h4>Workflow Decomposition Canvas</h4>
+                                        <p>A structured method to break a complex business process into atomic decision
+                                            points, surface AI intervention opportunities, and prioritize based on
+                                            volume, friction, and accuracy lift.</p>
+                                    </div>
+                                    <button class="fc-download"><svg width="24" height="24" viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                            <polyline points="7 10 12 15 17 10" />
+                                            <line x1="12" y1="15" x2="12" y2="3" />
+                                        </svg></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TAB 2: Best Practices -->
+                        <div id="hc-tab-best-practices" class="practice-pane hidden">
+                            <h3 class="sec-heading align-left">Best Practices We Push For Adoption</h3>
+                            <p class="sec-subtitle">Operating principles every designer in the practice follows &#8212;
+                                refined through repeated client engagements and codified so new hires ramp fast and
+                                outputs stay consistent.</p>
+
+                            <div class="best-practices-list">
+                                <div class="bp-item">
+                                    <div class="bp-icon"><svg width="24" height="24" fill="none" stroke="#e94c17"
+                                            stroke-width="2" viewBox="0 0 24 24">
+                                            <path d="M20 6L9 17l-5-5" />
+                                        </svg></div>
+                                    <div class="bp-content">
+                                        <h4>Start with the operator, not the org chart</h4>
+                                        <p>Every project opens with a minimum 5 days of shadowing actual end-users. No
+                                            persona is drafted without observed behavior to back it up.</p>
+                                    </div>
+                                </div>
+                                <div class="bp-item">
+                                    <div class="bp-icon"><svg width="24" height="24" fill="none" stroke="#e94c17"
+                                            stroke-width="2" viewBox="0 0 24 24">
+                                            <path d="M20 6L9 17l-5-5" />
+                                        </svg></div>
+                                    <div class="bp-content">
+                                        <h4>Ship a clickable prototype within 2 weeks</h4>
+                                        <p>Wireframes lose stakeholder attention. A working prototype &#8212; even rough
+                                            &#8212; closes alignment loops 3x faster and surfaces edge cases earlier.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="bp-item">
+                                    <div class="bp-icon"><svg width="24" height="24" fill="none" stroke="#e94c17"
+                                            stroke-width="2" viewBox="0 0 24 24">
+                                            <path d="M20 6L9 17l-5-5" />
+                                        </svg></div>
+                                    <div class="bp-content">
+                                        <h4>Design tokens before screens</h4>
+                                        <p>Color, type, spacing, motion, and elevation are locked in week one. This
+                                            prevents the late-stage scramble where 40 screens need re-tuning.</p>
+                                    </div>
+                                </div>
+                                <div class="bp-item">
+                                    <div class="bp-icon"><svg width="24" height="24" fill="none" stroke="#e94c17"
+                                            stroke-width="2" viewBox="0 0 24 24">
+                                            <path d="M20 6L9 17l-5-5" />
+                                        </svg></div>
+                                    <div class="bp-content">
+                                        <h4>Accessibility is not a phase</h4>
+                                        <p>WCAG AA contrast, keyboard navigation, and screen reader semantics are
+                                            reviewed in every weekly design crit &#8212; not bolted on at handoff.</p>
+                                    </div>
+                                </div>
+                                <div class="bp-item">
+                                    <div class="bp-icon"><svg width="24" height="24" fill="none" stroke="#e94c17"
+                                            stroke-width="2" viewBox="0 0 24 24">
+                                            <path d="M20 6L9 17l-5-5" />
+                                        </svg></div>
+                                    <div class="bp-content">
+                                        <h4>Document the why, not just the what</h4>
+                                        <p>Every Figma file has a decision log frame. Future designers and AI tools need
+                                            to understand the reasoning behind a pattern to evolve it correctly.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TAB 3: AI Infusion -->
+                        <div id="hc-tab-ai" class="practice-pane hidden">
+                            <h3 class="sec-heading align-left">Impact of AI Infusion</h3>
+
+                            <div class="metrics-grid">
+                                <div class="metric-card">
+                                    <div class="mc-number">3.2x</div>
+                                    <div class="mc-label">FASTER PROTOTYPING</div>
+                                    <p>AI-assisted design generation cuts ideation-to-wireframe cycle from weeks to
+                                        days.</p>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="mc-number">40%</div>
+                                    <div class="mc-label">FEWER REVISIONS</div>
+                                    <p>Domain-trained AI catches usability issues early, reducing costly late-stage
+                                        rework.</p>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="mc-number">92%</div>
+                                    <div class="mc-label">ADOPTION RATE</div>
+                                    <p>Interfaces shaped by AI-native patterns see higher first-month user activation.
+                                    </p>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="mc-number">60%</div>
+                                    <div class="mc-label">TIME SAVED</div>
+                                    <p>Automated design QA and token validation free designers for higher-order
+                                        thinking.</p>
+                                </div>
+                            </div>
+
+                            <div class="ai-gallery-section" style="margin-top: 50px;">
+                                <h3 class="sec-heading align-left">AI Infusion in Experience Design</h3>
+                                <p class="sec-subtitle">A visual walkthrough of how AI shows up in our day-to-day design
+                                    process &#8212; from research synthesis to handoff.</p>
+
+                                <div id="hc-ai-practice-gallery"></div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- Screen 3: Solution Deep Dive (Automated Patient Intake) -->
+        <section id="screen-deep-dive" class="hidden">
+            <header class="universal-header">
+                <!-- Row 1: Global Brand Bar -->
+                <div class="header-brand-bar">
+                    <div class="logo" id="logo-deepdive" onclick="goToHome()">
+                        <img src="assets/Delphi x AI.png" alt="Delphi x AI">
+                    </div>
+                    <div class="header-actions">
+                        <button class="icon-btn" title="Notifications">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                                <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+                            </svg>
+                        </button>
+                        <div class="user-profile-container">
+                            <button class="icon-btn user-profile-btn" title="User Menu">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                    <circle cx="12" cy="7" r="4" />
+                                </svg>
+                            </button>
+                            <div class="profile-dropdown">
+                                <label class="admin-toggle">
+                                    <input type="checkbox" class="admin-checkbox"
+                                        onchange="document.getElementById('btn-admin-toggle').click()">
+                                    <span class="toggle-slider"></span>
+                                    Admin Mode
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Row 2: Contextual Sub-Nav -->
+                <div class="header-subnav">
+                    <button class="back-nav-btn" onclick="goBackOneScreen()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m15 18-6-6 6-6" />
+                        </svg>
+                        <span>Use Cases</span>
+                    </button>
+                    <nav class="breadcrumbs" id="breadcrumbs-deepdive">
+                        <span class="bc-crumb bc-link" onclick="goToHome()">Home</span>
+                        <span class="bc-sep">&#8250;</span>
+                        <span class="bc-crumb bc-link" onclick="showHealthcareDetails()">Healthcare</span>
+                        <span class="bc-sep">&#8250;</span>
+                        <span class="bc-crumb bc-current" id="bc-usecase-name">Use Case</span>
+                    </nav>
+                </div>
+            </header>
+
+            <div class="deep-dive-hero"
+                style="display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; flex-wrap: wrap;">
+                <div class="hero-left-content" style="flex: 1; min-width: 300px;">
+                    <h1 id="deep-dive-title" style="margin-bottom: 15px;">Automated Patient Intake</h1>
+                    <p id="deep-dive-subtitle" style="margin-bottom: 20px;">Streamline patient onboarding with AI-driven
+                        data capture, smart routing, and seamless integration.</p>
+                    <div class="subtitle-buttons" style="margin-bottom: 20px;">
+                        <button class="action-btn" style="padding: 6px 12px; font-size: 0.8rem;">Digital
+                            Experiences</button>
+                        <button class="action-btn" style="padding: 6px 12px; font-size: 0.8rem;">Innovative
+                            Design</button>
+                        <button class="action-btn" style="padding: 6px 12px; font-size: 0.8rem;">Cutting-edge
+                            Tech</button>
+                    </div>
+                </div>
+                <div class="top-action-bar"
+                    style="display: flex; flex-direction: column; align-items: flex-end; gap: 10px; margin-top: 0;">
+                    <a href="https://www.youtube.com/" target="_blank" class="external-action-btn">
+                        Try Demo <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                            <polyline points="15 3 21 3 21 9" />
+                            <line x1="10" y1="14" x2="21" y2="3" />
+                        </svg>
+                    </a>
+                    <a href="https://www.youtube.com/" target="_blank" class="external-action-btn btn-secondary"
+                        style="display: flex; align-items: center; gap: 8px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-layers">
+                            <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                            <polyline points="2 12 12 17 22 12" />
+                            <polyline points="2 17 12 22 22 17" />
+                        </svg>
+                        View Prototype
+                    </a>
+                    <a href="https://www.youtube.com/" target="_blank" class="external-action-btn btn-secondary"
+                        style="display: flex; align-items: center; gap: 8px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-play-circle">
+                            <circle cx="12" cy="12" r="10" />
+                            <polygon points="10 8 16 12 10 16 10 8" />
+                        </svg>
+                        Watch Video
+                    </a>
+                </div>
+            </div>
+
+            <!-- Tabbed Interface -->
+            <div class="deep-dive-tabs">
+                <button class="dd-tab active" data-tab="overview">Overview</button>
+                <button class="dd-tab" data-tab="process">Process</button>
+                <button class="dd-tab" data-tab="tech-arch">Architecture</button>
+                <button class="dd-tab" data-tab="engine-map">Engine Map / AI Flow</button>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="deep-dive-content">
+                <div id="tab-overview" class="tab-pane active">
+                    <div class="overview-new-layout">
+                        <!-- Full Screen Mockup Preview (Now Gallery) -->
+                        <div class="overview-mockup-preview">
+                            <div id="patient-intake-gallery"></div>
+                        </div>
+                        <!-- Content Breakdown Section (Stacked Rows) -->
+                        <div class="overview-sec content-breakdown">
+                            <div class="breakdown-row">
+                                <div class="breakdown-left">
+                                    <h4>01. Executive Summary</h4>
+                                </div>
+                                <div class="breakdown-right">
+                                    <p>An end-to-end automated intake solution designed to eliminate manual data entry,
+                                        reduce wait times, and improve the overall patient onboarding experience
+                                        leveraging advanced document intelligence and AI routing.</p>
+                                </div>
+                            </div>
+                            <div class="breakdown-row">
+                                <div class="breakdown-left">
+                                    <h4>02. Problem</h4>
+                                </div>
+                                <div class="breakdown-right">
+                                    <p>Healthcare facilities struggle with manual intake processes, leading to long
+                                        waiting times, fragmented patient data, high administrative burden, and
+                                        operational delays that negatively impact patient care.</p>
+                                </div>
+                            </div>
+                            <div class="breakdown-row">
+                                <div class="breakdown-left">
+                                    <h4>03. Solution</h4>
+                                </div>
+                                <div class="breakdown-right">
+                                    <p>Delphi AI improves the intake process through intelligent automation, AI-driven
+                                        data capture from IDs and referral forms, smart routing to appropriate
+                                        departments, seamless EHR integration, and journey optimization.</p>
+                                </div>
+                            </div>
+                            <div class="breakdown-row">
+                                <div class="breakdown-left">
+                                    <h4>04. Outcome</h4>
+                                </div>
+                                <div class="breakdown-right">
+                                    <p>Measurable business and patient-care impact including 60% faster processing
+                                        times, improved patient experience scores, significantly reduced administrative
+                                        effort, and near-perfect data accuracy in clinical records.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Row: Testimonials -->
+                        <div class="overview-bottom-row" style="flex-direction: column;">
+
+                            <!-- Client Stories Section (100%) -->
+                            <div class="overview-sec sec-client-stories" style="width: 100%;">
+                                <h3 class="sec-heading align-left">Stories Shared by Client</h3>
+                                <div class="premium-testimonial-card">
+                                    <div class="quote-icon">&#8220;</div>
+                                    <p class="premium-quote">The automated intake system revolutionized our front desk
+                                        operations. Patients are seen faster, and our staff is no longer bogged down by
+                                        manual paperwork. Delphi AI delivered exactly what we needed.</p>
+                                    <div class="premium-client-meta">
+                                        <div class="premium-avatar">SJ</div>
+                                        <div class="premium-details">
+                                            <span class="premium-name">Sarah Jenkins</span>
+                                            <span class="premium-role">Director of Operations</span>
+                                            <span class="premium-company">Metro Health Systems</span>
+                                        </div>
+                                        <div class="trust-rating">
+                                            <svg width="16" height="16" fill="#e94c17" viewBox="0 0 24 24">
+                                                <polygon
+                                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                            </svg>
+                                            <svg width="16" height="16" fill="#e94c17" viewBox="0 0 24 24">
+                                                <polygon
+                                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                            </svg>
+                                            <svg width="16" height="16" fill="#e94c17" viewBox="0 0 24 24">
+                                                <polygon
+                                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                            </svg>
+                                            <svg width="16" height="16" fill="#e94c17" viewBox="0 0 24 24">
+                                                <polygon
+                                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                            </svg>
+                                            <svg width="16" height="16" fill="#e94c17" viewBox="0 0 24 24">
+                                                <polygon
+                                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="tab-process" class="tab-pane hidden">
+                    <div class="process-grid-container">
+                        <div class="process-card">
+                            <span class="process-step">01</span>
+                            <h3>Patient Form Upload</h3>
+                            <p>Intake documents are securely uploaded via portal, email, or fax channels.</p>
+                        </div>
+                        <div class="process-card">
+                            <span class="process-step">02</span>
+                            <h3>Document Ingestion</h3>
+                            <p>Automated ingestion pipeline digitizes and routes documents for processing.</p>
+                        </div>
+                        <div class="process-card">
+                            <span class="process-step">03</span>
+                            <h3>OCR & Data Extraction</h3>
+                            <p>Advanced optical character recognition extracts raw text from varied formats.</p>
+                        </div>
+                        <div class="process-card">
+                            <span class="process-step">04</span>
+                            <h3>Field Classification</h3>
+                            <p>AI models classify extracted text into specific patient and clinical fields.</p>
+                        </div>
+                        <div class="process-card">
+                            <span class="process-step">05</span>
+                            <h3>Data Validation</h3>
+                            <p>Rule-based engine cross-references extracted data for accuracy and completeness.</p>
+                        </div>
+                        <div class="process-card">
+                            <span class="process-step">06</span>
+                            <h3>Identity Verification</h3>
+                            <p>Patient identity is verified against existing master patient indexes.</p>
+                        </div>
+                        <div class="process-card">
+                            <span class="process-step">07</span>
+                            <h3>Insurance Verification</h3>
+                            <p>Real-time API calls verify insurance eligibility and benefit coverage.</p>
+                        </div>
+                        <div class="process-card">
+                            <span class="process-step">08</span>
+                            <h3>Exception Review</h3>
+                            <p>Flagged documents are routed to a human-in-the-loop dashboard for review.</p>
+                        </div>
+                        <div class="process-card">
+                            <span class="process-step">09</span>
+                            <h3>System / EHR Entry</h3>
+                            <p>Validated structured data is pushed directly into the core EHR system.</p>
+                        </div>
+                        <div class="process-card">
+                            <span class="process-step">10</span>
+                            <h3>Intake Completion</h3>
+                            <p>Patient intake workflow concludes, triggering next-step notifications.</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="tab-tech-arch" class="tab-pane hidden">
+                    <div class="tab-header-text">
+                        <h2>Automated Patient Intake &#8212; Architecture</h2>
+                        <p>High-level architecture showing how patient intake documents move through upload channels,
+                            OCR processing, AI extraction, validation, review workflow, and downstream healthcare
+                            systems.</p>
+                    </div>
+                    <div class="diagram-container">
+                        <img src="assets/Healthcare Services/tech_architecture.png" alt="Tech Architecture Diagram"
+                            style="width:100%; max-height: 70vh; object-fit: contain; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer;"
+                            onclick="openLightbox('assets/Healthcare Services/tech_architecture.png', 'image')">
+                    </div>
+                </div>
+                <div id="tab-engine-map" class="tab-pane hidden">
+                    <div class="tab-header-text">
+                        <h2>Automated Patient Intake - Engine Map / AI Flow</h2>
+                        <p>AI flow showing how intake data is extracted, classified, validated, routed for exception
+                            handling, and converted into structured output for system entry.</p>
+                    </div>
+                    <div class="diagram-container">
+                        <img src="assets/Healthcare Services/ai_engine_map.png" alt="Engine Map Flow"
+                            style="width:100%; max-height: 70vh; object-fit: contain; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer;"
+                            onclick="openLightbox('assets/Healthcare Services/ai_engine_map.png', 'image')">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Admin Controls -->
+    <div id="admin-controls" class="floating-admin">
+        <button id="btn-admin-toggle" class="admin-btn">Admin: OFF</button>
+    </div>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox-modal" class="lightbox-modal hidden">
+        <div class="lightbox-overlay" onclick="closeLightbox()"></div>
+        <button class="lightbox-close-btn" onclick="closeLightbox()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+        </button>
+        <div class="lightbox-zoom-controls">
+            <button class="zoom-btn" onclick="zoomLightbox(-1)"><svg width="20" height="20" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                </svg></button>
+            <button class="zoom-btn" onclick="zoomLightbox(0)"><svg width="20" height="20" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                    <path d="M3 3v5h5" />
+                </svg></button>
+            <button class="zoom-btn" onclick="zoomLightbox(1)"><svg width="20" height="20" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                </svg></button>
+        </div>
+        <div class="lightbox-content" id="lightbox-content">
+            <!-- Media injected here via JS -->
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="cms-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2 id="cms-modal-title">Edit Item</h2>
+            <form id="cms-form">
+                <input type="hidden" id="cms-id">
+                <input type="hidden" id="cms-type"> <!-- 'cap' or 'uc' -->
+
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" id="cms-title" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="cms-desc" required rows="4"></textarea>
+                </div>
+
+                <!-- Fields for Use Cases Only -->
+                <div id="cms-uc-fields" class="hidden">
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="cms-category">
+                            <option value="operational">Operational</option>
+                            <option value="clinical">Clinical</option>
+                            <option value="financial">Financial</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Workflow</label>
+                        <select id="cms-workflow">
+                            <option value="patient-intake">Patient Intake</option>
+                            <option value="billing">Billing & Claims</option>
+                            <option value="care-delivery">Care Delivery</option>
+                            <option value="all">All</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Section</label>
+                        <select id="cms-section">
+                            <option value="revenue-cycle">Revenue Cycle</option>
+                            <option value="clinical-ops">Clinical Operations</option>
+                            <option value="patient-access">Patient Access</option>
+                            <option value="quality">Quality & Compliance</option>
+                            <option value="all">All</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" id="cms-cancel" class="cancel-btn">Cancel</button>
+                    <button type="submit" id="cms-save" class="save-btn">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Custom Script -->
+    <script src="js/main.js"></script>
+</body>
+
+</html>

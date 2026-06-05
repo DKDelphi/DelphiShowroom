@@ -824,7 +824,7 @@
                     <h1 id="deep-dive-title" style="margin-bottom: 15px;">Automated Patient Intake</h1>
                     <p id="deep-dive-subtitle" style="margin-bottom: 20px;">Streamline patient onboarding with AI-driven
                         data capture, smart routing, and seamless integration.</p>
-                    <div class="subtitle-buttons" style="margin-bottom: 20px;">
+                    <div id="dd-tags-container" class="subtitle-buttons" style="margin-bottom: 20px;">
                         <button class="action-btn" style="padding: 6px 12px; font-size: 0.8rem;">Digital
                             Experiences</button>
                         <button class="action-btn" style="padding: 6px 12px; font-size: 0.8rem;">Innovative
@@ -881,7 +881,7 @@
                     <div class="overview-new-layout">
                         <!-- Full Screen Mockup Preview (Now Gallery) -->
                         <div class="overview-mockup-preview">
-                            <div id="patient-intake-gallery"></div>
+                            <div id="dd-gallery"></div>
                         </div>
                         <!-- Content Breakdown Section (Stacked Rows) -->
                         <div class="overview-sec content-breakdown">
@@ -889,7 +889,7 @@
                                 <div class="breakdown-left">
                                     <h4>01. Executive Summary</h4>
                                 </div>
-                                <div class="breakdown-right">
+                                <div class="breakdown-right" id="dd-exec-summary">
                                     <p>An end-to-end automated intake solution designed to eliminate manual data entry,
                                         reduce wait times, and improve the overall patient onboarding experience
                                         leveraging advanced document intelligence and AI routing.</p>
@@ -899,7 +899,7 @@
                                 <div class="breakdown-left">
                                     <h4>02. Problem</h4>
                                 </div>
-                                <div class="breakdown-right">
+                                <div class="breakdown-right" id="dd-problem">
                                     <p>Healthcare facilities struggle with manual intake processes, leading to long
                                         waiting times, fragmented patient data, high administrative burden, and
                                         operational delays that negatively impact patient care.</p>
@@ -909,7 +909,7 @@
                                 <div class="breakdown-left">
                                     <h4>03. Solution</h4>
                                 </div>
-                                <div class="breakdown-right">
+                                <div class="breakdown-right" id="dd-solution">
                                     <p>Delphi AI improves the intake process through intelligent automation, AI-driven
                                         data capture from IDs and referral forms, smart routing to appropriate
                                         departments, seamless EHR integration, and journey optimization.</p>
@@ -919,11 +919,19 @@
                                 <div class="breakdown-left">
                                     <h4>04. Outcome</h4>
                                 </div>
-                                <div class="breakdown-right">
+                                <div class="breakdown-right" id="dd-outcome">
                                     <p>Measurable business and patient-care impact including 60% faster processing
                                         times, improved patient experience scores, significantly reduced administrative
                                         effort, and near-perfect data accuracy in clinical records.</p>
                                 </div>
+                            </div>
+                        </div>
+
+                                                <!-- KPIs Section -->
+                        <div class="overview-sec sec-kpis" style="width: 100%; margin-top: 40px; margin-bottom: 40px;">
+                            <h3 class="sec-heading align-left">Impact & KPIs</h3>
+                            <div id="dd-kpi-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                                <!-- dynamically populated -->
                             </div>
                         </div>
 
@@ -1027,29 +1035,29 @@
                         </div>
                     </div>
                 </div>
-                <div id="tab-tech-arch" class="tab-pane hidden">
+                                <div id="tab-tech-arch" class="tab-pane hidden">
                     <div class="tab-header-text">
-                        <h2>Automated Patient Intake &#8212; Architecture</h2>
-                        <p>High-level architecture showing how patient intake documents move through upload channels,
+                        <h2 id="dd-arch-title">Automated Patient Intake &#8212; Architecture</h2>
+                        <p id="dd-arch-desc">High-level architecture showing how patient intake documents move through upload channels,
                             OCR processing, AI extraction, validation, review workflow, and downstream healthcare
                             systems.</p>
                     </div>
                     <div class="diagram-container">
-                        <img src="assets/Healthcare Services/tech_architecture.png" alt="Tech Architecture Diagram"
+                        <img id="dd-arch-img" src="assets/Healthcare Services/tech_architecture.png" alt="Tech Architecture Diagram"
                             style="width:100%; max-height: 70vh; object-fit: contain; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer;"
-                            onclick="openLightbox('assets/Healthcare Services/tech_architecture.png', 'image')">
+                            onclick="openLightbox(this.src, 'image')">
                     </div>
                 </div>
-                <div id="tab-engine-map" class="tab-pane hidden">
+                                <div id="tab-engine-map" class="tab-pane hidden">
                     <div class="tab-header-text">
-                        <h2>Automated Patient Intake - Engine Map / AI Flow</h2>
-                        <p>AI flow showing how intake data is extracted, classified, validated, routed for exception
+                        <h2 id="dd-engine-title">Automated Patient Intake - Engine Map / AI Flow</h2>
+                        <p id="dd-engine-desc">AI flow showing how intake data is extracted, classified, validated, routed for exception
                             handling, and converted into structured output for system entry.</p>
                     </div>
                     <div class="diagram-container">
-                        <img src="assets/Healthcare Services/ai_engine_map.png" alt="Engine Map Flow"
+                        <img id="dd-engine-img" src="assets/Healthcare Services/ai_engine_map.png" alt="Engine Map Flow"
                             style="width:100%; max-height: 70vh; object-fit: contain; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer;"
-                            onclick="openLightbox('assets/Healthcare Services/ai_engine_map.png', 'image')">
+                            onclick="openLightbox(this.src, 'image')">
                     </div>
                 </div>
             </div>
