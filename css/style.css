@@ -270,13 +270,40 @@ body {
 }
 
 /* Bottom Group (Engines) - 7 cols x 1 row */
-.service-card[data-index="15"] { left: 10%; top: 75%; }
-.service-card[data-index="16"] { left: 20%; top: 75%; }
-.service-card[data-index="17"] { left: 30%; top: 75%; }
-.service-card[data-index="18"] { left: 40%; top: 75%; }
-.service-card[data-index="19"] { left: 55%; top: 75%; }
-.service-card[data-index="20"] { left: 65%; top: 75%; }
-.service-card[data-index="21"] { left: 75%; top: 75%; }
+.service-card[data-index="15"] {
+    left: 10%;
+    top: 75%;
+}
+
+.service-card[data-index="16"] {
+    left: 20%;
+    top: 75%;
+}
+
+.service-card[data-index="17"] {
+    left: 30%;
+    top: 75%;
+}
+
+.service-card[data-index="18"] {
+    left: 40%;
+    top: 75%;
+}
+
+.service-card[data-index="19"] {
+    left: 55%;
+    top: 75%;
+}
+
+.service-card[data-index="20"] {
+    left: 65%;
+    top: 75%;
+}
+
+.service-card[data-index="21"] {
+    left: 75%;
+    top: 75%;
+}
 
 /* --- Healthcare UI Sections (Premium Modern UI) --- */
 #healthcare-ui-container {
@@ -825,13 +852,14 @@ body {
 }
 
 .card-img {
-    height: 180px;
+    height: 212px;
     width: 100%;
     background-size: cover;
-    background-position: center;
+    background-position: top;
     position: relative;
     overflow: hidden;
     transition: transform 0.5s ease;
+    padding-top: 170px;
 }
 
 .cap-card:hover .card-img {
@@ -2603,11 +2631,17 @@ select:focus-visible,
 }
 
 .impact-value {
+    display: block;
+    max-width: 270px;
+    /* adjust based on your card width */
+    white-space: nowrap;
+    /* force single line */
+    overflow: hidden;
+    /* hide extra text */
+    text-overflow: ellipsis;
+    /* show ... */
     font-size: 1.1rem;
-    font-weight: 500;
-    color: #e94c17;
-    line-height: 1;
-    margin-bottom: 4px;
+    color: #fff;
 }
 
 .impact-desc {
@@ -5913,7 +5947,7 @@ html {
 
 .cap-card,
 .use-case-card {
-    height: 420px !important;
+    height: 500px !important;
     border-radius: var(--radius-xl) !important;
     border: 1px solid var(--border-subtle) !important;
     background: #0c0c10 !important;

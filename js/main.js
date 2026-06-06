@@ -237,7 +237,7 @@ function setupSection2Interactions() {
         s2HoverContainer.style.width = '100%';
         s2HoverContainer.style.height = '100%';
         s2HoverContainer.style.pointerEvents = 'none';
-        s2HoverContainer.style.zIndex = '-1'; 
+        s2HoverContainer.style.zIndex = '-1';
         section2Hitboxes.appendChild(s2HoverContainer);
 
         for (const key of ['left', 'center', 'right']) {
@@ -372,7 +372,7 @@ function setupSection4UI() {
         hoverBgContainer.style.width = '100%';
         hoverBgContainer.style.height = '100%';
         hoverBgContainer.style.pointerEvents = 'none';
-        hoverBgContainer.style.zIndex = '-1'; 
+        hoverBgContainer.style.zIndex = '-1';
         section4Services.appendChild(hoverBgContainer);
 
         section4Images.forEach((imgObj) => {
@@ -451,7 +451,7 @@ function restoreStateFromHash() {
         goToHome(true);
         return;
     }
-    
+
     const params = new URLSearchParams(hash.replace('#', '?'));
     const screen = params.get('screen');
     const tab = params.get('tab');
@@ -641,53 +641,53 @@ const useCaseData = [
             ]
         }
     },
-    { 
-        id: 'uc-6', title: 'Resource Allocation', desc: 'Predict staffing and bed needs based on patient influx.', 
+    {
+        id: 'uc-6', title: 'Resource Allocation', desc: 'Predict staffing and bed needs based on patient influx.',
         domain: 'clinic', tech: 'predictive-ml', project: 'mvp', impact: 'Optimized Staffing', image: 'assets/Card Images/Card Image 1.jpg',
         deepDive: { subtitle: "", executiveSummary: "", problem: "", solution: "", outcome: "", kpis: [] }
     },
-    { 
-        id: 'uc-7', title: 'Denial Prevention', desc: 'Predict and prevent insurance claim denials.', 
+    {
+        id: 'uc-7', title: 'Denial Prevention', desc: 'Predict and prevent insurance claim denials.',
         domain: 'insurance', tech: 'predictive-ml', project: 'production', impact: '40% Fewer Denials', image: 'assets/Card Images/Card Image 2.jpg',
         deepDive: { subtitle: "", executiveSummary: "", problem: "", solution: "", outcome: "", kpis: [] }
     },
-    { 
-        id: 'uc-8', title: '24/7 Appointment Scheduling', desc: 'Automated booking and rescheduling for patients.', 
+    {
+        id: 'uc-8', title: '24/7 Appointment Scheduling', desc: 'Automated booking and rescheduling for patients.',
         domain: 'clinic', tech: 'generative-ai', project: 'production', impact: '24/7 Availability', image: 'assets/Card Images/Card Image 3.jpg',
         deepDive: { subtitle: "", executiveSummary: "", problem: "", solution: "", outcome: "", kpis: [] }
     },
-    { 
-        id: 'uc-9', title: 'Symptom Checker', desc: 'AI-driven initial symptom assessment and triage.', 
+    {
+        id: 'uc-9', title: 'Symptom Checker', desc: 'AI-driven initial symptom assessment and triage.',
         domain: 'pharmacy', tech: 'nlp', project: 'mvp', impact: 'Faster Triage', image: 'assets/Card Images/Card Image 4.jpg',
         deepDive: { subtitle: "", executiveSummary: "", problem: "", solution: "", outcome: "", kpis: [] }
     },
-    { 
-        id: 'uc-10', title: 'Billing Explanations', desc: 'Help patients understand their bills via chat.', 
+    {
+        id: 'uc-10', title: 'Billing Explanations', desc: 'Help patients understand their bills via chat.',
         domain: 'hospital', tech: 'generative-ai', project: 'poc', impact: 'Higher Satisfaction', image: 'assets/Card Images/Card Image 5.jpg',
         deepDive: { subtitle: "", executiveSummary: "", problem: "", solution: "", outcome: "", kpis: [] }
     },
-    { 
-        id: 'uc-11', title: 'Automated Screening', desc: 'Highlight potential anomalies in X-rays and MRIs.', 
+    {
+        id: 'uc-11', title: 'Automated Screening', desc: 'Highlight potential anomalies in X-rays and MRIs.',
         domain: 'hospital', tech: 'computer-vision', project: 'production', impact: 'Faster Diagnosis', image: 'assets/Card Images/Card Image 1.jpg',
         deepDive: { subtitle: "", executiveSummary: "", problem: "", solution: "", outcome: "", kpis: [] }
     },
-    { 
-        id: 'uc-12', title: 'Scan Prioritization', desc: 'Route urgent scans to top of radiologist queue.', 
+    {
+        id: 'uc-12', title: 'Scan Prioritization', desc: 'Route urgent scans to top of radiologist queue.',
         domain: 'clinic', tech: 'predictive-ml', project: 'production', impact: 'Priority Routing', image: 'assets/Card Images/Card Image 2.jpg',
         deepDive: { subtitle: "", executiveSummary: "", problem: "", solution: "", outcome: "", kpis: [] }
     },
-    { 
-        id: 'uc-13', title: 'Claim Scrubbing', desc: 'Automatically validate claims against payer rules before submission.', 
+    {
+        id: 'uc-13', title: 'Claim Scrubbing', desc: 'Automatically validate claims against payer rules before submission.',
         domain: 'insurance', tech: 'nlp', project: 'production', impact: 'Zero Errors', image: 'assets/Card Images/Card Image 3.jpg',
         deepDive: { subtitle: "", executiveSummary: "", problem: "", solution: "", outcome: "", kpis: [] }
     },
-    { 
-        id: 'uc-14', title: 'Prior Authorization', desc: 'Automate prior authorization requests from EHR data.', 
+    {
+        id: 'uc-14', title: 'Prior Authorization', desc: 'Automate prior authorization requests from EHR data.',
         domain: 'hospital', tech: 'generative-ai', project: 'mvp', impact: 'Instant Approvals', image: 'assets/Card Images/Card Image 4.jpg',
         deepDive: { subtitle: "", executiveSummary: "", problem: "", solution: "", outcome: "", kpis: [] }
     },
-    { 
-        id: 'uc-15', title: 'Genomic Profiling', desc: 'Match patient profiles to targeted therapies.', 
+    {
+        id: 'uc-15', title: 'Genomic Profiling', desc: 'Match patient profiles to targeted therapies.',
         domain: 'pharmacy', tech: 'predictive-ml', project: 'poc', impact: 'Targeted Therapy', image: 'assets/Card Images/Card Image 5.jpg',
         deepDive: { subtitle: "", executiveSummary: "", problem: "", solution: "", outcome: "", kpis: [] }
     }
@@ -1565,13 +1565,13 @@ function goToHome(skipHashUpdate = false) {
 
     const mainContainer = document.getElementById('main-container');
     if (mainContainer) mainContainer.classList.remove('hidden');
-    
+
     // Enable Lenis scrolling
     if (typeof lenis !== 'undefined') lenis.start();
-    
+
     // Reset to start of page
     window.scrollTo(0, 0);
-    
+
     updateUrlHash({ screen: null, tab: null, model: null, deepdive: null, practice: null }, skipHashUpdate);
 }
 
@@ -1590,10 +1590,10 @@ function switchHcMainTab(tabId, btnElement, skipHashUpdate = false) {
     const allTabs = document.querySelectorAll('.hc-master-tab');
     allTabs.forEach(t => t.classList.remove('active'));
     if (btnElement) btnElement.classList.add('active');
-    
+
     const allPanes = document.querySelectorAll('.hc-main-pane');
     allPanes.forEach(p => p.classList.add('hidden'));
-    
+
     const targetPane = document.getElementById('hc-main-tab-' + tabId);
     if (targetPane) {
         targetPane.classList.remove('hidden');
@@ -1604,7 +1604,7 @@ function switchHcMainTab(tabId, btnElement, skipHashUpdate = false) {
             targetPane.style.transition = 'opacity 0.3s ease';
         }, 50);
     }
-    
+
     updateUrlHash({ tab: tabId, deepdive: null, model: null }, skipHashUpdate);
 }
 
@@ -1945,9 +1945,9 @@ function showDataModel(modelId, element, skipHashUpdate = false) {
     if (selectedModel) {
         selectedModel.classList.add('active');
     }
-    
+
     updateUrlHash({ tab: 'data', model: modelId }, skipHashUpdate);
-    
+
     const model = dataModels[modelId];
     if (model) {
         document.getElementById('data-model-title').innerText = model.title;
