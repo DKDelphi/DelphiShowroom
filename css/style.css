@@ -5947,7 +5947,7 @@ html {
 
 .cap-card,
 .use-case-card {
-    height: 500px !important;
+    height: 520px !important;
     border-radius: var(--radius-xl) !important;
     border: 1px solid var(--border-subtle) !important;
     background: #0c0c10 !important;
@@ -7466,7 +7466,7 @@ select:focus-visible {
 --------------------------------------------------------------- */
 .cap-card,
 .use-case-card {
-    height: 420px !important;
+    height: 520px !important;
     animation: cardStagger 0.5s cubic-bezier(0.25, 1, 0.5, 1) both !important;
 }
 
@@ -8517,4 +8517,103 @@ select:focus-visible {
 .practices-main-content {
     overflow-y: visible !important;
     height: auto !important;
+}/* ============================================================
+   ENGINES UI SECTION
+   ============================================================ */
+
+#engines-ui-container {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 200 !important;
+    background:
+        radial-gradient(ellipse at 10% 20%, rgba(233, 76, 23, 0.1) 0%, transparent 45%),
+        radial-gradient(ellipse at 90% 80%, rgba(233, 76, 23, 0.07) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(175, 0, 45, 0.05) 0%, transparent 60%),
+        #050508 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    scroll-behavior: smooth !important;
+}
+
+#engines-ui-container.hidden {
+    display: none !important;
+}
+
+.engine-flow-container {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 12px !important;
+    padding: 16px 0 !important;
+    overflow-x: auto !important;
+    scrollbar-width: thin !important;
+    scrollbar-color: rgba(233, 76, 23, 0.5) transparent !important;
+}
+
+.engine-flow-container::-webkit-scrollbar {
+    height: 6px !important;
+}
+.engine-flow-container::-webkit-scrollbar-track {
+    background: transparent !important;
+}
+.engine-flow-container::-webkit-scrollbar-thumb {
+    background-color: rgba(233, 76, 23, 0.5) !important;
+    border-radius: 10px !important;
+}
+
+.flow-step {
+    background: rgba(10, 10, 16, 0.8) !important;
+    border: 1px solid var(--border-subtle) !important;
+    border-radius: var(--radius-md) !important;
+    padding: 16px 24px !important;
+    color: #fff !important;
+    font-size: 0.95rem !important;
+    font-weight: 500 !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    transition: all var(--tf) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+    flex-shrink: 0 !important;
+    position: relative !important;
+}
+
+.flow-step::before {
+    content: "" !important;
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 2px !important;
+    background: linear-gradient(to right, transparent, var(--accent), transparent) !important;
+    opacity: 0 !important;
+    transition: opacity var(--tm) !important;
+}
+
+.flow-step:hover {
+    border-color: rgba(233, 76, 23, 0.4) !important;
+    background: rgba(233, 76, 23, 0.1) !important;
+    transform: translateY(-4px) !important;
+    box-shadow: 0 12px 32px rgba(233, 76, 23, 0.15) !important;
+}
+
+.flow-step:hover::before {
+    opacity: 1 !important;
+}
+
+.flow-arrow {
+    color: var(--accent) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    opacity: 0.8 !important;
+    flex-shrink: 0 !important;
+    animation: pulseGlow 2s infinite alternate !important;
+}
+
+@keyframes pulseGlow {
+    0% { filter: drop-shadow(0 0 2px rgba(233, 76, 23, 0.4)); opacity: 0.6; }
+    100% { filter: drop-shadow(0 0 8px rgba(233, 76, 23, 0.9)); opacity: 1; }
 }

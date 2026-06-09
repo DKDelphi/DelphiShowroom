@@ -416,6 +416,10 @@ function setupSection4UI() {
             const index = parseInt(e.target.getAttribute('data-index'));
             if (index === 1) { // Healthcare
                 showHealthcareDetails();
+            } else if (index >= 15 && index <= 20) { // Main Engines
+                openEngineDetail('engine-' + (index - 14));
+            } else if (index === 21) { // Other Engines
+                openOtherEngines();
             }
         });
     });
@@ -1963,5 +1967,219 @@ function showDataModel(modelId, element, skipHashUpdate = false) {
                 contentArea.style.transition = 'opacity 0.3s ease';
             }, 50);
         }
+    }
+}
+// --- Engines UI Logic --- //
+const enginesUiContainer = document.getElementById('engines-ui-container');
+const screenEngineDetail = document.getElementById('screen-engine-detail');
+const screenOtherEngines = document.getElementById('screen-other-engines');
+
+const engineData = [
+    {
+        id: 'engine-1', title: 'OCR Engine', desc: 'Advanced optical character recognition for extracting text and structured data from complex documents.',
+        flow: ['Input Document', 'Pre-process', 'Extract Text', 'Classify Fields', 'Validate Data', 'Output JSON'],
+        capabilities: [
+            { label: 'Multilingual', desc: 'Supports extraction in over 50 languages.' },
+            { label: 'Handwriting', desc: 'Accurately digitizes handwritten notes and forms.' },
+            { label: 'Layout Analysis', desc: 'Preserves tables, columns, and document structure.' },
+            { label: 'High Accuracy', desc: 'Achieves 99%+ accuracy on standard forms.' }
+        ],
+        useCases: 'Invoice processing, receipt scanning, patient intake forms, identity verification, contract analysis.',
+        outcome: 'Eliminates manual data entry, speeds up processing times by 80%, and reduces human error in data digitization.'
+    },
+    {
+        id: 'engine-2', title: 'Agentic RAG Engine', desc: 'Retrieval-Augmented Generation powered by autonomous agents that verify, cite, and synthesize information.',
+        flow: ['User Query', 'Deconstruct', 'Multi-source Retrieval', 'Fact-Check', 'Synthesize', 'Deliver Answer'],
+        capabilities: [
+            { label: 'Multi-hop Reasoning', desc: 'Connects information across different documents.' },
+            { label: 'Self-Correction', desc: 'Agents verify outputs against source material.' },
+            { label: 'Access Control', desc: 'Respects user permissions during retrieval.' },
+            { label: 'Citation', desc: 'Provides exact references for all claims.' }
+        ],
+        useCases: 'Enterprise search, customer support automation, legal research, financial analysis, technical documentation.',
+        outcome: 'Ensures hallucination-free generative AI outputs, increasing trust and accelerating complex knowledge discovery.'
+    },
+    {
+        id: 'engine-3', title: 'AGUI Engine', desc: 'Agentic Graphical User Interface that dynamically generates UI components based on user intent.',
+        flow: ['User Intent', 'Understand Context', 'Select Components', 'Generate Layout', 'Render UI', 'Handle Actions'],
+        capabilities: [
+            { label: 'Dynamic Forms', desc: 'Generates input forms on the fly based on required data.' },
+            { label: 'Data Visualization', desc: 'Creates charts and graphs tailored to the query.' },
+            { label: 'Context Aware', desc: 'Adapts UI to the current workflow stage.' },
+            { label: 'Accessibility', desc: 'Ensures all generated components meet WCAG standards.' }
+        ],
+        useCases: 'Conversational applications, adaptive dashboards, personalized user portals, complex data entry workflows.',
+        outcome: 'Provides a highly intuitive, conversational user experience that reduces interface friction and improves task completion rates.'
+    },
+    {
+        id: 'engine-4', title: 'Multi-Agent Orchestration Framework', desc: 'Coordinates complex workflows across multiple specialized AI agents to solve multi-step problems.',
+        flow: ['Complex Task', 'Task Decomposition', 'Assign Agents', 'Agent Collaboration', 'Consolidate', 'Final Output'],
+        capabilities: [
+            { label: 'Task Routing', desc: 'Routes sub-tasks to the most capable specialized agent.' },
+            { label: 'State Management', desc: 'Maintains context across long-running workflows.' },
+            { label: 'Conflict Resolution', desc: 'Mediates disagreeing agent outputs.' },
+            { label: 'Scalability', desc: 'Handles thousands of concurrent agent workflows.' }
+        ],
+        useCases: 'Supply chain optimization, software development lifecycle, complex financial auditing, strategic planning.',
+        outcome: 'Enables automation of complex, cognitive tasks previously requiring entire teams of human experts.'
+    },
+    {
+        id: 'engine-5', title: 'MCP Authentication / Authorization', desc: 'Model Context Protocol layer ensuring secure, governed, and authorized access to enterprise data.',
+        flow: ['Data Request', 'Identify User', 'Check Roles', 'Filter Context', 'Pass to Model', 'Audit Log'],
+        capabilities: [
+            { label: 'RBAC Integration', desc: 'Connects with Active Directory and Okta.' },
+            { label: 'Row-level Security', desc: 'Filters data access down to individual records.' },
+            { label: 'Token Redaction', desc: 'Removes PII before sending to LLMs.' },
+            { label: 'Full Auditability', desc: 'Logs every prompt and data access request.' }
+        ],
+        useCases: 'Healthcare chatbots, financial advisors, HR portals, any AI system accessing sensitive enterprise data.',
+        outcome: 'Unblocks enterprise AI adoption by guaranteeing data security, compliance, and strict access governance.'
+    },
+    {
+        id: 'engine-6', title: 'Agent Ops Engine', desc: 'Comprehensive monitoring, logging, and evaluation suite for AI agents in production environments.',
+        flow: ['Agent Execution', 'Capture Telemetry', 'Analyze Metrics', 'Detect Anomalies', 'Alert', 'Optimize'],
+        capabilities: [
+            { label: 'Cost Tracking', desc: 'Monitors token usage and API costs in real-time.' },
+            { label: 'Latency Metrics', desc: 'Tracks response times across the agent lifecycle.' },
+            { label: 'Quality Eval', desc: 'Automated evaluation of agent responses.' },
+            { label: 'A/B Testing', desc: 'Compare different prompts and models safely.' }
+        ],
+        useCases: 'Production AI monitoring, compliance reporting, continuous improvement, cost optimization.',
+        outcome: 'Provides the operational visibility needed to scale AI confidently while controlling costs and maintaining quality.'
+    },
+    // Other Engines (Grid)
+    { id: 'engine-8', title: 'NLP Engine', desc: 'Natural Language Processing for sentiment analysis, entity extraction, and text classification.', capabilities: [{label:'Sentiment Analysis', desc:''}, {label:'Entity Extraction', desc:''}, {label:'Classification', desc:''}, {label:'Summarization', desc:''}], useCases: 'Social listening, ticket routing.', outcome: 'Automates text understanding.', flow: ['Text', 'Tokenize', 'Extract', 'Classify', 'Synthesize', 'Output'] },
+    { id: 'engine-9', title: 'Search Engine', desc: 'Enterprise semantic search across structured and unstructured data silos.', capabilities: [{label:'Semantic Search', desc:''}, {label:'Hybrid Search', desc:''}, {label:'Faceted Search', desc:''}, {label:'Ranking', desc:''}], useCases: 'Intranet search, e-commerce.', outcome: 'Finds relevant info instantly.', flow: ['Query', 'Embed', 'Retrieve', 'Rank', 'Filter', 'Results'] },
+    { id: 'engine-10', title: 'Rules Engine', desc: 'Deterministic business logic execution for compliance and decision automation.', capabilities: [{label:'Decision Trees', desc:''}, {label:'Compliance Checks', desc:''}, {label:'Policy Routing', desc:''}, {label:'Version Control', desc:''}], useCases: 'Loan approval, claims scrubbing.', outcome: 'Guarantees compliance.', flow: ['Input Data', 'Evaluate Rules', 'Check Policy', 'Flag Exceptions', 'Approve/Deny', 'Log'] },
+    { id: 'engine-11', title: 'Vision Engine', desc: 'Computer vision for image classification, object detection, and anomaly spotting.', capabilities: [{label:'Object Detection', desc:''}, {label:'Facial Recognition', desc:''}, {label:'Quality Control', desc:''}, {label:'Image Segmentation', desc:''}], useCases: 'Manufacturing QA, security.', outcome: 'Automates visual inspections.', flow: ['Image', 'Pre-process', 'Feature Extract', 'Detect', 'Classify', 'Alert'] },
+    { id: 'engine-12', title: 'Speech Engine', desc: 'Speech-to-text and text-to-speech with emotion detection and speaker diarization.', capabilities: [{label:'Transcription', desc:''}, {label:'Translation', desc:''}, {label:'Voice Cloning', desc:''}, {label:'Emotion Detection', desc:''}], useCases: 'Call center analytics, accessibility.', outcome: 'Unlocks voice data insights.', flow: ['Audio', 'Denoise', 'Diarize', 'Transcribe', 'Analyze', 'Text'] },
+    { id: 'engine-13', title: 'Document Intelligence Engine', desc: 'Advanced AI to understand complex document layouts, signatures, and stamps.', capabilities: [{label:'Signature Detection', desc:''}, {label:'Stamp Recognition', desc:''}, {label:'Form Extraction', desc:''}, {label:'Table Parsing', desc:''}], useCases: 'Mortgage processing, legal discovery.', outcome: 'Digitizes complex paper trails.', flow: ['Document', 'Layout Analyze', 'Extract Fields', 'Verify Sigs', 'Structure', 'JSON'] },
+    { id: 'engine-14', title: 'Knowledge Graph Engine', desc: 'Constructs and queries relationships between entities across enterprise data.', capabilities: [{label:'Entity Linking', desc:''}, {label:'Graph DB', desc:''}, {label:'Relationship Mapping', desc:''}, {label:'Ontology Creation', desc:''}], useCases: 'Fraud detection, 360 customer view.', outcome: 'Uncovers hidden data connections.', flow: ['Data Sources', 'Extract Entities', 'Link Nodes', 'Build Graph', 'Query', 'Insights'] },
+    { id: 'engine-15', title: 'Recommendation Engine', desc: 'Personalized content and product recommendations based on user behavior.', capabilities: [{label:'Collaborative Filtering', desc:''}, {label:'Content-based', desc:''}, {label:'Real-time', desc:''}, {label:'A/B Testing', desc:''}], useCases: 'Retail, media streaming.', outcome: 'Increases conversion and engagement.', flow: ['User Data', 'Analyze History', 'Match Profiles', 'Generate Recs', 'Rank', 'Serve'] },
+    { id: 'engine-16', title: 'Monitoring & Evaluation Engine', desc: 'Continuous oversight of AI model drift, bias, and performance degradation.', capabilities: [{label:'Drift Detection', desc:''}, {label:'Bias Auditing', desc:''}, {label:'Performance Alerts', desc:''}, {label:'Auto-retraining', desc:''}], useCases: 'MLOps, model governance.', outcome: 'Maintains AI reliability over time.', flow: ['Model Output', 'Collect Stats', 'Compare Baseline', 'Detect Drift', 'Alert', 'Retrain'] },
+    { id: 'engine-17', title: 'Workflow Automation Engine', desc: 'Orchestrates APIs, scripts, and robotic process automation (RPA).', capabilities: [{label:'API Integration', desc:''}, {label:'RPA', desc:''}, {label:'Schedule Jobs', desc:''}, {label:'Error Handling', desc:''}], useCases: 'Data syncing, legacy system bridging.', outcome: 'Removes manual repetitive tasks.', flow: ['Trigger', 'Fetch Data', 'Transform', 'API Call', 'Update System', 'Complete'] }
+];
+
+let previousEngineScreen = null;
+
+function hideAllScreensEngines() {
+    hideAllScreens(); // From main.js
+    if (enginesUiContainer) enginesUiContainer.classList.add('hidden');
+    if (screenEngineDetail) screenEngineDetail.classList.add('hidden');
+    if (screenOtherEngines) screenOtherEngines.classList.add('hidden');
+}
+
+function openEngineDetail(engineId, fromOther = false) {
+    hideAllScreensEngines();
+    
+    // Hide main container
+    const mainContainer = document.getElementById('main-container');
+    if (mainContainer) mainContainer.classList.add('hidden');
+    document.body.style.overflowY = 'hidden';
+    
+    if (enginesUiContainer) enginesUiContainer.classList.remove('hidden');
+    if (screenEngineDetail) screenEngineDetail.classList.remove('hidden');
+    window.scrollTo(0, 0);
+
+    previousEngineScreen = fromOther ? 'other' : 'showroom';
+    document.getElementById('engine-back-text').innerText = fromOther ? 'Back to Engines' : 'Back to Showroom';
+
+    populateEngineDetail(engineId);
+}
+
+function populateEngineDetail(engineId) {
+    const engine = engineData.find(e => e.id === engineId);
+    if (!engine) return;
+
+    document.getElementById('engine-bc-name').innerText = engine.title;
+    document.getElementById('engine-title').innerText = engine.title;
+    document.getElementById('engine-desc').innerText = engine.desc;
+
+    // Process Flow
+    const flowContainer = document.getElementById('engine-flow-container');
+    if (flowContainer) {
+        flowContainer.innerHTML = '';
+        engine.flow.forEach((step, index) => {
+            const stepDiv = document.createElement('div');
+            stepDiv.className = 'flow-step';
+            stepDiv.innerText = step;
+            flowContainer.appendChild(stepDiv);
+            
+            if (index < engine.flow.length - 1) {
+                const arrowDiv = document.createElement('div');
+                arrowDiv.className = 'flow-arrow';
+                arrowDiv.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+                flowContainer.appendChild(arrowDiv);
+            }
+        });
+    }
+
+    // Capabilities
+    const capGrid = document.getElementById('engine-capabilities-grid');
+    if (capGrid) {
+        capGrid.innerHTML = '';
+        engine.capabilities.forEach(cap => {
+            capGrid.innerHTML += `
+                <div class="metric-card" style="padding: 20px; text-align: left;">
+                    <h4 style="color: #fff; font-size: 1.05rem; margin-bottom: 8px;">${cap.label}</h4>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5;">${cap.desc}</p>
+                </div>
+            `;
+        });
+    }
+
+    document.getElementById('engine-use-cases').innerText = engine.useCases;
+    document.getElementById('engine-business-outcome').innerText = engine.outcome;
+}
+
+function openOtherEngines() {
+    hideAllScreensEngines();
+    
+    // Hide main container
+    const mainContainer = document.getElementById('main-container');
+    if (mainContainer) mainContainer.classList.add('hidden');
+    document.body.style.overflowY = 'hidden';
+
+    if (enginesUiContainer) enginesUiContainer.classList.remove('hidden');
+    if (screenOtherEngines) screenOtherEngines.classList.remove('hidden');
+    window.scrollTo(0, 0);
+
+    renderOtherEngines();
+}
+
+function renderOtherEngines() {
+    const grid = document.getElementById('other-engines-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    const otherEngines = engineData.filter(e => parseInt(e.id.split('-')[1]) >= 8);
+
+    otherEngines.forEach(eng => {
+        const card = document.createElement('div');
+        card.className = 'use-case-card highlight-card';
+        card.style.height = '240px'; // Shorter card for engines grid
+        
+        card.innerHTML = `
+            <div class="card-content" style="padding: 24px;">
+                <h3 style="margin-bottom: 12px;">${eng.title}</h3>
+                <p style="margin-bottom: 20px;">${eng.desc}</p>
+                <button class="action-btn" style="padding: 8px 16px; font-size: 0.85rem;" onclick="event.stopPropagation(); openEngineDetail('${eng.id}', true)">View Details</button>
+            </div>
+        `;
+
+        card.addEventListener('click', () => openEngineDetail(eng.id, true));
+        grid.appendChild(card);
+    });
+}
+
+function goBackFromEngineDetail() {
+    if (previousEngineScreen === 'other') {
+        openOtherEngines();
+    } else {
+        // Go back to showroom
+        hideAllScreensEngines();
+        const mainContainer = document.getElementById('main-container');
+        if (mainContainer) mainContainer.classList.remove('hidden');
+        document.body.style.overflowY = 'auto';
     }
 }
