@@ -1077,13 +1077,255 @@
     </section>
     </div>
 
+    <!-- Section: Manufacturing Unit UI Container -->
+    <div id="manufacturing-ui-container" class="hidden"
+        style="background-color: #121212; color: #fff; min-height: 100vh;">
+
+        <!-- MFG Background Canvas -->
+        <canvas id="mfg-particle-canvas"
+            style="position: fixed; top:0; left:0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none;"></canvas>
+
+        <!-- Screen 1: Manufacturing Unit Landing -->
+        <section id="screen-manufacturing-landing" class="hidden" style="position: relative; z-index: 1;">
+            <header class="universal-header"
+                style="background: transparent; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                <div class="header-brand-bar">
+                    <div class="logo" onclick="goToHome()">
+                        <img src="assets/Delphi x AI.png" alt="Delphi x AI">
+                    </div>
+                    <div class="header-actions">
+                        <button class="icon-btn" title="Notifications" style="color: #fff;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                                <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="header-subnav">
+                    <button class="back-nav-btn" onclick="goBackToLandingFromManufacturing()" style="color: #fff;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m15 18-6-6 6-6" />
+                        </svg>
+                        <span>Back to Showroom</span>
+                    </button>
+                    <nav class="breadcrumbs">
+                        <span class="bc-crumb bc-link" onclick="goBackToLandingFromManufacturing()"
+                            style="color: rgba(255,255,255,0.7);">Home</span>
+                        <span class="bc-sep" style="color: rgba(255,255,255,0.5);">&#8250;</span>
+                        <span class="bc-crumb bc-current" style="color: #fff;">Manufacturing Unit</span>
+                    </nav>
+                </div>
+            </header>
+
+            <div class="hc-hero landing-hero no-right-col"
+                style="padding-bottom: 20px; max-width: 1600px; margin: 0 auto;">
+                <div class="hero-left-col full-width align-left">
+                    <h1 style="color: #fff; font-size: 2.8rem; margin-bottom: 15px;">Manufacturing Unit</h1>
+                    <p style="color: rgba(255,255,255,0.7); font-size: 1.1rem; max-width: 800px; line-height: 1.6;">
+                        Explore DelphiAI’s execution layer where opportunities are shaped into solution concepts and AI
+                        engines are assembled into reusable enterprise capabilities.</p>
+                </div>
+            </div>
+
+            <div class="mfg-landing-cards"
+                style="display: flex; gap: 30px; justify-content: flex-start; max-width: 1600px; margin: 40px auto; padding: 0 40px; flex-wrap: wrap;">
+                <!-- Envisioning Centre Card -->
+                <div class="mfg-card" onclick="openEnvisioningCentre()">
+                    <div class="mfg-card-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#e94c17" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 12h4l3-9 5 18 3-9h5" />
+                        </svg>
+                    </div>
+                    <h3 style="color: #fff;">Envisioning Centre</h3>
+                    <p style="color: rgba(255,255,255,0.7);">Discover business problems, transformation opportunities,
+                        and early-stage solution concepts
+                        identified across industries.</p>
+                    <button class="external-action-btn btn-secondary">
+                        Explore Opportunities
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14" />
+                            <path d="m12 5 7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Engine Hall Card -->
+                <div class="mfg-card" onclick="openEngineHall()">
+                    <div class="mfg-card-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#e94c17" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <rect width="18" height="18" x="3" y="3" rx="2" />
+                            <path d="M7 7v10" />
+                            <path d="M11 7v10" />
+                            <path d="M15 7v10" />
+                        </svg>
+                    </div>
+                    <h3 style="color: #fff;">Engine Hall</h3>
+                    <p style="color: rgba(255,255,255,0.7);">Explore the reusable AI engines that power DelphiAI
+                        solutions, demos, workflows, and industry
+                        case studies.</p>
+                    <button class="external-action-btn btn-secondary">
+                        View Engines
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14" />
+                            <path d="m12 5 7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Screen 2: Envisioning Centre -->
+        <section id="screen-envisioning-centre" class="hidden" style="position: relative; z-index: 1;">
+            <header class="universal-header"
+                style="background: transparent; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                <div class="header-brand-bar">
+                    <div class="logo" onclick="goToHome()">
+                        <img src="assets/Delphi x AI.png" alt="Delphi x AI">
+                    </div>
+                </div>
+                <div class="header-subnav">
+                    <button class="back-nav-btn" onclick="openManufacturingUnit()" style="color: #fff;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m15 18-6-6 6-6" />
+                        </svg>
+                        <span>Back</span>
+                    </button>
+                    <nav class="breadcrumbs">
+                        <span class="bc-crumb bc-link" onclick="goBackToLandingFromManufacturing()"
+                            style="color: rgba(255,255,255,0.7);">Home</span>
+                        <span class="bc-sep" style="color: rgba(255,255,255,0.5);">&#8250;</span>
+                        <span class="bc-crumb bc-link" onclick="openManufacturingUnit()"
+                            style="color: rgba(255,255,255,0.7);">Manufacturing Unit</span>
+                        <span class="bc-sep" style="color: rgba(255,255,255,0.5);">&#8250;</span>
+                        <span class="bc-crumb bc-current" style="color: #fff;">Envisioning Centre</span>
+                    </nav>
+                </div>
+            </header>
+
+            <div class="hc-hero landing-hero no-right-col"
+                style="padding-bottom: 20px; max-width: 1600px; margin: 0 auto;">
+                <div class="hero-left-col full-width align-left">
+                    <h1 style="color: #fff; font-size: 2.8rem; margin-bottom: 15px;">Envisioning Centre</h1>
+                    <p style="color: rgba(255,255,255,0.7); font-size: 1.1rem; max-width: 800px; line-height: 1.6;">A
+                        curated space for discovered business
+                        problems, transformation opportunities, and solution concepts being shaped by DelphiAI.</p>
+                </div>
+            </div>
+
+            <div class="cap-grid"
+                style="grid-template-columns: repeat(2, 1fr); max-width: 1600px; margin: 40px auto; padding: 0 40px; gap: 30px;">
+                <!-- Card 1 -->
+                <div class="opportunity-card" style="width: 40em;">
+                    <div class="opp-status in-progress">In Progress</div>
+                    <h3 style="color: #fff;">Disconnected Patient Documentation</h3>
+                    <p style="color: rgba(255,255,255,0.7);">Healthcare teams manage large volumes of scattered clinical
+                        notes, referrals, scanned records,
+                        and patient documents, making it difficult to extract reliable insights quickly.</p>
+                    <div class="opp-kpis">
+                        <span><strong style="color: #fff;">Opportunity Size:</strong> <span
+                                style="color: rgba(255,255,255,0.7);">High</span></span>
+                        <span><strong style="color: #fff;">Industries:</strong> <span
+                                style="color: rgba(255,255,255,0.7);">Healthcare, Insurance, Public Sector</span></span>
+                    </div>
+                    <div class="opp-kpis" style="margin-top: 15px; background: none;">
+                        <h4 style="color: #fff;">Where Has Delphi Reached?</h4>
+                        <ul style="color: rgba(255,255,255,0.7);">
+                            <li>Validated the problem via 3 health-tech user interviews</li>
+                            <li>Designed an early AI extraction prototype using LLM parsing</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="opportunity-card" style="width: 40em;">
+                    <div class="opp-status upcoming">Upcoming</div>
+                    <h3 style="color: #fff;">Supply Chain Demand Volatility</h3>
+                    <p style="color: rgba(255,255,255,0.7);">Supply chain leaders struggle to balance inventory with
+                        erratic demand signals due to
+                        disconnected data silos across logistics, sales, and manufacturing.</p>
+                    <div class="opp-kpis">
+                        <span><strong style="color: #fff;">Opportunity Size:</strong> <span
+                                style="color: rgba(255,255,255,0.7);">High</span></span>
+                        <span><strong style="color: #fff;">Industries:</strong> <span
+                                style="color: rgba(255,255,255,0.7);">Manufacturing, Retail, Logistics</span></span>
+                    </div>
+                    <div class="opp-kpis" style="margin-top: 15px; background: none;">
+                        <h4 style="color: #fff;">Where Has Delphi Reached?</h4>
+                        <ul style="color: rgba(255,255,255,0.7);">
+                            <li>Identified predictive AI use cases for inventory optimization</li>
+                            <li>Drafted initial solution architecture combining internal ERP data with external signals
+                            </li>
+                            <li>Scheduled stakeholder reviews for next quarter</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Screen 3: Engine Hall -->
+        <section id="screen-engine-hall" class="hidden" style="position: relative; z-index: 1;">
+            <header class="universal-header"
+                style="background: transparent; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                <div class="header-brand-bar">
+                    <div class="logo" onclick="goToHome()">
+                        <img src="assets/Delphi x AI.png" alt="Delphi x AI">
+                    </div>
+                </div>
+                <div class="header-subnav">
+                    <button class="back-nav-btn" onclick="openManufacturingUnit()" style="color: #fff;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m15 18-6-6 6-6" />
+                        </svg>
+                        <span>Back</span>
+                    </button>
+                    <nav class="breadcrumbs">
+                        <span class="bc-crumb bc-link" onclick="goBackToLandingFromManufacturing()"
+                            style="color: rgba(255,255,255,0.7);">Home</span>
+                        <span class="bc-sep" style="color: rgba(255,255,255,0.5);">&#8250;</span>
+                        <span class="bc-crumb bc-link" onclick="openManufacturingUnit()"
+                            style="color: rgba(255,255,255,0.7);">Manufacturing Unit</span>
+                        <span class="bc-sep" style="color: rgba(255,255,255,0.5);">&#8250;</span>
+                        <span class="bc-crumb bc-current" style="color: #fff;">Engine Hall</span>
+                    </nav>
+                </div>
+            </header>
+
+            <div class="hc-hero landing-hero no-right-col"
+                style="padding-bottom: 20px; max-width: 1600px; margin: 0 auto;">
+                <div class="hero-left-col full-width align-left">
+                    <h1 style="color: #fff; font-size: 2.8rem; margin-bottom: 15px;">Engine Hall</h1>
+                    <p style="color: rgba(255,255,255,0.7); font-size: 1.1rem; max-width: 800px; line-height: 1.6;">
+                        Explore DelphiAI’s reusable intelligence
+                        engines that power enterprise AI workflows, automation, validation, and decision intelligence.
+                    </p>
+                </div>
+            </div>
+
+            <div class="cap-grid" id="manufacturing-engines-grid"
+                style="max-width: 1600px; margin: 40px auto; padding: 0 40px; gap: 30px;">
+                <!-- Engine cards injected by JS -->
+            </div>
+        </section>
+    </div>
+
     <!-- Engines UI Container -->
     <div id="engines-ui-container" class="hidden">
+
+        <!-- Engine Background Canvas -->
+        <canvas id="engine-particle-canvas"
+            style="position: fixed; top:0; left:0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none;"></canvas>
+
         <!-- Screen: Engine Detail Template -->
         <section id="screen-engine-detail" class="hidden">
-            <!-- AGUI Background Canvas -->
-            <canvas id="engine-particle-canvas"
-                style="position: fixed; top:0; left:0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; display: none;"></canvas>
             <header class="universal-header">
                 <div class="header-brand-bar">
                     <div class="logo" onclick="goToHome()">
@@ -1254,7 +1496,7 @@
 
             <div class="hc-hero landing-hero no-right-col" style="padding-bottom: 20px;">
                 <div class="hero-left-col full-width align-left">
-                    <h1>Additional AI Engines</h1>
+                    <h1>All Engines</h1>
                     <p>Explore our extensive library of specialized AI engines built for diverse enterprise needs.</p>
                 </div>
             </div>

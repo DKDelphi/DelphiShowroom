@@ -57,7 +57,10 @@ const engine_titles = {
     'engine-14': ['Knowledge Graph Engine', 'Constructs and queries relationships between entities across enterprise data.'],
     'engine-15': ['Recommendation Engine', 'Personalized content and product recommendations based on user behavior.'],
     'engine-16': ['Monitoring & Evaluation Engine', 'Continuous oversight of AI model drift, bias, and performance degradation.'],
-    'engine-17': ['Workflow Automation Engine', 'Orchestrates APIs, scripts, and robotic process automation (RPA).']
+    'engine-17': ['Workflow Automation Engine', 'Orchestrates APIs, scripts, and robotic process automation (RPA).'],
+    'engine-18': ['Validation Engine', 'Checks confidence, completeness, accuracy, business rules, and exception conditions.'],
+    'engine-19': ['Workflow Router', 'Routes outputs, actions, cases, or alerts to the correct system, queue, or user.'],
+    'engine-20': ['Analytics Output Engine', 'Turns processed intelligence into dashboards, reports, insights, and measurable outcomes.']
 };
 
 for (const [engine_id, [title, desc]] of Object.entries(engine_titles)) {

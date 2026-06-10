@@ -287,6 +287,8 @@ function setupSection2Interactions() {
             const target = e.target.getAttribute('data-target');
             if (target === 'left') {
                 startSection3Entry();
+            } else if (target === 'right') {
+                openManufacturingUnit();
             }
         });
     });
@@ -1991,14 +1993,24 @@ function openEngineDetail(engineId, fromOther = false) {
     // Hide main container
     const mainContainer = document.getElementById('main-container');
     if (mainContainer) mainContainer.classList.add('hidden');
+    
+    // Hide manufacturing container if it was open
+    const manufacturingUiContainer = document.getElementById('manufacturing-ui-container');
+    if (manufacturingUiContainer) manufacturingUiContainer.classList.add('hidden');
+
     document.body.style.overflowY = 'hidden';
     
     if (enginesUiContainer) enginesUiContainer.classList.remove('hidden');
     if (screenEngineDetail) screenEngineDetail.classList.remove('hidden');
     window.scrollTo(0, 0);
 
-    previousEngineScreen = fromOther ? 'other' : 'showroom';
-    document.getElementById('engine-back-text').innerText = fromOther ? 'Back to Engines' : 'Back to Showroom';
+    if (fromOther === 'manufacturing-engine-hall') {
+        previousEngineScreen = 'manufacturing-engine-hall';
+        document.getElementById('engine-back-text').innerText = 'Back to Engine Hall';
+    } else {
+        previousEngineScreen = fromOther ? 'other' : 'showroom';
+        document.getElementById('engine-back-text').innerText = fromOther ? 'Back to Engines' : 'Back to Showroom';
+    }
 
     populateEngineDetail(engineId);
 }
@@ -2023,11 +2035,7 @@ function populateEngineDetail(engineId) {
     // Engine Background
     const engineCanvas = document.getElementById('engine-particle-canvas');
     if (engineCanvas) {
-        if (engineId === 'engine-3') {
-            engineCanvas.style.display = 'block';
-        } else {
-            engineCanvas.style.display = 'none';
-        }
+        engineCanvas.style.display = 'block';
     }
 
     // Header info
@@ -2213,7 +2221,7 @@ function renderOtherEngines() {
     otherEngines.forEach(eng => {
         const card = document.createElement('div');
         card.className = 'use-case-card highlight-card';
-        card.style.height = '240px'; // Shorter card for engines grid
+        card.style.height = '200px'; // Reduced card height
         
         card.innerHTML = `
             <div class="card-content" style="padding: 24px;">
@@ -2231,6 +2239,8 @@ function renderOtherEngines() {
 function goBackFromEngineDetail() {
     if (previousEngineScreen === 'other') {
         openOtherEngines();
+    } else if (previousEngineScreen === 'manufacturing-engine-hall') {
+        if (typeof openEngineHall === 'function') openEngineHall();
     } else {
         // Go back to showroom
         hideAllScreensEngines();
@@ -2283,4 +2293,141 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener("resize", resize);
     resize();
     animateWaves();
+});
+
+// --- Manufacturing Unit Logic --- //
+const manufacturingUiContainer = document.getElementById('manufacturing-ui-container');
+
+function hideAllManufacturingScreens() {
+    document.querySelectorAll('#manufacturing-ui-container > section').forEach(sec => sec.classList.add('hidden'));
+}
+
+function openManufacturingUnit() {
+    // Hide main landing container
+    const mainContainer = document.getElementById('main-container');
+    if (mainContainer) mainContainer.classList.add('hidden');
+    document.body.style.overflowY = 'auto'; // allow scroll within the container
+
+    if (manufacturingUiContainer) manufacturingUiContainer.classList.remove('hidden');
+    
+    hideAllManufacturingScreens();
+    document.getElementById('screen-manufacturing-landing').classList.remove('hidden');
+    window.scrollTo(0, 0);
+}
+
+function openEnvisioningCentre() {
+    hideAllManufacturingScreens();
+    document.getElementById('screen-envisioning-centre').classList.remove('hidden');
+    window.scrollTo(0, 0);
+}
+
+function openEngineHall() {
+    hideAllManufacturingScreens();
+    
+    // Hide engine details if we came back from there
+    const enginesUiContainer = document.getElementById('engines-ui-container');
+    if (enginesUiContainer) enginesUiContainer.classList.add('hidden');
+
+    if (manufacturingUiContainer) manufacturingUiContainer.classList.remove('hidden');
+
+    document.getElementById('screen-engine-hall').classList.remove('hidden');
+    window.scrollTo(0, 0);
+
+    renderManufacturingEngineHall();
+}
+
+function goBackToLandingFromManufacturing() {
+    if (manufacturingUiContainer) manufacturingUiContainer.classList.add('hidden');
+    const mainContainer = document.getElementById('main-container');
+    if (mainContainer) mainContainer.classList.remove('hidden');
+    
+    document.body.style.overflowY = 'hidden'; 
+    window.scrollTo(0, 0);
+}
+
+function renderManufacturingEngineHall() {
+    const grid = document.getElementById('manufacturing-engines-grid');
+    if (!grid || typeof engineData === 'undefined') return;
+    
+    grid.innerHTML = '';
+    
+    // Requested engines: 1, 8, 2, 3, 4, 5, 6, 18, 19, 20
+    const mfgEngineIds = ['engine-1', 'engine-8', 'engine-2', 'engine-3', 'engine-4', 'engine-5', 'engine-6', 'engine-18', 'engine-19', 'engine-20'];
+    
+    mfgEngineIds.forEach(id => {
+        const eng = engineData.find(e => e.id === id);
+        if (!eng) return;
+        
+        const card = document.createElement('div');
+        card.className = 'opportunity-card'; // Use glass card styling
+        card.style.display = 'flex';
+        card.style.flexDirection = 'column';
+        card.style.cursor = 'pointer';
+        card.style.position = 'relative';
+        card.style.transition = 'all 0.3s ease';
+        
+        // Ensure hover lifts it
+        card.onmouseenter = () => { card.style.transform = 'translateY(-4px)'; card.style.borderColor = 'rgba(255,170,85,0.4)'; };
+        card.onmouseleave = () => { card.style.transform = 'none'; card.style.borderColor = 'var(--border-subtle)'; };
+        
+        card.innerHTML = `
+            <div style="flex-grow: 1;">
+                <h3 style="margin-bottom: 10px; font-size: 1.3rem; color: #fff;">${eng.title}</h3>
+                <p style="color: rgba(255,255,255,0.7); line-height: 1.5; font-size: 0.95rem;">${eng.desc}</p>
+            </div>
+            <div class="card-actions" style="margin-top: 20px;">
+                <button class="action-btn btn-demo" style="padding: 8px 16px; font-size: 0.85rem;" onclick="event.stopPropagation();">Demo</button>
+                <button class="action-btn btn-secondary" style="padding: 8px 16px; font-size: 0.85rem;" onclick="event.stopPropagation(); openEngineDetail('${eng.id}', 'manufacturing-engine-hall')">View Engine</button>
+            </div>
+        `;
+        
+        card.addEventListener('click', () => openEngineDetail(eng.id, 'manufacturing-engine-hall'));
+        grid.appendChild(card);
+    });
+}
+
+// --- MFG Particle Canvas ---
+document.addEventListener("DOMContentLoaded", () => {
+    const canvas = document.getElementById("mfg-particle-canvas");
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+
+    let width, height;
+    let time = 0;
+
+    function resize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+    }
+
+    function drawWave(yOffset, color, speed, amplitude, frequency) {
+        ctx.beginPath();
+        for (let x = 0; x <= width; x += 10) {
+            let y = (height / 2) + yOffset + Math.sin(x * frequency + time * speed) * amplitude;
+            if (x === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+        time += 0.02;
+
+        // Draw multiple glowing orange strands just like AI Symptom Checker
+        drawWave(-50, 'rgba(233, 76, 23, 0.1)', 0.5, 100, 0.003);
+        drawWave(0, 'rgba(233, 76, 23, 0.2)', 0.7, 150, 0.002);
+        drawWave(50, 'rgba(233, 76, 23, 0.3)', 0.9, 80, 0.004);
+        drawWave(100, 'rgba(255, 255, 255, 0.05)', 0.4, 200, 0.001);
+
+        requestAnimationFrame(animate);
+    }
+
+    window.addEventListener("resize", resize);
+    resize();
+    animate();
 });
