@@ -1,0 +1,421 @@
+/* =========================================================
+   DelphiAI Showroom — Design Tokens
+   Source of truth for light premium glass UI styling
+   Brand: Orange #E94C17, White #FFFFFF, Dark Gray #232323
+   ========================================================= */
+
+:root {
+  /* -----------------------------
+     Brand Colors
+  ----------------------------- */
+  --color-brand-orange: #E94C17;
+  --color-brand-orange-rgb: 233, 76, 23;
+  --color-brand-white: #FFFFFF;
+  --color-brand-dark: #232323;
+
+  /* -----------------------------
+     Backgrounds
+  ----------------------------- */
+  --color-bg-page: #F7F7F8;
+  --color-bg-canvas: #FFFFFF;
+  --color-bg-soft: #FAFAFA;
+  --color-bg-muted: #F1F2F4;
+  --color-bg-dark: #232323;
+
+  /* -----------------------------
+     Text Colors
+  ----------------------------- */
+  --color-text-primary: #232323;
+  --color-text-secondary: #6B7280;
+  --color-text-muted: #9CA3AF;
+  --color-text-inverse: #FFFFFF;
+  --color-text-orange: #E94C17;
+
+  /* -----------------------------
+     Border Colors
+  ----------------------------- */
+  --color-border-light: rgba(35, 35, 35, 0.10);
+  --color-border-medium: rgba(35, 35, 35, 0.16);
+  --color-border-strong: rgba(35, 35, 35, 0.24);
+  --color-border-orange: rgba(233, 76, 23, 0.45);
+
+  /* -----------------------------
+     Glass Surfaces
+  ----------------------------- */
+  --surface-glass: rgba(255, 255, 255, 0.72);
+  --surface-glass-strong: rgba(255, 255, 255, 0.88);
+  --surface-glass-soft: rgba(255, 255, 255, 0.56);
+  --surface-card: rgba(255, 255, 255, 0.82);
+  --surface-card-hover: rgba(255, 255, 255, 0.96);
+  --surface-orange-soft: rgba(233, 76, 23, 0.10);
+  --surface-orange-medium: rgba(233, 76, 23, 0.16);
+  --surface-dark-soft: rgba(35, 35, 35, 0.06);
+
+  /* -----------------------------
+     Gradients
+  ----------------------------- */
+  --gradient-page: radial-gradient(circle at top right, rgba(233, 76, 23, 0.12), transparent 34%), linear-gradient(135deg, #FFFFFF 0%, #F7F7F8 48%, #FFFFFF 100%);
+  --gradient-orange: linear-gradient(135deg, #E94C17 0%, #FF7A45 100%);
+  --gradient-dark: linear-gradient(135deg, #232323 0%, #3A3A3A 100%);
+  --gradient-card: linear-gradient(145deg, rgba(255,255,255,0.92), rgba(255,255,255,0.62));
+
+  /* -----------------------------
+     Typography
+  ----------------------------- */
+  --font-family-base: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-family-display: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  --font-size-xs: 0.75rem;    /* 12px */
+  --font-size-sm: 0.875rem;   /* 14px */
+  --font-size-md: 1rem;       /* 16px */
+  --font-size-lg: 1.125rem;   /* 18px */
+  --font-size-xl: 1.25rem;    /* 20px */
+  --font-size-2xl: 1.5rem;    /* 24px */
+  --font-size-3xl: 2rem;      /* 32px */
+  --font-size-4xl: 2.5rem;    /* 40px */
+  --font-size-5xl: 3.25rem;   /* 52px */
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
+  --line-height-tight: 1.1;
+  --line-height-heading: 1.2;
+  --line-height-body: 1.55;
+
+  --letter-spacing-tight: -0.04em;
+  --letter-spacing-heading: -0.025em;
+  --letter-spacing-normal: 0em;
+  --letter-spacing-wide: 0.04em;
+
+  /* -----------------------------
+     Spacing Scale
+  ----------------------------- */
+  --space-0: 0;
+  --space-1: 0.25rem;  /* 4px */
+  --space-2: 0.5rem;   /* 8px */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-5: 1.25rem;  /* 20px */
+  --space-6: 1.5rem;   /* 24px */
+  --space-8: 2rem;     /* 32px */
+  --space-10: 2.5rem;  /* 40px */
+  --space-12: 3rem;    /* 48px */
+  --space-16: 4rem;    /* 64px */
+
+  /* Semantic spacing */
+  --space-page-x: var(--space-8);
+  --space-page-y: var(--space-6);
+  --space-section-gap: var(--space-6);
+  --space-card-padding: var(--space-5);
+  --space-card-gap: var(--space-4);
+  --space-header-padding: var(--space-4);
+
+  /* -----------------------------
+     Border Radius
+  ----------------------------- */
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+  --radius-3xl: 32px;
+  --radius-full: 999px;
+
+  --radius-button: var(--radius-md);
+  --radius-card: var(--radius-xl);
+  --radius-panel: var(--radius-2xl);
+  --radius-tab: var(--radius-full);
+  --radius-input: var(--radius-md);
+
+  /* -----------------------------
+     Shadows
+  ----------------------------- */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 10px 28px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 18px 48px rgba(0, 0, 0, 0.10);
+  --shadow-xl: 0 28px 70px rgba(0, 0, 0, 0.14);
+  --shadow-orange: 0 14px 34px rgba(233, 76, 23, 0.26);
+  --shadow-card: var(--shadow-md);
+  --shadow-panel: var(--shadow-lg);
+
+  /* -----------------------------
+     Blur / Glass
+  ----------------------------- */
+  --blur-sm: blur(8px);
+  --blur-md: blur(14px);
+  --blur-lg: blur(22px);
+  --glass-backdrop: blur(18px) saturate(140%);
+
+  /* -----------------------------
+     Layout Dimensions
+  ----------------------------- */
+  --header-height: 72px;
+  --sidebar-width: 280px;
+  --content-max-width: 1440px;
+  --screen-radius: 28px;
+  --page-min-height: 100vh;
+
+  /* -----------------------------
+     Buttons
+  ----------------------------- */
+  --button-height-sm: 36px;
+  --button-height-md: 44px;
+  --button-height-lg: 52px;
+  --button-padding-x-sm: 14px;
+  --button-padding-x-md: 18px;
+  --button-padding-x-lg: 24px;
+  --button-font-size: var(--font-size-sm);
+  --button-font-weight: var(--font-weight-semibold);
+
+  /* -----------------------------
+     Tabs
+  ----------------------------- */
+  --tab-height: 44px;
+  --tab-padding-x: 18px;
+  --tab-bg: rgba(255, 255, 255, 0.68);
+  --tab-bg-active: #E94C17;
+  --tab-text: #6B7280;
+  --tab-text-active: #FFFFFF;
+  --tab-border: rgba(35, 35, 35, 0.10);
+
+  /* -----------------------------
+     Cards
+  ----------------------------- */
+  --card-bg: var(--surface-card);
+  --card-bg-hover: var(--surface-card-hover);
+  --card-border: var(--color-border-light);
+  --card-radius: var(--radius-card);
+  --card-padding: var(--space-card-padding);
+  --card-shadow: var(--shadow-card);
+  --card-icon-size: 40px;
+
+  /* -----------------------------
+     Forms / Inputs
+  ----------------------------- */
+  --input-height: 44px;
+  --input-bg: rgba(255, 255, 255, 0.82);
+  --input-border: var(--color-border-light);
+  --input-border-focus: var(--color-border-orange);
+  --input-radius: var(--radius-input);
+  --input-padding-x: 14px;
+
+  /* -----------------------------
+     Motion
+  ----------------------------- */
+  --transition-fast: 140ms ease;
+  --transition-base: 220ms ease;
+  --transition-slow: 360ms ease;
+  --hover-lift: translateY(-4px);
+
+  /* -----------------------------
+     Z Index
+  ----------------------------- */
+  --z-base: 1;
+  --z-header: 50;
+  --z-dropdown: 100;
+  --z-modal: 1000;
+}
+
+/* =========================================================
+   Base Helpers
+   Use these utility classes across pages and components.
+   ========================================================= */
+
+.app-surface {
+  min-height: var(--page-min-height);
+  background: var(--gradient-page);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-base);
+}
+
+.glass-panel {
+  background: var(--surface-glass);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--shadow-panel);
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
+}
+
+.ui-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  padding: var(--card-padding);
+  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base), background var(--transition-base);
+}
+
+.ui-card:hover {
+  background: var(--card-bg-hover);
+  border-color: var(--color-border-orange);
+  box-shadow: var(--shadow-lg);
+  transform: var(--hover-lift);
+}
+
+.btn-primary {
+  min-height: var(--button-height-md);
+  padding: 0 var(--button-padding-x-md);
+  border: 1px solid transparent;
+  border-radius: var(--radius-button);
+  background: var(--gradient-orange);
+  color: var(--color-text-inverse);
+  font-size: var(--button-font-size);
+  font-weight: var(--button-font-weight);
+  box-shadow: var(--shadow-orange);
+  transition: transform var(--transition-base), box-shadow var(--transition-base), opacity var(--transition-base);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 44px rgba(233, 76, 23, 0.34);
+}
+
+.btn-secondary {
+  min-height: var(--button-height-md);
+  padding: 0 var(--button-padding-x-md);
+  border: 1px solid transparent;
+  border-radius: var(--radius-button);
+  background: var(--gradient-dark);
+  color: var(--color-text-inverse);
+  font-size: var(--button-font-size);
+  font-weight: var(--button-font-weight);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.btn-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-ghost {
+  min-height: var(--button-height-md);
+  padding: 0 var(--button-padding-x-md);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-button);
+  background: var(--surface-glass-soft);
+  color: var(--color-text-primary);
+  font-size: var(--button-font-size);
+  font-weight: var(--button-font-weight);
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
+  transition: background var(--transition-base), border-color var(--transition-base), transform var(--transition-base);
+}
+
+.btn-ghost:hover {
+  background: var(--surface-glass-strong);
+  border-color: var(--color-border-orange);
+  transform: translateY(-2px);
+}
+
+.tab-list {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1);
+  background: var(--tab-bg);
+  border: 1px solid var(--tab-border);
+  border-radius: var(--radius-full);
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
+}
+
+.tab-item {
+  height: var(--tab-height);
+  padding: 0 var(--tab-padding-x);
+  border: 0;
+  border-radius: var(--radius-tab);
+  background: transparent;
+  color: var(--tab-text);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  transition: background var(--transition-base), color var(--transition-base), box-shadow var(--transition-base);
+}
+
+.tab-item[data-active="true"],
+.tab-item.active {
+  background: var(--tab-bg-active);
+  color: var(--tab-text-active);
+  box-shadow: var(--shadow-orange);
+}
+
+.input-field {
+  height: var(--input-height);
+  padding: 0 var(--input-padding-x);
+  border: 1px solid var(--input-border);
+  border-radius: var(--input-radius);
+  background: var(--input-bg);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  outline: none;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base), background var(--transition-base);
+}
+
+.input-field:focus {
+  border-color: var(--input-border-focus);
+  box-shadow: 0 0 0 4px rgba(233, 76, 23, 0.12);
+  background: var(--color-brand-white);
+}
+
+.kicker {
+  color: var(--color-brand-orange);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+}
+
+.page-title {
+  color: var(--color-text-primary);
+  font-size: clamp(var(--font-size-3xl), 4vw, var(--font-size-5xl));
+  font-weight: var(--font-weight-extrabold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+.page-subtitle {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-body);
+  max-width: 760px;
+}
+
+.section-title {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-heading);
+  letter-spacing: var(--letter-spacing-heading);
+}
+
+.card-title {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-heading);
+}
+
+.card-description {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-body);
+}
+
+.badge-orange {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 6px 10px;
+  border-radius: var(--radius-full);
+  background: var(--surface-orange-soft);
+  color: var(--color-brand-orange);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  border: 1px solid rgba(233, 76, 23, 0.18);
+}

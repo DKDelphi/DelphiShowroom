@@ -852,7 +852,7 @@ body {
 }
 
 .card-img {
-    height: 212px;
+    height: fit-content !important;
     width: 100%;
     background-size: cover;
     background-position: top;
@@ -1546,12 +1546,12 @@ select:focus-visible,
     padding-bottom: 40px;
 }
 
-.overview-sec {
+/* .overview-sec {
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 16px;
     padding: 40px;
-}
+} */
 
 .sec-1 {
     display: flex;
@@ -2438,13 +2438,13 @@ select:focus-visible,
     gap: 40px;
 }
 
-.overview-sec {
+/* .overview-sec {
     background: rgba(15, 15, 18, 0.75);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 20px;
     padding: 30px;
     backdrop-filter: blur(24px);
-}
+} */
 
 .overview-sec.sec-1,
 .overview-sec.sec-3,
@@ -6798,6 +6798,7 @@ html {
 /* ============================================================
    PRODUCTION POLISH — Part 6: Frameworks, Metrics, Gallery, Lightbox
    ============================================================ */
+
 .framework-list {
     display: flex;
     flex-direction: column;
@@ -7410,13 +7411,13 @@ select:focus-visible {
 }
 
 /* overview-sec border polish */
-.overview-sec {
+/* .overview-sec {
     background: rgba(10, 10, 16, 0.6) !important;
     border: 1px solid var(--border-subtle) !important;
     border-radius: var(--radius-xl) !important;
     padding: 32px !important;
     backdrop-filter: blur(20px) !important;
-}
+} */
 
 .overview-mockup-preview {
     width: 100% !important;
@@ -8298,20 +8299,38 @@ select:focus-visible {
     border-color: var(--accent) !important;
 }
 
+.btn-demo {
+    transition: all 0.2s ease !important;
+}
+
 .btn-demo:hover {
     background: #d43e0d !important;
-    transform: none !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 14px rgba(233, 76, 23, 0.4) !important;
 }
 
 .btn-proto {
     background: rgba(255, 255, 255, 0.06) !important;
     color: var(--text-secondary) !important;
+    transition: all 0.2s ease !important;
 }
 
 .btn-proto:hover {
     background: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
     color: #fff !important;
-    transform: none !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
+}
+
+.tag-pill {
+    transition: all 0.2s ease !important;
+}
+
+.tag-pill:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
+    filter: brightness(1.2) !important;
 }
 
 /* Card action row */
@@ -8517,7 +8536,9 @@ select:focus-visible {
 .practices-main-content {
     overflow-y: visible !important;
     height: auto !important;
-}/* ============================================================
+}
+
+/* ============================================================
    ENGINES UI SECTION
    ============================================================ */
 
@@ -8556,9 +8577,11 @@ select:focus-visible {
 .engine-flow-container::-webkit-scrollbar {
     height: 6px !important;
 }
+
 .engine-flow-container::-webkit-scrollbar-track {
     background: transparent !important;
 }
+
 .engine-flow-container::-webkit-scrollbar-thumb {
     background-color: rgba(233, 76, 23, 0.5) !important;
     border-radius: 10px !important;
@@ -8614,6 +8637,83 @@ select:focus-visible {
 }
 
 @keyframes pulseGlow {
-    0% { filter: drop-shadow(0 0 2px rgba(233, 76, 23, 0.4)); opacity: 0.6; }
-    100% { filter: drop-shadow(0 0 8px rgba(233, 76, 23, 0.9)); opacity: 1; }
+    0% {
+        filter: drop-shadow(0 0 2px rgba(233, 76, 23, 0.4));
+        opacity: 0.6;
+    }
+
+    100% {
+        filter: drop-shadow(0 0 8px rgba(233, 76, 23, 0.9));
+        opacity: 1;
+    }
+}
+
+/* --- Engine Detail Page Tab Styles --- */
+.engine-tab {
+    background: transparent;
+    border: 1px solid transparent;
+    color: #a0a0a0;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.engine-tab:hover {
+    background: rgba(255, 255, 255, 0.03);
+    color: #ffffff;
+}
+
+.engine-tab.active {
+    background: rgba(233, 76, 23, 0.1);
+    color: #e94c17;
+    border: 1px solid rgba(233, 76, 23, 0.3);
+}
+
+/* --- Content Breakdown Layout --- */
+.content-breakdown {
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    background: rgba(10, 10, 12, 0.5);
+    overflow: hidden;
+}
+
+.breakdown-row {
+    display: flex;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.breakdown-row:last-child {
+    border-bottom: none;
+}
+
+.breakdown-left {
+    width: 150px;
+    padding: 24px;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: flex-start;
+}
+
+.breakdown-left h4 {
+    color: var(--accent-orange);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.breakdown-right {
+    flex: 1;
+    padding: 24px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* Ensure flow container uses original styles properly */
+#engine-flow-container .flow-step {
+    padding: 12px 20px !important;
 }

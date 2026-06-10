@@ -25,6 +25,7 @@
     </script>
 
     <!-- Custom Styles -->
+    <link rel="stylesheet" href="tokens.css">
     <link rel="stylesheet" href="css/style.css">
 
     <!-- GSAP & ScrollTrigger -->
@@ -175,17 +176,18 @@
                     <h1>Healthcare Capabilities</h1>
                     <p>Drive better patient outcomes, smarter operations, secure compliance, and faster digital
                         transformation across the healthcare ecosystem with AI-powered capabilities.</p>
-                    <div class="hc-master-tabs hc-tabs" style="margin-top: 30px;">
-                        <button class="tab practice-tab hc-master-tab active" data-target="usecases"
-                            onclick="switchHcMainTab('usecases', this)">Usecases</button>
-                        <button class="tab practice-tab hc-master-tab" data-target="data"
-                            onclick="switchHcMainTab('data', this)">Data</button>
-                        <button class="tab practice-tab hc-master-tab" data-target="frameworks"
-                            onclick="switchHcMainTab('frameworks', this)">Frameworks</button>
-                        <button class="tab practice-tab hc-master-tab" data-target="bestpractices"
-                            onclick="switchHcMainTab('bestpractices', this)">Best Practices</button>
-                    </div>
                 </div>
+                <div class="deep-dive-tabs"
+                    style="margin-top: 30px; padding: 0 !important; gap: 10px; border-bottom: none; display: flex; flex-wrap: wrap;">
+                    <button class="dd-tab active" data-target="usecases"
+                        onclick="switchHcMainTab('usecases', this)">Usecases</button>
+                    <button class="dd-tab" data-target="data" onclick="switchHcMainTab('data', this)">Data</button>
+                    <button class="dd-tab" data-target="frameworks"
+                        onclick="switchHcMainTab('frameworks', this)">Frameworks</button>
+                    <button class="dd-tab" data-target="bestpractices"
+                        onclick="switchHcMainTab('bestpractices', this)">Best Practices</button>
+                </div>
+
             </div>
 
             <div id="hc-main-tab-usecases" class="hc-main-pane active">
@@ -206,21 +208,19 @@
                                 </select>
                                 <select id="filter-tech" class="filter-select">
                                     <option value="all">Technology</option>
-                                    <option value="generative-ai">Generative AI</option>
-                                    <option value="predictive-ml">Predictive ML</option>
-                                    <option value="nlp">NLP</option>
-                                    <option value="computer-vision">Computer Vision</option>
+                                    <option value="genai">GenAI</option>
+                                    <option value="predictive">Predictive AI</option>
+                                    <option value="vision">Computer Vision</option>
                                 </select>
                                 <select id="filter-domain" class="filter-select">
                                     <option value="all">Domain</option>
-                                    <option value="hospital">Hospital</option>
-                                    <option value="clinic">Clinic</option>
-                                    <option value="pharmacy">Pharmacy</option>
-                                    <option value="insurance">Insurance</option>
+                                    <option value="clinical">Clinical</option>
+                                    <option value="admin">Administrative</option>
+                                    <option value="finance">Financial</option>
                                 </select>
                                 <select id="filter-project" class="filter-select">
                                     <option value="all">Project Type</option>
-                                    <option value="poc">Proof of Concept</option>
+                                    <option value="prototype">Prototype</option>
                                     <option value="mvp">MVP</option>
                                     <option value="production">Production</option>
                                 </select>
@@ -256,7 +256,7 @@
 
             <!-- TAB 2: Data Models -->
             <div id="hc-main-tab-data" class="hc-main-pane hidden">
-                <div class="practices-layout">
+                <div class="practices-layout" style="margin-top: -2em; margin-left: -1em;">
 
                     <!-- Left Sidebar -->
                     <div class="practices-sidebar">
@@ -303,8 +303,9 @@
             </div> <!-- End hc-main-tab-data -->
 
             <!-- TAB 3: Frameworks -->
-            <div id="hc-main-tab-frameworks" class="hc-main-pane hidden" style="padding: 40px; background: #000;">
-                <h3 class="sec-heading align-left">Design Frameworks We Own</h3>
+            <div id="hc-main-tab-frameworks" class="hc-main-pane hidden"
+                style="opacity: 1; transition: opacity 0.3s; margin-left: 64px; margin-right: 64px; border-radius: 10px;">
+                <h3 class=" sec-heading align-left">Design Frameworks We Own</h3>
                 <p class="sec-subtitle">Six battle-tested frameworks our team applies across enterprise UX
                     engagements &#8212; refined through 50+ projects spanning healthcare, financial
                     services, and government.</p>
@@ -380,7 +381,8 @@
 
 
             <!-- TAB 4: Best Practices -->
-            <div id="hc-main-tab-bestpractices" class="hc-main-pane hidden" style="padding: 40px; background: #000;">
+            <div id="hc-main-tab-bestpractices" class="hc-main-pane hidden"
+                style="opacity: 1; transition: opacity 0.3s; margin-left: 64px; margin-right: 64px; border-radius: 10px;">
                 <h3 class="sec-heading align-left">Best Practices We Push For Adoption</h3>
                 <p class="sec-subtitle">Operating principles every designer in the practice follows &#8212;
                     refined through repeated client engagements and codified so new hires ramp fast and
@@ -990,7 +992,7 @@
                 </div>
             </div>
             <div id="tab-process" class="tab-pane hidden">
-                <div class="process-grid-container">
+                <div class="process-grid-container" style="margin: -4.5em 4em 0em 4em;">
                     <div class="process-card">
                         <span class="process-step">01</span>
                         <h3>Patient Form Upload</h3>
@@ -1043,7 +1045,7 @@
                     </div>
                 </div>
             </div>
-            <div id="tab-tech-arch" class="tab-pane hidden">
+            <div id="tab-tech-arch" class="tab-pane hidden" style="margin: -4.5em 4em 0em 4em;">
                 <div class="tab-header-text">
                     <h2 id="dd-arch-title">Automated Patient Intake &#8212; Architecture</h2>
                     <p id="dd-arch-desc">High-level architecture showing how patient intake documents move through
@@ -1058,7 +1060,7 @@
                         onclick="openLightbox(this.src, 'image')">
                 </div>
             </div>
-            <div id="tab-engine-map" class="tab-pane hidden">
+            <div id="tab-engine-map" class="tab-pane hidden" style="margin: -4.5em 4em 0em 4em;">
                 <div class="tab-header-text">
                     <h2 id="dd-engine-title">Automated Patient Intake - Engine Map / AI Flow</h2>
                     <p id="dd-engine-desc">AI flow showing how intake data is extracted, classified, validated, routed
@@ -1079,6 +1081,9 @@
     <div id="engines-ui-container" class="hidden">
         <!-- Screen: Engine Detail Template -->
         <section id="screen-engine-detail" class="hidden">
+            <!-- AGUI Background Canvas -->
+            <canvas id="engine-particle-canvas"
+                style="position: fixed; top:0; left:0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; display: none;"></canvas>
             <header class="universal-header">
                 <div class="header-brand-bar">
                     <div class="logo" onclick="goToHome()">
@@ -1086,13 +1091,20 @@
                     </div>
                     <div class="header-actions">
                         <button class="icon-btn" title="Notifications">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" /><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" /></svg>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                                <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+                            </svg>
                         </button>
                     </div>
                 </div>
                 <div class="header-subnav">
                     <button class="back-nav-btn" onclick="goBackFromEngineDetail()">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m15 18-6-6 6-6" />
+                        </svg>
                         <span id="engine-back-text">Back to Showroom</span>
                     </button>
                     <nav class="breadcrumbs">
@@ -1105,40 +1117,102 @@
                 </div>
             </header>
 
-            <div class="hc-hero landing-hero no-right-col" style="padding-bottom: 20px;">
-                <div class="hero-left-col full-width align-left">
-                    <h1 id="engine-title">Engine Title</h1>
-                    <p id="engine-desc">One or two-line explanation of what the selected engine does.</p>
+            <div class="deep-dive-hero"
+                style="display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; flex-wrap: wrap;">
+                <div class="hero-left-content" style="flex: 1; min-width: 300px;">
+                    <h1 id="engine-title" style="margin-bottom: 15px;">Engine Title</h1>
+                    <p id="engine-desc" style="margin-bottom: 20px;">Engine description.</p>
+                    <div id="engine-tags-container" class="subtitle-buttons" style="margin-bottom: 20px;">
+                        <!-- Tags injected via JS -->
+                    </div>
                 </div>
             </div>
 
-            <div class="hc-main-pane active">
-                <div class="hc-content-area">
-                    <!-- Visual Process Flow -->
-                    <div class="overview-sec" style="margin-bottom: 30px;">
-                        <h3 class="sec-heading align-left">Engine Flow</h3>
+            <!-- Tabbed Interface -->
+            <div class="deep-dive-tabs" id="engine-tabs-nav">
+                <button class="dd-tab active" data-tab="engine-overview"
+                    onclick="switchEngineTab('engine-overview', this)">Overview</button>
+                <button class="dd-tab" data-tab="engine-flow" onclick="switchEngineTab('engine-flow', this)">Engine
+                    Flow</button>
+                <button class="dd-tab" data-tab="engine-arch" onclick="switchEngineTab('engine-arch', this)">Tech
+                    Arch</button>
+                <button class="dd-tab" data-tab="engine-qa" onclick="switchEngineTab('engine-qa', this)">Quality
+                    assurance</button>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="deep-dive-content" id="engine-tabs-content">
+                <!-- Overview Tab -->
+                <div id="tab-engine-overview" class="tab-pane active">
+                    <div class="overview-new-layout">
+                        <!-- 1. Key Capabilities -->
+                        <div class="overview-sec sec-kpis" style="margin-bottom: 30px; width: 100%;">
+                            <h3 class="sec-heading align-left" style="margin-top: 0; margin-bottom: 1em !important;">
+                                Key Capabilities</h3>
+                            <div class="cap-grid" id="engine-capabilities-grid">
+                                <!-- Capability cards generated by JS -->
+                            </div>
+                        </div>
+
+                        <!-- 2 & 3. Problem and Solution Breakdown -->
+                        <div class="overview-sec content-breakdown" style="margin-bottom: 40px; width: 100%;">
+                            <div class="breakdown-row">
+                                <div class="breakdown-left">
+                                    <h4>Problem</h4>
+                                </div>
+                                <div class="breakdown-right" id="engine-problem">
+                                    <p>Problem description goes here.</p>
+                                </div>
+                            </div>
+                            <div class="breakdown-row">
+                                <div class="breakdown-left">
+                                    <h4>Solution</h4>
+                                </div>
+                                <div class="breakdown-right" id="engine-solution">
+                                    <p>Solution description goes here.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Engines Used In (Video Card Style) -->
+                        <div class="overview-sec" style="margin-bottom: 30px;">
+                            <h3 class="sec-heading align-left">Engines Used In</h3>
+                            <div id="engine-usedin-grid"
+                                style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+                                <!-- Cards injected via JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Engine Flow Tab -->
+                <div id="tab-engine-flow" class="tab-pane">
+                    <div class="overview-sec">
+                        <h3 class="sec-heading align-left" style="margin-bottom: .5em !important;">Engine Flow</h3>
                         <div class="engine-flow-container" id="engine-flow-container">
                             <!-- Flow generated by JS -->
                         </div>
                     </div>
+                </div>
 
-                    <!-- Key Capabilities -->
-                    <div class="overview-sec" style="margin-bottom: 30px;">
-                        <h3 class="sec-heading align-left">Key Capabilities</h3>
-                        <div class="cap-grid" id="engine-capabilities-grid">
-                            <!-- Capability cards generated by JS -->
+                <!-- Tech Arch Tab -->
+                <div id="tab-engine-arch" class="tab-pane">
+                    <div class="overview-sec">
+                        <h3 class="sec-heading align-left" style="margin-bottom: .5em !important;">Tech Architecture
+                        </h3>
+                        <div class="cap-grid" id="engine-arch-grid">
+                            <!-- Arch grid generated by JS -->
                         </div>
                     </div>
+                </div>
 
-                    <!-- Two Column Layout: Where It Is Used & Business Outcome -->
-                    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-                        <div class="overview-sec" style="flex: 1; min-width: 300px;">
-                            <h3 class="sec-heading align-left">Where It Is Used</h3>
-                            <p id="engine-use-cases" style="color: var(--text-secondary); line-height: 1.6; font-size: 0.95rem;"></p>
-                        </div>
-                        <div class="overview-sec" style="flex: 1; min-width: 300px;">
-                            <h3 class="sec-heading align-left">Business Outcome</h3>
-                            <p id="engine-business-outcome" style="color: var(--text-secondary); line-height: 1.6; font-size: 0.95rem;"></p>
+                <!-- QA Tab -->
+                <div id="tab-engine-qa" class="tab-pane">
+                    <div class="overview-sec">
+                        <h3 class="sec-heading align-left" style="margin-bottom: .5em !important;">Quality Assurance
+                        </h3>
+                        <div class="cap-grid" id="engine-qa-grid">
+                            <!-- QA generated by JS -->
                         </div>
                     </div>
                 </div>
@@ -1154,13 +1228,20 @@
                     </div>
                     <div class="header-actions">
                         <button class="icon-btn" title="Notifications">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" /><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" /></svg>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                                <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+                            </svg>
                         </button>
                     </div>
                 </div>
                 <div class="header-subnav">
                     <button class="back-nav-btn" onclick="goToHome()">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m15 18-6-6 6-6" />
+                        </svg>
                         <span>Back to Showroom</span>
                     </button>
                     <nav class="breadcrumbs">
@@ -1282,6 +1363,7 @@
     </div>
 
     <!-- Custom Script -->
+    <script src="js/new_engines.js"></script>
     <script src="js/main.js"></script>
 </body>
 

@@ -1,0 +1,61 @@
+<h1>Healthcare Solutions</h1>
+                    <p>AI-powered capabilities that enable better patient outcomes, smarter operations, secure compliance, and faster digital transformation across the healthcare ecosystem.</p>
+                    <div class="hc-master-tabs hc-tabs" style="margin-top: 30px;">
+                        <button class="tab practice-tab hc-master-tab active" data-target="usecases"
+                            onclick="switchHcMainTab('usecases', this)">Explore Use Cases</button>
+                        <button class="tab practice-tab hc-master-tab" data-target="data"
+                            onclick="switchHcMainTab('data', this)">Data Models</button>
+                        <button class="tab practice-tab hc-master-tab" data-target="frameworks"
+                            onclick="switchHcMainTab('frameworks', this)">Frameworks</button>
+                        <button class="tab practice-tab hc-master-tab" data-target="bestpractices"
+                            onclick="switchHcMainTab('bestpractices', this)">Best Practices</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="hc-main-tab-usecases" class="hc-main-pane active">
+                <div class="hc-content-area">
+                    <div class="capabilities-section">
+                        <div class="cap-header">
+                            <h2><span class="dot"></span> Healthcare Use Cases</h2>
+                        </div>
+
+                        <!-- New Filter Bar -->
+                        <div class="advanced-filter-bar">
+                            <div class="filter-group">
+                                <select id="filter-usecase" class="filter-select">
+                                    <option value="all">Use Case</option>
+                                    <option value="patient-intake">Patient Intake</option>
+                                    <option value="clinical-ops">Clinical Ops</option>
+                                    <option value="revenue-cycle">Revenue Cycle</option>
+                                </select>
+                            </div>
+                            <div class="search-group">
+                                <div class="search-input-wrapper">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="11" cy="11" r="8" />
+                                        <path d="m21 21-4.3-4.3" />
+                                    </svg>
+                                    <input type="text" id="search-cards" placeholder="Search use cases...">
+                                </div>
+                                <button id="clear-filters" class="action-btn">Clear Filters</button>
+                            </div>
+                        </div>
+
+                        <div class="cap-grid" id="capabilities-grid">
+                            <!-- Capability cards will be injected by JavaScript -->
+                        </div>
+
+                        <!-- Pagination -->
+                        <div class="pagination-container">
+                            <button class="page-btn prev-btn" id="page-prev" disabled>Previous</button>
+                            <div class="page-numbers" id="page-numbers">
+                                <!-- Page numbers injected by JS -->
+                            </div>
+                            <button class="page-btn next-btn" id="page-next">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- End hc-main-tab-usecases -->
+
+            <!-- TAB 2: Data Models -->
