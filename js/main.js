@@ -757,19 +757,10 @@ function renderUseCases() {
     if (!grid) return;
     grid.innerHTML = '';
 
-    const usecaseFilter = document.getElementById('filter-usecase')?.value || 'all';
-    const techFilter = document.getElementById('filter-tech')?.value || 'all';
-    const domainFilter = document.getElementById('filter-domain')?.value || 'all';
-    const projectFilter = document.getElementById('filter-project')?.value || 'all';
     const searchQuery = document.getElementById('search-cards')?.value.toLowerCase() || '';
 
     let filteredData = useCaseData.filter(uc => {
-        if (techFilter !== 'all' && uc.tech !== techFilter) return false;
-        if (domainFilter !== 'all' && uc.domain !== domainFilter) return false;
-        if (projectFilter !== 'all' && uc.project !== projectFilter) return false;
         if (searchQuery && !uc.title.toLowerCase().includes(searchQuery) && !uc.desc.toLowerCase().includes(searchQuery)) return false;
-        // Mock usecase filter logic since we didn't tag exactly 'patient-intake', 'clinical-ops' etc in the new mock. 
-        // We'll just ignore usecaseFilter for this mock data unless we added it.
         return true;
     });
 
@@ -849,29 +840,16 @@ function renderPagination(totalPages) {
     }
 }
 
-// Attach filter listeners
-['filter-usecase', 'filter-tech', 'filter-domain', 'filter-project', 'search-cards'].forEach(id => {
+// Attach search listener
+['search-cards'].forEach(id => {
     const el = document.getElementById(id);
     if (el) {
-        el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', () => {
+        el.addEventListener('input', () => {
             currentPage = 1;
             renderUseCases();
         });
     }
 });
-
-const clearBtn = document.getElementById('clear-filters');
-if (clearBtn) {
-    clearBtn.addEventListener('click', () => {
-        document.getElementById('filter-usecase').value = 'all';
-        document.getElementById('filter-tech').value = 'all';
-        document.getElementById('filter-domain').value = 'all';
-        document.getElementById('filter-project').value = 'all';
-        document.getElementById('search-cards').value = '';
-        currentPage = 1;
-        renderUseCases();
-    });
-}
 const btnPrevPage = document.getElementById('page-prev');
 if (btnPrevPage) btnPrevPage.addEventListener('click', () => { if (currentPage > 1) { currentPage--; renderUseCases(); } });
 const btnNextPage = document.getElementById('page-next');
@@ -893,6 +871,16 @@ function populateDeepDive(ucId) {
     const uc = useCaseData.find(item => item.id === ucId);
 
     if (uc) {
+        // Handle Client Stories conditional visibility
+        const clientStoriesSec = document.querySelector('.sec-client-stories');
+        if (clientStoriesSec) {
+            if (uc.deepDive && uc.deepDive.clientImage) {
+                clientStoriesSec.style.display = 'block';
+            } else {
+                clientStoriesSec.style.display = 'none';
+            }
+        }
+
         // Breadcrumbs update
         const bcUsecaseName = document.getElementById('bc-usecase-name');
         if (bcUsecaseName) bcUsecaseName.innerText = uc.title;
@@ -2145,6 +2133,16 @@ function populateEngineDetail(engineId) {
                     <img src="assets/Card Images/Card Image 1.jpg" alt="AGUI Architecture" style="width: 100%; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); object-fit: cover; max-height: 500px;">
                 </div>
             `;
+        } else if (engineId === 'engine-5') {
+            archGrid.className = '';
+            archGrid.innerHTML = `
+                <div style="width: 100%;">
+                    <p style="color: var(--color-text-primary, #232323); font-size: 1.05rem; line-height: 1.6; margin-bottom: 25px;">
+                        The MCP Authentication / Authorization Engine ensures secure, governed, and verified access to enterprise data. This architecture seamlessly integrates with existing IAM solutions to provide fine-grained, context-aware access controls.
+                    </p>
+                    <img src="assets/Card Images/Card Image 2.jpg" alt="MCP Architecture" style="width: 100%; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); object-fit: cover; max-height: 500px;">
+                </div>
+            `;
         } else if (engine.architecture) {
             archGrid.className = 'cap-grid';
             engine.architecture.forEach(arch => {
@@ -2161,34 +2159,27 @@ function populateEngineDetail(engineId) {
         }
     }
 
-    // QA Tab
+        // QA Tab
     const qaGrid = document.getElementById('engine-qa-grid');
     if (qaGrid) {
         qaGrid.innerHTML = '';
-        if (engine.qa) {
-            qaGrid.className = 'best-practices-list';
-            qaGrid.style.display = 'flex';
-            qaGrid.style.flexDirection = 'column';
-            qaGrid.style.gap = '15px';
-            engine.qa.forEach(qa => {
-                qaGrid.innerHTML += `
-                    <div class="bp-item" style="border: 1px solid rgba(0,0,0,0.05); padding: 15px; border-radius: 8px;">
-                        <div class="bp-icon">
-                            <svg width="24" height="24" fill="none" stroke="#e94c17" stroke-width="2" viewBox="0 0 24 24">
-                                <path d="M20 6L9 17l-5-5" />
-                            </svg>
-                        </div>
-                        <div class="bp-content" style="display: flex; flex-direction: column; justify-content: center;">
-                            <h4 style="color: var(--color-text-primary, #232323); margin: 0; font-size: 1.05rem;">${qa.title}</h4>
-                            ${qa.desc ? `<p style="color: var(--color-text-primary, #232323); font-size: 0.9rem; line-height: 1.5; margin: 5px 0 0 0;">${qa.desc}</p>` : ''}
-                        </div>
-                    </div>
-                `;
-            });
+        if (engine.qaFile || engine.qa) {
+            qaGrid.className = 'cap-grid';
+            qaGrid.style = 'display:flex; justify-content:flex-start; align-items:center;';
+            qaGrid.innerHTML = `
+                <button class="action-btn primary" onclick="alert('Downloading QA Document...');">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="7 10 12 15 17 10" />
+                        <line x1="12" y1="15" x2="12" y2="3" />
+                    </svg>
+                    Download QA Document
+                </button>
+            `;
         } else {
             qaGrid.className = 'cap-grid';
             qaGrid.style = '';
-            qaGrid.innerHTML = '<p style="color: var(--color-text-primary);">No quality assurance details available.</p>';
+            qaGrid.innerHTML = '<p style="color: var(--color-text-primary);">No quality assurance document available.</p>';
         }
     }
 
@@ -2431,3 +2422,7 @@ document.addEventListener("DOMContentLoaded", () => {
     resize();
     animate();
 });
+
+
+
+

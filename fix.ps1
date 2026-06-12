@@ -1,16 +1,4 @@
-$lines = Get-Content 'js/main.js' -Encoding UTF8
-$newlines = @()
-foreach ($l in $lines) {
-    if ($l -match "filter-tech" -and $l -notmatch "forEach") { continue }
-    if ($l -match "filter-domain" -and $l -notmatch "forEach") { continue }
-    if ($l -match "filter-project" -and $l -notmatch "forEach") { continue }
-    
-    if ($l -match "forEach") {
-        $l = $l -replace "'filter-tech', ", ""
-        $l = $l -replace "'filter-domain', ", ""
-        $l = $l -replace "'filter-project', ", ""
-    }
-    
-    $newlines += $l
-}
-Set-Content 'js/main.js' -Value $newlines -Encoding UTF8
+$content = Get-Content "c:\Users\MobeenShaikh\Downloads\DelphiShowroom\js\main.js" -Raw
+$content = $content -replace "(?s)qaGrid.innerHTML = \s*<button class=\\"action-btn primary\\" onclick=\\"alert\\('Downloading QA Document...\\"\\);\\">.*?</button>\s*;", "qaGrid.innerHTML = \`n                <button class=\\"action-btn primary\\" onclick=\\"alert('Downloading QA Document...');\\">\n                    <svg width=\\"16\\" height=\\"16\\" viewBox=\\"0 0 24 24\\" fill=\\"none\\" stroke=\\"currentColor\\" stroke-width=\\"2\\" style=\\"margin-right:8px;\\">\n                        <path d=\\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\\" />\n                        <polyline points=\\"7 10 12 15 17 10\\" />\n                        <line x1=\\"12\\" y1=\\"15\\" x2=\\"12\\" y2=\\"3\\" />\n                    </svg>\n                    Download QA Document\n                </button>\n            \;"
+Set-Content "c:\Users\MobeenShaikh\Downloads\DelphiShowroom\js\main.js" -Value $content
+Write-Host "Fixed main.js"

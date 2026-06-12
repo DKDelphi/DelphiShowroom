@@ -125,14 +125,17 @@
                     <div class="logo" id="logo-landing" onclick="goToHome()">
                         <img src="assets/Delphi x AI.png" alt="Delphi x AI">
                     </div>
-                                          <div class="header-actions">
-                          <button class="action-btn btn-secondary" onclick="window.location.href='admin/index.html'" style="padding: 6px 16px; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.4); border-radius: 8px;">
-                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px; display: inline-block; vertical-align: middle;">
-                                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-                              </svg>
-                              Admin
-                          </button>
-                          <button class="icon-btn" id="bell-btn-landing" title="Notifications">
+                    <div class="header-actions">
+                        <button class="action-btn btn-secondary" onclick="window.location.href='admin/index.html'"
+                            style="padding: 6px 16px; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.4); border-radius: 8px;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2"
+                                style="margin-right: 6px; display: inline-block; vertical-align: middle;">
+                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                            </svg>
+                            Admin
+                        </button>
+                        <button class="icon-btn" id="bell-btn-landing" title="Notifications">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
@@ -148,8 +151,13 @@
                                 </svg>
                             </button>
                             <div class="profile-dropdown">
-                                <a href="admin/index.html" style="display:flex; align-items:center; gap:8px; padding:10px; color:var(--color-text-primary); text-decoration:none; border-bottom:1px solid var(--color-border-light); margin-bottom:8px; font-size:14px; font-weight:600;">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                                <a href="admin/index.html"
+                                    style="display:flex; align-items:center; gap:8px; padding:10px; color:var(--color-text-primary); text-decoration:none; border-bottom:1px solid var(--color-border-light); margin-bottom:8px; font-size:14px; font-weight:600;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                    </svg>
                                     Admin Dashboard
                                 </a>
                                 <label class="admin-toggle">
@@ -191,7 +199,8 @@
                     style="margin-top: 30px; padding: 0 !important; gap: 10px; border-bottom: none; display: flex; flex-wrap: wrap;">
                     <button class="dd-tab active" data-target="usecases"
                         onclick="switchHcMainTab('usecases', this)">Usecases</button>
-                    <button class="dd-tab" data-target="data" onclick="switchHcMainTab('data', this)">Data</button>
+                    <button class="dd-tab" data-target="data" onclick="switchHcMainTab('data', this)">Data
+                        Model</button>
                     <button class="dd-tab" data-target="frameworks"
                         onclick="switchHcMainTab('frameworks', this)">Frameworks</button>
                     <button class="dd-tab" data-target="bestpractices"
@@ -205,47 +214,6 @@
                     <div class="capabilities-section">
                         <div class="cap-header">
                             <h2><span class="dot"></span> Healthcare Use Cases</h2>
-                        </div>
-
-                        <!-- New Filter Bar -->
-                        <div class="advanced-filter-bar">
-                            <div class="filter-group">
-                                <select id="filter-usecase" class="filter-select">
-                                    <option value="all">Use Case</option>
-                                    <option value="patient-intake">Patient Intake</option>
-                                    <option value="clinical-ops">Clinical Ops</option>
-                                    <option value="revenue-cycle">Revenue Cycle</option>
-                                </select>
-                                <select id="filter-tech" class="filter-select">
-                                    <option value="all">Technology</option>
-                                    <option value="genai">GenAI</option>
-                                    <option value="predictive">Predictive AI</option>
-                                    <option value="vision">Computer Vision</option>
-                                </select>
-                                <select id="filter-domain" class="filter-select">
-                                    <option value="all">Domain</option>
-                                    <option value="clinical">Clinical</option>
-                                    <option value="admin">Administrative</option>
-                                    <option value="finance">Financial</option>
-                                </select>
-                                <select id="filter-project" class="filter-select">
-                                    <option value="all">Project Type</option>
-                                    <option value="prototype">Prototype</option>
-                                    <option value="mvp">MVP</option>
-                                    <option value="production">Production</option>
-                                </select>
-                            </div>
-                            <div class="search-group">
-                                <div class="search-input-wrapper">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="11" cy="11" r="8" />
-                                        <path d="m21 21-4.3-4.3" />
-                                    </svg>
-                                    <input type="text" id="search-cards" placeholder="Search use cases...">
-                                </div>
-                                <button id="clear-filters" class="action-btn">Clear Filters</button>
-                            </div>
                         </div>
 
                         <div class="cap-grid" id="capabilities-grid">
@@ -808,8 +776,13 @@
                                 </svg>
                             </button>
                             <div class="profile-dropdown">
-                                <a href="admin/index.html" style="display:flex; align-items:center; gap:8px; padding:10px; color:var(--color-text-primary); text-decoration:none; border-bottom:1px solid var(--color-border-light); margin-bottom:8px; font-size:14px; font-weight:600;">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                                <a href="admin/index.html"
+                                    style="display:flex; align-items:center; gap:8px; padding:10px; color:var(--color-text-primary); text-decoration:none; border-bottom:1px solid var(--color-border-light); margin-bottom:8px; font-size:14px; font-weight:600;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                    </svg>
                                     Admin Dashboard
                                 </a>
                                 <label class="admin-toggle">
@@ -1621,6 +1594,27 @@
     <!-- Custom Script -->
     <script src="js/new_engines.js"></script>
     <script src="js/main.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Hide Framework download buttons if no file uploaded
+    const frameworkBtns = document.querySelectorAll('#practice-tab-frameworks .fc-download');
+    frameworkBtns.forEach(btn => {
+        if (!btn.hasAttribute('data-file')) {
+            btn.style.display = 'none';
+        }
+    });
+
+    // Hide Best Practice download buttons if no file uploaded
+    const bpBtns = document.querySelectorAll('#practice-tab-best-practices .fc-download');
+    bpBtns.forEach(btn => {
+        if (!btn.hasAttribute('data-file')) {
+            btn.style.display = 'none';
+        }
+    });
+});
+</script>
 </body>
 
 </html>
+
+
