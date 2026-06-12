@@ -3,65 +3,1600 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard — DelphiAI Showroom</title>
+    <title>Admin - Delphi Ecosystem Showroom</title>
     <!-- General Sans Font -->
     <link href="https://api.fontshare.com/v2/css?f[]=general-sans@200,300,400,500,600,700&display=swap" rel="stylesheet">
     
-    <!-- Main shared styles from user flow -->
+    <!-- Shared Design Tokens & Base Styles -->
     <link rel="stylesheet" href="../tokens.css">
     <link rel="stylesheet" href="../css/style.css">
-    <!-- Admin-specific overrides -->
+    
+    <!-- Admin Specific Styles -->
     <link rel="stylesheet" href="css/admin.css">
 </head>
-<body>
+<body class="app-surface">
+    <canvas id="particle-canvas" style="position: fixed; top:0; left:0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none;"></canvas>
 
-    <!-- Unified Header from User Flow -->
-    <header class="universal-header">
+    <!-- Global Layout -->
+        <header class="universal-header">
         <div class="header-brand-bar">
-            <div class="logo">
-                <img src="../assets/Delphi x AI.png" alt="Delphi x AI" style="max-height: 24px;">
+            <div class="logo" onclick="window.location.href='../index.html'">
+                <img src="../assets/Delphi x AI.png" alt="Delphi x AI">
             </div>
             <div class="header-actions">
                 <button class="icon-btn" title="Notifications">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+                    </svg>
                 </button>
                 <div class="user-profile-container">
                     <button class="icon-btn user-profile-btn" title="User Menu">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                        </svg>
                     </button>
                 </div>
             </div>
         </div>
         <div class="header-subnav">
             <button class="back-nav-btn" onclick="window.location.href='../index.html'">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-                <span>Exit Admin</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m15 18-6-6 6-6" />
+                </svg>
+                <span>Back to Showroom</span>
             </button>
-            <nav class="breadcrumbs" id="header-breadcrumb">
-                <!-- Breadcrumbs injected here by JS -->
-            </nav>
+            <nav class="breadcrumbs">
+                <span class="bc-crumb bc-link" onclick="window.location.href='../index.html'">Home</span>
+                <span class="bc-sep">&#8250;</span>
+                <span class="bc-crumb bc-current" id="bc-current">Dashboard</span>
+            </ul>
         </div>
     </header>
 
-    <div class="practices-layout" style="margin-top: 0; min-height: calc(100vh - 120px);">
-        <!-- Sidebar using the practices-sidebar styling -->
-        <aside class="practices-sidebar" style="height: auto; border-right: 1px solid rgba(255,255,255,0.1);">
-            <h3 class="sidebar-title" style="margin-top: 20px;">ADMINISTRATION<br><span>Showroom</span></h3>
-            <ul class="sidebar-nav" id="sidebar-nav">
-                <!-- Links will be injected by admin.js -->
+    <div class="practices-layout">
+        <!-- Left Sidebar -->
+        <aside class="practices-sidebar">
+            <h3 class="sidebar-title">DELPHI AI<br><span>Admin</span></h3>
+            <div class="sidebar-search-container">
+                <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="m21 21-4.3-4.3" />
+                </svg>
+                <input type="text" id="admin-sidebar-search" class="practices-search-input" placeholder="Search sections...">
+            </div>
+            <ul class="sidebar-nav" id="admin-nav-list">
+                <li class="admin-nav-item active" data-target="screen-dashboard">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+                    <span>Dashboard</span>
+                </li>
+                <li class="admin-nav-item" data-target="screen-industries">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    <span>Industries</span>
+                </li>
+                <li class="admin-nav-item" data-target="screen-usecases">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+                    <span>Use Cases</span>
+                </li>
+                
+                <li class="admin-nav-item" data-target="screen-engines">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                    <span>Engines</span>
+                </li>
+                <li class="admin-nav-item" data-target="screen-practices">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path><line x1="9" y1="14" x2="15" y2="14"></line></svg>
+                    <span>Practices</span>
+                </li>
+                <li class="admin-nav-item" data-target="screen-manufacturing">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                    <span>Manufacturing Unit</span>
+                </li>
+                
+                
+                
+                <div style="margin-top: auto;"></div>
+                
+                <li class="admin-nav-item" data-target="screen-users">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    <span>Users & Roles</span>
+                </li>
+                <li class="admin-nav-item" data-target="screen-settings">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                    <span>Settings</span>
+                </li>
             </ul>
         </aside>
 
-        <!-- Main Content Area -->
-        <div class="practices-main-content" id="admin-content" style="padding-top: 20px;">
-            <!-- Views rendered here by admin.js -->
+                <!-- Right Main Content -->
+        <div class="practices-main-content">
+                
+                <!-- SCREEN 01: Dashboard -->
+                <section id="screen-dashboard" class="admin-screen active">
+                    <div class="admin-page-header">
+                        <div>
+                            <h1 class="page-title">Admin Dashboard</h1>
+                            <p class="page-subtitle">Manage showroom content, monitor publishing status, and keep Industries, Engines, and Manufacturing Unit experiences up to date.</p>
+                        </div>
+                    </div>
+
+                    <!-- 1. Main zone cards -->
+                    <div class="form-grid full" style="grid-template-columns: repeat(3, 1fr); margin-bottom: var(--space-6);">
+                        <div class="ui-card" style="padding: var(--space-5); cursor: pointer;">
+                            <h3 style="margin-top:0; display:flex; align-items:center; gap:8px;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-brand)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>
+                                Showroom
+                            </h3>
+                            <p style="color:var(--color-text-secondary); margin-bottom:0; font-size:14px;">Manage Industries, Use Cases, and Case Studies.</p>
+                        </div>
+                        <div class="ui-card" style="padding: var(--space-5); cursor: pointer;">
+                            <h3 style="margin-top:0; display:flex; align-items:center; gap:8px;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-brand)" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                                Manufacturing Unit
+                            </h3>
+                            <p style="color:var(--color-text-secondary); margin-bottom:0; font-size:14px;">Manage Envisioning Centre and Engine Hall content.</p>
+                        </div>
+                        <div class="ui-card" style="padding: var(--space-5); border: 1px dashed var(--color-border-light); background: rgba(0,0,0,0.2); opacity: 0.7;">
+                            <h3 style="margin-top:0; display:flex; align-items:center; gap:8px;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-secondary)" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                Control Tower
+                            </h3>
+                            <p style="color:var(--color-text-secondary); margin-bottom:0; font-size:14px;">Coming soon...</p>
+                        </div>
+                    </div>
+
+                    <!-- 2. Enhanced KPI cards -->
+                    <div class="dashboard-kpi-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: var(--space-6);">
+                        <div class="ui-card kpi-card" style="display:flex; flex-direction:column; gap:8px;">
+                            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                                <span class="kpi-label">Total Use Cases</span>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-secondary)" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+                            </div>
+                            <div style="display:flex; align-items:baseline; gap:8px;">
+                                <span class="kpi-value">42</span>
+                                <span style="color:#10b981; font-size:12px; font-weight:500;">+2 this week</span>
+                            </div>
+                        </div>
+                        <div class="ui-card kpi-card" style="display:flex; flex-direction:column; gap:8px;">
+                            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                                <span class="kpi-label">Engines</span>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-secondary)" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                            </div>
+                            <div style="display:flex; align-items:baseline; gap:8px;">
+                                <span class="kpi-value">16</span>
+                                <span style="color:var(--color-text-secondary); font-size:12px; font-weight:500;">Stable</span>
+                            </div>
+                        </div>
+                        <div class="ui-card kpi-card" style="display:flex; flex-direction:column; gap:8px;">
+                            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                                <span class="kpi-label">Case Studies</span>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-secondary)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                            </div>
+                            <div style="display:flex; align-items:baseline; gap:8px;">
+                                <span class="kpi-value">24</span>
+                                <span style="color:#10b981; font-size:12px; font-weight:500;">+5 this month</span>
+                            </div>
+                        </div>
+                        <div class="ui-card kpi-card" style="display:flex; flex-direction:column; gap:8px;">
+                            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                                <span class="kpi-label">Active Users</span>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-secondary)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+                            </div>
+                            <div style="display:flex; align-items:baseline; gap:8px;">
+                                <span class="kpi-value">1,245</span>
+                                <span style="color:#f59e0b; font-size:12px; font-weight:500;">Peak hour</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-grid" style="grid-template-columns: 2fr 1fr; margin-bottom: var(--space-6);">
+                        <!-- 3. Recent Updates -->
+                        <div class="ui-card" style="padding: var(--space-6);">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: var(--space-4);">
+                                <h3 class="section-title" style="margin:0;">Recent Updates</h3>
+                                <a href="#" style="color:var(--color-brand); font-size:14px; text-decoration:none;">View all</a>
+                            </div>
+                            <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap: var(--space-4);">
+                                <li style="display:flex; align-items:center; justify-content:space-between; padding-bottom:var(--space-3); border-bottom:1px solid var(--color-border-light);">
+                                    <div style="display:flex; align-items:center; gap:12px;">
+                                        <div style="width:32px; height:32px; border-radius:50%; background:var(--color-border-light); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:600; color:var(--color-text-primary);">JD</div>
+                                        <div>
+                                            <div style="font-size:14px;"><strong>Healthcare OCR</strong> <span style="color:var(--color-text-secondary);">was modified</span></div>
+                                            <div style="font-size:12px; color:var(--color-text-secondary); margin-top:2px;">by John Doe &middot; 2 hours ago</div>
+                                        </div>
+                                    </div>
+                                    <span class="status-badge status-published">Published</span>
+                                </li>
+                                <li style="display:flex; align-items:center; justify-content:space-between; padding-bottom:var(--space-3); border-bottom:1px solid var(--color-border-light);">
+                                    <div style="display:flex; align-items:center; gap:12px;">
+                                        <div style="width:32px; height:32px; border-radius:50%; background:var(--color-border-light); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:600; color:var(--color-text-primary);">AS</div>
+                                        <div>
+                                            <div style="font-size:14px;"><strong>Finance Landing Page</strong> <span style="color:var(--color-text-secondary);">content updated</span></div>
+                                            <div style="font-size:12px; color:var(--color-text-secondary); margin-top:2px;">by Admin Smith &middot; 5 hours ago</div>
+                                        </div>
+                                    </div>
+                                    <span class="status-badge status-draft">Draft</span>
+                                </li>
+                                <li style="display:flex; align-items:center; justify-content:space-between;">
+                                    <div style="display:flex; align-items:center; gap:12px;">
+                                        <div style="width:32px; height:32px; border-radius:50%; background:var(--color-border-light); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:600; color:var(--color-text-primary);">JD</div>
+                                        <div>
+                                            <div style="font-size:14px;"><strong>Agentic RAG Engine</strong> <span style="color:var(--color-text-secondary);">new entry created</span></div>
+                                            <div style="font-size:12px; color:var(--color-text-secondary); margin-top:2px;">by John Doe &middot; 1 day ago</div>
+                                        </div>
+                                    </div>
+                                    <span class="status-badge status-published">Published</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- 4. Quick Actions -->
+                        <div class="ui-card" style="padding: var(--space-6);">
+                            <h3 class="section-title" style="margin-top:0; margin-bottom: var(--space-4);">Quick Actions</h3>
+                            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: var(--space-3);">
+                                <div class="action-add" data-form-target="screen-industry-form" style="background:var(--color-bg-page); border:1px solid var(--color-border-light); border-radius:var(--radius-md); padding:var(--space-4); text-align:center; cursor:pointer; transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--color-brand)'" onmouseout="this.style.borderColor='var(--color-border-light)'">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom:8px; color:var(--color-text-secondary);"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path></svg>
+                                    <div style="font-size:13px; font-weight:500;">Add Industry</div>
+                                </div>
+                                <div class="action-add" data-form-target="screen-usecase-form" style="background:var(--color-bg-page); border:1px solid var(--color-border-light); border-radius:var(--radius-md); padding:var(--space-4); text-align:center; cursor:pointer; transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--color-brand)'" onmouseout="this.style.borderColor='var(--color-border-light)'">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom:8px; color:var(--color-text-secondary);"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+                                    <div style="font-size:13px; font-weight:500;">Add Use Case</div>
+                                </div>
+                                <div class="action-add" data-form-target="screen-engine-form" style="background:var(--color-bg-page); border:1px solid var(--color-border-light); border-radius:var(--radius-md); padding:var(--space-4); text-align:center; cursor:pointer; transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--color-brand)'" onmouseout="this.style.borderColor='var(--color-border-light)'">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom:8px; color:var(--color-text-secondary);"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33"></path></svg>
+                                    <div style="font-size:13px; font-weight:500;">Add Engine</div>
+                                </div>
+                                <div style="background:var(--color-bg-page); border:1px solid var(--color-border-light); border-radius:var(--radius-md); padding:var(--space-4); text-align:center; cursor:pointer; transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--color-brand)'" onmouseout="this.style.borderColor='var(--color-border-light)'">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom:8px; color:var(--color-text-secondary);"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                                    <div style="font-size:13px; font-weight:500;">Upload Media</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-grid" style="grid-template-columns: 1fr 1fr; margin-bottom: var(--space-6);">
+                        <!-- 5. Content Health -->
+                        <div class="ui-card" style="padding: var(--space-6); border-left: 3px solid #ef4444;">
+                            <h3 class="section-title" style="margin-top:0; margin-bottom: var(--space-4); display:flex; align-items:center; gap:8px;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                                Content Health
+                            </h3>
+                            <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap: var(--space-3); font-size:14px;">
+                                <li style="display:flex; justify-content:space-between; align-items:center;">
+                                    <span>Missing Architecture Diagrams</span>
+                                    <span style="color:#ef4444; font-weight:600;">3 items</span>
+                                </li>
+                                <li style="display:flex; justify-content:space-between; align-items:center;">
+                                    <span>Missing Gallery Images</span>
+                                    <span style="color:#f59e0b; font-weight:600;">2 items</span>
+                                </li>
+                                <li style="display:flex; justify-content:space-between; align-items:center;">
+                                    <span>Broken Demo Links</span>
+                                    <span style="color:#ef4444; font-weight:600;">1 link</span>
+                                </li>
+                                <li style="display:flex; justify-content:space-between; align-items:center;">
+                                    <span>Pending Drafts (Older than 30 days)</span>
+                                    <span style="color:#f59e0b; font-weight:600;">5 items</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- 6. Publishing Overview -->
+                        <div class="ui-card" style="padding: var(--space-6);">
+                            <h3 class="section-title" style="margin-top:0; margin-bottom: var(--space-4); display:flex; align-items:center; gap:8px;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>
+                                Publishing Overview
+                            </h3>
+                            <div style="display:flex; flex-direction:column; gap:var(--space-3);">
+                                <div>
+                                    <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px;">
+                                        <span>Published</span>
+                                        <span>75%</span>
+                                    </div>
+                                    <div style="width:100%; height:8px; background:var(--color-border-light); border-radius:4px; overflow:hidden;">
+                                        <div style="width:75%; height:100%; background:#10b981;"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px;">
+                                        <span>Draft</span>
+                                        <span>20%</span>
+                                    </div>
+                                    <div style="width:100%; height:8px; background:var(--color-border-light); border-radius:4px; overflow:hidden;">
+                                        <div style="width:20%; height:100%; background:#f59e0b;"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px;">
+                                        <span>Archived</span>
+                                        <span>5%</span>
+                                    </div>
+                                    <div style="width:100%; height:8px; background:var(--color-border-light); border-radius:4px; overflow:hidden;">
+                                        <div style="width:5%; height:100%; background:var(--color-text-secondary);"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-grid" style="grid-template-columns: 1fr 1fr; margin-bottom: var(--space-6);">
+                        <!-- 7. Pending Review -->
+                        <div class="ui-card" style="padding: var(--space-6);">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: var(--space-4);">
+                                <h3 class="section-title" style="margin:0;">Pending Review</h3>
+                                <span class="status-badge status-draft">4 Items</span>
+                            </div>
+                            <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap: var(--space-3);">
+                                <li style="background:var(--color-bg-page); border:1px solid var(--color-border-light); border-radius:var(--radius-md); padding:var(--space-3); display:flex; justify-content:space-between; align-items:center;">
+                                    <div>
+                                        <div style="font-weight:500; font-size:14px;">Clinical Trials Use Case</div>
+                                        <div style="font-size:12px; color:var(--color-text-secondary);">Submitted by Mike T.</div>
+                                    </div>
+                                    <button class="btn-ghost" style="padding:4px 8px; font-size:12px;">Review</button>
+                                </li>
+                                <li style="background:var(--color-bg-page); border:1px solid var(--color-border-light); border-radius:var(--radius-md); padding:var(--space-3); display:flex; justify-content:space-between; align-items:center;">
+                                    <div>
+                                        <div style="font-weight:500; font-size:14px;">OCR Engine Architecture</div>
+                                        <div style="font-size:12px; color:var(--color-text-secondary);">Submitted by Sarah L.</div>
+                                    </div>
+                                    <button class="btn-ghost" style="padding:4px 8px; font-size:12px;">Review</button>
+                                </li>
+                                <li style="background:var(--color-bg-page); border:1px solid var(--color-border-light); border-radius:var(--radius-md); padding:var(--space-3); display:flex; justify-content:space-between; align-items:center;">
+                                    <div>
+                                        <div style="font-weight:500; font-size:14px;">Retail Industry Page</div>
+                                        <div style="font-size:12px; color:var(--color-text-secondary);">Submitted by Alex R.</div>
+                                    </div>
+                                    <button class="btn-ghost" style="padding:4px 8px; font-size:12px;">Review</button>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- 8. Activity Timeline -->
+                        <div class="ui-card" style="padding: var(--space-6);">
+                            <h3 class="section-title" style="margin-top:0; margin-bottom: var(--space-4);">Activity Timeline</h3>
+                            <div style="position:relative; padding-left:24px;">
+                                <!-- Timeline line -->
+                                <div style="position:absolute; left:7px; top:8px; bottom:8px; width:2px; background:var(--color-border-light);"></div>
+                                
+                                <div style="position:relative; margin-bottom:var(--space-4);">
+                                    <div style="position:absolute; left:-24px; top:4px; width:10px; height:10px; border-radius:50%; background:var(--color-brand); border:2px solid var(--color-bg-panel);"></div>
+                                    <div style="font-size:14px;"><strong>System Update</strong> completed</div>
+                                    <div style="font-size:12px; color:var(--color-text-secondary);">Today, 10:30 AM</div>
+                                </div>
+                                <div style="position:relative; margin-bottom:var(--space-4);">
+                                    <div style="position:absolute; left:-24px; top:4px; width:10px; height:10px; border-radius:50%; background:var(--color-text-secondary); border:2px solid var(--color-bg-panel);"></div>
+                                    <div style="font-size:14px;"><strong>New User</strong> John Doe registered</div>
+                                    <div style="font-size:12px; color:var(--color-text-secondary);">Yesterday, 4:15 PM</div>
+                                </div>
+                                <div style="position:relative;">
+                                    <div style="position:absolute; left:-24px; top:4px; width:10px; height:10px; border-radius:50%; background:var(--color-text-secondary); border:2px solid var(--color-bg-panel);"></div>
+                                    <div style="font-size:14px;"><strong>Backup</strong> successfully generated</div>
+                                    <div style="font-size:12px; color:var(--color-text-secondary);">Oct 20, 2:00 AM</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SCREEN 02: Industries Management -->
+                <section id="screen-industries" class="admin-screen">
+                    <div class="admin-page-header">
+                        <div>
+                            <h1 class="page-title">Industries</h1>
+                            <p class="page-subtitle">Add, edit, organize, and publish industry landing pages and related content.</p>
+                        </div>
+                        <button class="action-btn primary action-add" data-form-target="screen-industry-form"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>Add Industry</button>
+                    </div>
+
+                    <div style="display:flex; gap:10px; margin-bottom:var(--space-4);">
+                        <button class="btn-ghost" style="padding:6px 12px; height:auto; font-size:12px;">All</button>
+                        <button class="btn-ghost" style="padding:6px 12px; height:auto; font-size:12px; border-color:transparent;">Published</button>
+                        <button class="btn-ghost" style="padding:6px 12px; height:auto; font-size:12px; border-color:transparent;">Draft</button>
+                    </div>
+
+                    <div class="data-table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Industry Name</th>
+                                    <th>Linked Use Cases</th>
+                                    <th>Clicks/Opened</th>
+                                    <th>Status</th>
+                                    <th>Last Updated</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Healthcare</strong><br><span style="color:var(--color-text-secondary); font-size:12px;">Drive better patient outcomes...</span></td>
+                                    <td>12</td>
+                                    <td>1,245</td>
+                                    <td><span class="status-badge status-published">Published</span></td>
+                                    <td>Oct 24, 2023</td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="table-icon-btn action-edit" data-form-target="screen-industry-form">Edit</button>
+                                            <button class="table-icon-btn action-delete">Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Financial Services</strong><br><span style="color:var(--color-text-secondary); font-size:12px;">Transform banking operations...</span></td>
+                                    <td>8</td>
+                                    <td>890</td>
+                                    <td><span class="status-badge status-published">Published</span></td>
+                                    <td>Oct 20, 2023</td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="table-icon-btn action-edit" data-form-target="screen-industry-form">Edit</button>
+                                            <button class="table-icon-btn action-delete">Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Public Sector</strong><br><span style="color:var(--color-text-secondary); font-size:12px;">Modernize government services...</span></td>
+                                    <td>5</td>
+                                    <td>120</td>
+                                    <td><span class="status-badge status-draft">Draft</span></td>
+                                    <td>Nov 2, 2023</td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="table-icon-btn action-edit" data-form-target="screen-industry-form">Edit</button>
+                                            <button class="table-icon-btn action-delete">Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- SCREEN 03: Add / Edit Industry -->
+                <section id="screen-industry-form" class="admin-screen">
+                    <div class="admin-page-header">
+                        <div>
+                            <h1 class="page-title">Add Industry</h1>
+                        </div>
+                    </div>
+
+                    <div class="admin-form-section">
+                        <h3>Basic Information</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Industry Name</label>
+                                <input type="text" class="input-field" placeholder="e.g., Healthcare">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Short Subtitle</label>
+                                <input type="text" class="input-field" placeholder="Brief one-liner">
+                            </div>
+                            <div class="form-group" style="grid-column: span 2;">
+                                <label class="form-label">Industry Description</label>
+                                <textarea class="form-textarea" placeholder="Full descriptive text..."></textarea>
+                            </div>
+                        </div>
+                        <div class="form-grid" style="margin-top:var(--space-5);">
+                            <div class="form-group">
+                                <label class="form-label">Industry Icon / Hero Image</label>
+                                <div class="image-uploader">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                                    <div>Click to upload or drag & drop</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Status</label>
+                                <select class="input-field">
+                                    <option>Draft</option>
+                                    <option>Published</option>
+                                    <option>Archived</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="save-action-bar">
+                        <button class="btn-ghost action-cancel-form" data-back-target="screen-industries">Cancel</button>
+                        <button class="btn-secondary">Preview</button>
+                        <button class="action-btn primary"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>Save & Publish</button>
+                    </div>
+                </section>
+
+                <!-- SCREEN 04: Use Cases Management -->
+                <section id="screen-usecases" class="admin-screen">
+                    <div class="admin-page-header">
+                        <div>
+                            <h1 class="page-title">Use Cases</h1>
+                            <p class="page-subtitle">Manage all industry use cases, categories, descriptions, cards, and linked case studies.</p>
+                        </div>
+                        <button class="action-btn primary action-add" data-form-target="screen-usecase-form"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>Add Use Case</button>
+                    </div>
+
+                    <div style="display:flex; gap:10px; margin-bottom:var(--space-4);">
+                        <select class="input-field" style="width:200px;"><option>All Industries</option><option>Healthcare</option></select>
+                        <select class="input-field" style="width:200px;"><option>All Categories</option></select>
+                        <select class="input-field" style="width:200px;"><option>All Statuses</option></select>
+                        <input type="text" class="input-field" placeholder="Search use cases..." style="flex:1;">
+                    </div>
+
+                    <div class="data-table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Use Case Title</th>
+                                    <th>Industry</th>
+                                    <th>Category</th>
+                                    <th>Status</th>
+                                    <th>Last Updated</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Patient Intake Automation</strong></td>
+                                    <td>Healthcare</td>
+                                    <td>Operations</td>
+                                    <td><span class="status-badge status-published">Published</span></td>
+                                    <td>Oct 25, 2023</td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="table-icon-btn action-edit" data-form-target="screen-usecase-form">Edit</button>
+                                            <button class="table-icon-btn action-delete">Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- SCREEN 05: Add / Edit Use Case -->
+                <section id="screen-usecase-form" class="admin-screen">
+                    <div class="admin-page-header">
+                        <div><h1 class="page-title">Add Use Case</h1></div>
+                    </div>
+
+                    <div class="admin-form-section">
+                        <h3>Basic Information</h3>
+                        <div class="form-grid">
+                            <div class="form-group" style="grid-column: span 2;">
+                                <label class="form-label">Use Case Title</label>
+                                <input type="text" class="input-field">
+                            </div>
+                            <div class="form-group" style="grid-column: span 2;">
+                                <label class="form-label">Tags</label>
+                                <input type="text" class="input-field" placeholder="e.g. GenAI, Operations (Comma separated)">
+                            </div>
+                            <div class="form-group" style="grid-column: span 2;">
+                                <label class="form-label">Full Description</label>
+                                <textarea class="form-textarea"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-list" style="margin-bottom: var(--space-6);">
+                        <button class="tab-item active" data-active="true" data-target="uc-tab-overview">Overview</button>
+                        <button class="tab-item" data-active="false" data-target="uc-tab-process">Process</button>
+                        <button class="tab-item" data-active="false" data-target="uc-tab-architecture">Architecture</button>
+                        <button class="tab-item" data-active="false" data-target="uc-tab-engine-map">Engine Map / AI Flow</button>
+                    </div>
+
+                    <div id="uc-tab-overview" class="tab-pane">
+
+                    <div class="admin-form-section">
+                        <h3>Overview</h3>
+                        <div class="form-group">
+                            <label class="form-label">Gallery / Multi Image Placeholder</label>
+                            <div class="image-uploader">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                                <div>Click to upload or drag & drop multiple images</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="admin-form-section">
+                        <h3>Impact & KPIs Card</h3>
+                        <div style="border: 1px solid var(--color-border-light); padding: var(--space-4); border-radius: var(--radius-md); margin-bottom: var(--space-3);">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">Small Title</label>
+                                    <input type="text" class="input-field" placeholder="e.g. Metric">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Title</label>
+                                    <input type="text" class="input-field" placeholder="e.g. 50% Reduction">
+                                </div>
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-textarea" style="min-height: 60px;"></textarea>
+                                </div>
+                            </div>
+                            <div style="display:flex; justify-content:flex-end; margin-top:var(--space-3);">
+                                <button class="btn-ghost" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.3);">Remove Card</button>
+                            </div>
+                        </div>
+                        <button class="btn-secondary" style="width: 100%;">+ Add Another KPI Card</button>
+                    </div>
+
+                    <div class="admin-form-section">
+                        <h3>Our Approach</h3>
+                        <div class="form-grid full">
+                            <div style="padding: var(--space-4); border: 1px solid var(--color-border-light); border-radius: var(--radius-md);">
+                                <h4 style="margin: 0 0 var(--space-3) 0; font-size: 1rem;">Executive Summary</h4>
+                                <div class="form-group" style="margin-bottom: var(--space-3);">
+                                    <label class="form-label">Title</label>
+                                    <input type="text" class="input-field">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-textarea"></textarea>
+                                </div>
+                            </div>
+
+                            <div style="padding: var(--space-4); border: 1px solid var(--color-border-light); border-radius: var(--radius-md);">
+                                <h4 style="margin: 0 0 var(--space-3) 0; font-size: 1rem;">Problem</h4>
+                                <div class="form-group" style="margin-bottom: var(--space-3);">
+                                    <label class="form-label">Title</label>
+                                    <input type="text" class="input-field">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-textarea"></textarea>
+                                </div>
+                            </div>
+
+                            <div style="padding: var(--space-4); border: 1px solid var(--color-border-light); border-radius: var(--radius-md);">
+                                <h4 style="margin: 0 0 var(--space-3) 0; font-size: 1rem;">Solution</h4>
+                                <div class="form-group" style="margin-bottom: var(--space-3);">
+                                    <label class="form-label">Title</label>
+                                    <input type="text" class="input-field">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-textarea"></textarea>
+                                </div>
+                            </div>
+
+                            <div style="padding: var(--space-4); border: 1px solid var(--color-border-light); border-radius: var(--radius-md);">
+                                <h4 style="margin: 0 0 var(--space-3) 0; font-size: 1rem;">Outcome</h4>
+                                <div class="form-group" style="margin-bottom: var(--space-3);">
+                                    <label class="form-label">Title</label>
+                                    <input type="text" class="input-field">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-textarea"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="admin-form-section">
+                        <h3>Stories Shared by Client</h3>
+                        <div class="form-grid">
+                            <div class="form-group" style="grid-column: span 2;">
+                                <label class="form-label">Client Feedback</label>
+                                <textarea class="form-textarea"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Name</label>
+                                <input type="text" class="input-field">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Post (Title/Role)</label>
+                                <input type="text" class="input-field">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Company Name</label>
+                                <input type="text" class="input-field">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Rating (1-5)</label>
+                                <input type="number" class="input-field" min="1" max="5" placeholder="5">
+                            </div>
+                        </div>
+                    </div>
+
+                    </div>
+
+                    <div id="uc-tab-process" class="tab-pane hidden">
+                        <div class="admin-form-section">
+                            <h3>Process Steps</h3>
+                            <div style="border: 1px solid var(--color-border-light); padding: var(--space-4); border-radius: var(--radius-md); margin-bottom: var(--space-3);">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label class="form-label">Count Number</label>
+                                        <input type="number" class="input-field" placeholder="e.g. 1">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Process Name</label>
+                                        <input type="text" class="input-field" placeholder="e.g. Data Ingestion">
+                                    </div>
+                                    <div class="form-group" style="grid-column: span 2;">
+                                        <label class="form-label">Description</label>
+                                        <textarea class="form-textarea" style="min-height: 60px;"></textarea>
+                                    </div>
+                                </div>
+                                <div style="display:flex; justify-content:flex-end; margin-top:var(--space-3);">
+                                    <button class="btn-ghost" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.3);">Remove Step</button>
+                                </div>
+                            </div>
+                            <button class="btn-secondary" style="width: 100%;">+ Add Another Process Step</button>
+                        </div>
+                    </div>
+
+                    <div id="uc-tab-architecture" class="tab-pane hidden">
+                        <div class="admin-form-section">
+                            <h3>Architecture Details</h3>
+                            <div class="form-grid">
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <label class="form-label">Title</label>
+                                    <input type="text" class="input-field">
+                                </div>
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-textarea"></textarea>
+                                </div>
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <label class="form-label">Architecture Diagram / Image</label>
+                                    <div class="image-uploader">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                                        <div>Click to upload or drag & drop architecture image</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="uc-tab-engine-map" class="tab-pane hidden">
+                        <div class="admin-form-section">
+                            <h3>Engine Map / AI Flow Details</h3>
+                            <div class="form-grid">
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <label class="form-label">Title</label>
+                                    <input type="text" class="input-field">
+                                </div>
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-textarea"></textarea>
+                                </div>
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <label class="form-label">Engine Map Image</label>
+                                    <div class="image-uploader">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                                        <div>Click to upload or drag & drop AI flow image</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="save-action-bar">
+                        <button class="btn-ghost action-cancel-form" data-back-target="screen-usecases">Cancel</button>
+                        <button class="action-btn primary"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>Save Use Case</button>
+                    </div>
+                </section>
+
+                <!-- SCREEN 06: Case Studies Management -->
+                <section id="screen-casestudies" class="admin-screen">
+                    <div class="admin-page-header">
+                        <div>
+                            <h1 class="page-title">Case Studies</h1>
+                            <p class="page-subtitle">Manage solution detail pages, overview content, AI flow, architecture, engine map, and gallery assets.</p>
+                        </div>
+                        <button class="action-btn primary action-add" data-form-target="screen-casestudy-form"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>Add Case Study</button>
+                    </div>
+
+                    <div class="data-table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Case Study Title</th>
+                                    <th>Industry</th>
+                                    <th>Use Case</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Modernizing Clinical Trials</strong></td>
+                                    <td>Healthcare</td>
+                                    <td>Data Processing</td>
+                                    <td><span class="status-badge status-draft">Draft</span></td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="table-icon-btn action-edit" data-form-target="screen-casestudy-form">Edit</button>
+                                            <button class="table-icon-btn action-delete">Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- SCREEN 07: Add / Edit Case Study -->
+                <section id="screen-casestudy-form" class="admin-screen">
+                    <div class="admin-page-header">
+                        <div><h1 class="page-title">Edit Case Study</h1></div>
+                    </div>
+
+                    <div class="tab-list" style="margin-bottom: var(--space-6);">
+                        <button class="tab-item active" data-active="true" data-target="cs-tab-overview">Overview</button>
+                        <button class="tab-item" data-active="false" data-target="cs-tab-how">How It Works</button>
+                        <button class="tab-item" data-active="false" data-target="cs-tab-arch">Tech Architecture</button>
+                        <button class="tab-item" data-active="false" data-target="cs-tab-gallery">Gallery</button>
+                    </div>
+
+                    <div id="cs-tab-overview" class="tab-pane">
+                        <div class="admin-form-section">
+                            <h3>Overview</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">Case Study Title</label>
+                                    <input type="text" class="input-field">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Problem</label>
+                                    <textarea class="form-textarea"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Solution</label>
+                                    <textarea class="form-textarea"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Outcome</label>
+                                    <textarea class="form-textarea"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="cs-tab-how" class="tab-pane hidden">
+                        <div class="admin-form-section"><h3>How It Works</h3><p>Step-by-step editor here...</p></div>
+                    </div>
+                    <div id="cs-tab-arch" class="tab-pane hidden">
+                        <div class="admin-form-section"><h3>Tech Architecture</h3><p>Architecture upload tools here...</p></div>
+                    </div>
+                    <div id="cs-tab-gallery" class="tab-pane hidden">
+                        <div class="admin-form-section"><h3>Gallery Assets</h3><p>Multiple image upload tools here...</p></div>
+                    </div>
+
+                    <div class="save-action-bar">
+                        <button class="btn-ghost action-cancel-form" data-back-target="screen-casestudies">Cancel</button>
+                        <button class="action-btn primary"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>Save Case Study</button>
+                    </div>
+                </section>
+
+                <!-- SCREEN 08: Engines Management -->
+                <section id="screen-engines" class="admin-screen">
+                    <div class="admin-page-header">
+                        <div>
+                            <h1 class="page-title">Engines</h1>
+                            <p class="page-subtitle">Manage reusable AI engines used across industries, case studies, and manufacturing unit.</p>
+                        </div>
+                        <button class="action-btn primary action-add" data-form-target="screen-engine-form"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>Add Engine</button>
+                    </div>
+                    <div class="data-table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr><th>Engine Name</th><th>Used In</th><th>Status</th><th>Actions</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Agentic RAG</strong></td>
+                                    <td>4 Use Cases</td>
+                                    <td><span class="status-badge status-published">Published</span></td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="table-icon-btn action-edit" data-form-target="screen-engine-form">Edit</button>
+                                            <button class="table-icon-btn action-delete">Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- SCREEN 09: Add / Edit Engine -->
+                <section id="screen-engine-form" class="admin-screen">
+                    <div class="admin-page-header">
+                        <div><h1 class="page-title">Add / Edit Engine</h1></div>
+                    </div>
+
+                    <div class="admin-form-section">
+                        <h3>Basic Information</h3>
+                        <div class="form-grid">
+                            <div class="form-group" style="grid-column: span 2;">
+                                <label class="form-label">Use Case Title</label>
+                                <input type="text" class="input-field">
+                            </div>
+                            <div class="form-group" style="grid-column: span 2;">
+                                <label class="form-label">Tags</label>
+                                <input type="text" class="input-field" placeholder="Comma separated">
+                            </div>
+                            <div class="form-group" style="grid-column: span 2;">
+                                <label class="form-label">Full Description</label>
+                                <textarea class="form-textarea"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-list" style="margin-bottom: var(--space-6);">
+                        <button class="tab-item active" data-active="true" data-target="eng-tab-overview">Overview</button>
+                        <button class="tab-item" data-active="false" data-target="eng-tab-flow">Engine Flow</button>
+                        <button class="tab-item" data-active="false" data-target="eng-tab-tech-arch">Tech Arch</button>
+                        <button class="tab-item" data-active="false" data-target="eng-tab-qa">Quality assurance</button>
+                    </div>
+
+                    <div id="eng-tab-overview" class="tab-pane">
+                        <div class="admin-form-section">
+                            <h3>Key Capabilities Cards</h3>
+                            <div style="border: 1px solid var(--color-border-light); padding: var(--space-4); border-radius: var(--radius-md); margin-bottom: var(--space-3);">
+                                <div class="form-grid">
+                                    <div class="form-group" style="grid-column: span 2;">
+                                        <label class="form-label">Title</label>
+                                        <input type="text" class="input-field">
+                                    </div>
+                                    <div class="form-group" style="grid-column: span 2;">
+                                        <label class="form-label">1 Line Description</label>
+                                        <input type="text" class="input-field">
+                                    </div>
+                                </div>
+                                <div style="display:flex; justify-content:flex-end; margin-top:var(--space-3);">
+                                    <button class="btn-ghost" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.3);">Remove Card</button>
+                                </div>
+                            </div>
+                            <button class="btn-secondary" style="width: 100%;">+ Add Another Capability Card</button>
+                        </div>
+
+                        <div class="admin-form-section">
+                            <h3>Problem & Solution</h3>
+                            <div class="form-grid full">
+                                <div class="form-group">
+                                    <label class="form-label">Problem Description</label>
+                                    <textarea class="form-textarea"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Solution Description</label>
+                                    <textarea class="form-textarea"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="admin-form-section">
+                            <h3>Engines Used In Card</h3>
+                            <div style="border: 1px solid var(--color-border-light); padding: var(--space-4); border-radius: var(--radius-md); margin-bottom: var(--space-3);">
+                                <div class="form-grid">
+                                    <div class="form-group" style="grid-column: span 2;">
+                                        <label class="form-label">Title</label>
+                                        <input type="text" class="input-field">
+                                    </div>
+                                    <div class="form-group" style="grid-column: span 2;">
+                                        <label class="form-label">Description</label>
+                                        <textarea class="form-textarea"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Tag</label>
+                                        <input type="text" class="input-field">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Button Name</label>
+                                        <input type="text" class="input-field">
+                                    </div>
+                                    <div class="form-group" style="grid-column: span 2;">
+                                        <label class="form-label">Image</label>
+                                        <div class="image-uploader">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                                            <div>Click to upload or drag & drop image</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="display:flex; justify-content:flex-end; margin-top:var(--space-3);">
+                                    <button class="btn-ghost" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.3);">Remove Engine</button>
+                                </div>
+                            </div>
+                            <button class="btn-secondary" style="width: 100%;">+ Add Another Engine Card</button>
+                        </div>
+                    </div>
+
+                    <div id="eng-tab-flow" class="tab-pane hidden">
+                        <div class="admin-form-section">
+                            <h3>Engine Flow Card</h3>
+                            <div class="form-grid">
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <label class="form-label">Name</label>
+                                    <input type="text" class="input-field">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="eng-tab-tech-arch" class="tab-pane hidden">
+                        <div class="admin-form-section">
+                            <h3>Tech Architecture</h3>
+                            <div class="form-grid">
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <label class="form-label">Title</label>
+                                    <input type="text" class="input-field">
+                                </div>
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-textarea"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="eng-tab-qa" class="tab-pane hidden">
+                        <div class="admin-form-section">
+                            <h3>Quality Assurance</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">Checkbox Icon (True/False)</label>
+                                    <div style="margin-top: 8px;">
+                                        <input type="checkbox" style="width: 20px; height: 20px;">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Title</label>
+                                    <input type="text" class="input-field">
+                                </div>
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-textarea"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="save-action-bar">
+                        <button class="btn-ghost action-cancel-form" data-back-target="screen-engines">Cancel</button>
+                        <button class="action-btn primary"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>Save Engine</button>
+                    </div>
+                </section>
+
+                <!-- SCREEN 10: Manufacturing Unit -->
+                <section id="screen-manufacturing" class="admin-screen">
+                    <div class="admin-page-header">
+                        <div>
+                            <h1 class="page-title">Manufacturing Unit</h1>
+                            <p class="page-subtitle">Manage Envisioning Centre opportunities and Engine Hall content.</p>
+                        </div>
+                    </div>
+
+                    <div class="tab-list" style="margin-bottom: var(--space-6);">
+                        <button class="tab-item active" data-active="true" data-target="mfg-tab-envision">Envisioning Centre</button>
+                        <button class="tab-item" data-active="false" data-target="mfg-tab-hall">Engine Hall</button>
+                    </div>
+
+                    <div id="mfg-tab-envision" class="tab-pane active">
+                        <div style="display:flex; justify-content:flex-end; margin-bottom: var(--space-4);">
+                            <button class="action-btn primary action-add" data-form-target="screen-envisioning-form"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>Add Envisioning Centre</button>
+                        </div>
+                        <div class="data-table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr><th>Opportunity Title</th><th>Size</th><th>Status</th><th>Actions</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Inventory Optimization</td>
+                                        <td>$10M+</td>
+                                        <td><span class="status-badge status-draft">In Progress</span></td>
+                                        <td><div class="table-actions"><button class="table-icon-btn action-edit" data-form-target="screen-envisioning-form">Edit</button></div></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="mfg-tab-hall" class="tab-pane hidden">
+                        <div style="display:flex; justify-content:flex-end; margin-bottom: var(--space-4);">
+                            <button class="action-btn primary action-add" data-form-target="screen-enginehall-form"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>Add Engine Hall</button>
+                        </div>
+                        <div class="data-table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr><th>Title</th><th>Actions</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Featured Engine Hall Layout</td>
+                                        <td><div class="table-actions"><button class="table-icon-btn action-edit" data-form-target="screen-enginehall-form">Edit</button></div></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SCREEN: Add / Edit Envisioning Centre -->
+                <section id="screen-envisioning-form" class="admin-screen">
+                    <div class="admin-page-header">
+                        <div><h1 class="page-title">Add / Edit Envisioning Centre</h1></div>
+                    </div>
+                    <div class="admin-form-section">
+                        <h3>Envisioning Centre Details</h3>
+                        <div class="form-grid">
+                            <div class="form-group" style="grid-column: span 2;">
+                                <label class="form-label">Title</label>
+                                <input type="text" class="input-field">
+                            </div>
+                            <div class="form-group" style="grid-column: span 2;">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-textarea"></textarea>
+                            </div>
+                        </div>
+
+                        <h4 style="margin-top: var(--space-4); margin-bottom: var(--space-2);">Opportunity Card</h4>
+                        <div class="ui-card" style="padding: var(--space-4); border: 1px dashed var(--color-border-medium); background: transparent;">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">Card Title</label>
+                                    <input type="text" class="input-field">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Status Chip</label>
+                                    <input type="text" class="input-field" placeholder="e.g. In Progress">
+                                </div>
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-textarea"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Size</label>
+                                    <input type="text" class="input-field" placeholder="e.g. $10M+">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Industries</label>
+                                    <input type="text" class="input-field" placeholder="Comma separated">
+                                </div>
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <label class="form-label">Question</label>
+                                    <input type="text" class="input-field">
+                                </div>
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <label class="form-label">Answer in points</label>
+                                    <textarea class="form-textarea" placeholder="- Point 1&#10;- Point 2" style="min-height: 100px;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="save-action-bar">
+                        <button class="btn-ghost action-cancel-form" data-back-target="screen-manufacturing">Cancel</button>
+                        <button class="action-btn primary"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>Save Envisioning Centre</button>
+                    </div>
+                </section>
+
+                <!-- SCREEN: Add / Edit Engine Hall -->
+                <section id="screen-enginehall-form" class="admin-screen">
+                    <div class="admin-page-header">
+                        <div><h1 class="page-title">Add / Edit Engine Hall</h1></div>
+                    </div>
+                    <div class="admin-form-section">
+                        <h3>Engine Hall Description</h3>
+                        <div class="form-grid">
+                            <div class="form-group" style="grid-column: span 2;">
+                                <label class="form-label">Title</label>
+                                <input type="text" class="input-field">
+                            </div>
+                            <div class="form-group" style="grid-column: span 2;">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-textarea"></textarea>
+                            </div>
+                            <div class="form-group" style="grid-column: span 2;">
+                                <label class="form-label">Chips</label>
+                                <input type="text" class="input-field" placeholder="Comma separated">
+                            </div>
+                        </div>
+
+                        <!-- Form Tabs -->
+                        <div class="admin-tabs" style="margin-top: var(--space-6);">
+                            <button class="tab-item active" data-tab-target="tab-eh-overview">Overview</button>
+                            <button class="tab-item" data-tab-target="tab-eh-flow">Engine Flow</button>
+                            <button class="tab-item" data-tab-target="tab-eh-tech">Tech Architecture</button>
+                            <button class="tab-item" data-tab-target="tab-eh-qa">Quality assurance</button>
+                        </div>
+
+                        <!-- Tab: Overview Tab -->
+                        <div id="tab-eh-overview" class="tab-pane active">
+                            <h4 style="margin-top: var(--space-4); margin-bottom: var(--space-2);">Key Capabilities Cards</h4>
+                            <div class="ui-card" style="padding: var(--space-4); border: 1px dashed var(--color-border-medium); background: transparent;">
+                                <div class="form-grid">
+                                    <div class="form-group" style="grid-column: span 2;">
+                                        <label class="form-label">Title</label>
+                                        <input type="text" class="input-field">
+                                    </div>
+                                    <div class="form-group" style="grid-column: span 2;">
+                                        <label class="form-label">1 line description</label>
+                                        <input type="text" class="input-field">
+                                    </div>
+                                </div>
+                                <button class="btn-ghost" style="margin-top: var(--space-3); color:#ef4444; padding:4px 8px; border-color:transparent;">Remove</button>
+                            </div>
+                            <button class="btn-ghost" style="margin-top: var(--space-3); margin-bottom: var(--space-6);">+ Add Capability Card</button>
+
+                            <div class="form-grid">
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <label class="form-label">Problem Description</label>
+                                    <textarea class="form-textarea"></textarea>
+                                </div>
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <label class="form-label">Solution Description</label>
+                                    <textarea class="form-textarea"></textarea>
+                                </div>
+                            </div>
+
+                            <h4 style="margin-top: var(--space-6); margin-bottom: var(--space-2);">Engines used in card</h4>
+                            <div class="ui-card" style="padding: var(--space-4); border: 1px dashed var(--color-border-medium); background: transparent;">
+                                <div class="form-grid">
+                                    <div class="form-group" style="grid-column: span 2;">
+                                        <label class="form-label">Image</label>
+                                        <div class="media-upload-area">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:24px; height:24px; margin-bottom:8px; color:var(--color-text-secondary);"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                                            <div>Click or drag to upload image</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="grid-column: span 2;">
+                                        <label class="form-label">Title</label>
+                                        <input type="text" class="input-field">
+                                    </div>
+                                    <div class="form-group" style="grid-column: span 2;">
+                                        <label class="form-label">Description</label>
+                                        <textarea class="form-textarea"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Tag</label>
+                                        <input type="text" class="input-field">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Button Name</label>
+                                        <input type="text" class="input-field">
+                                    </div>
+                                </div>
+                                <button class="btn-ghost" style="margin-top: var(--space-3); color:#ef4444; padding:4px 8px; border-color:transparent;">Remove Engine</button>
+                            </div>
+                            <button class="btn-ghost" style="margin-top: var(--space-3);">+ Add Engine</button>
+                        </div>
+
+                        <!-- Tab: Engine Flow card -->
+                        <div id="tab-eh-flow" class="tab-pane hidden">
+                            <h4 style="margin-top: var(--space-4); margin-bottom: var(--space-2);">Engine Flow card</h4>
+                            <div class="form-grid">
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <label class="form-label">Name</label>
+                                    <input type="text" class="input-field">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab: Tech Architecture -->
+                        <div id="tab-eh-tech" class="tab-pane hidden">
+                            <h4 style="margin-top: var(--space-4); margin-bottom: var(--space-2);">Tech Architecture</h4>
+                            <div class="form-grid">
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <label class="form-label">Title</label>
+                                    <input type="text" class="input-field">
+                                </div>
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-textarea"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab: Quality assurance -->
+                        <div id="tab-eh-qa" class="tab-pane hidden">
+                            <h4 style="margin-top: var(--space-4); margin-bottom: var(--space-2);">Quality assurance</h4>
+                            <div class="form-grid">
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <label class="form-label" style="display:flex; align-items:center; gap:8px;">
+                                        <input type="checkbox"> Checkbox Icon Active
+                                    </label>
+                                </div>
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <label class="form-label">Title</label>
+                                    <input type="text" class="input-field">
+                                </div>
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-textarea"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="save-action-bar">
+                        <button class="btn-ghost action-cancel-form" data-back-target="screen-manufacturing">Cancel</button>
+                        <button class="action-btn primary"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>Save Engine Hall</button>
+                    </div>
+                </section>
+
+                <!-- SCREEN 11: Architecture Diagrams Removed -->
+                <section id="screen-media" class="admin-screen">
+                    <div class="admin-page-header">
+                        <div>
+                            <h1 class="page-title">Media Library</h1>
+                        </div>
+                        <button class="action-btn primary"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>Upload Media</button>
+                    </div>
+                    <div class="media-grid">
+                        <!-- Example items -->
+                        <div class="media-item"><img src="../assets/Financial Services/hero.png" alt=""><div class="media-item-overlay"><button class="btn-secondary">View</button></div></div>
+                        <div class="media-item"><img src="../assets/Public Sector/hero.png" alt=""><div class="media-item-overlay"><button class="btn-secondary">View</button></div></div>
+                    </div>
+                </section>
+
+                <!-- SCREEN 13: Users & Roles -->
+                <section id="screen-users" class="admin-screen">
+                    <div class="admin-page-header">
+                        <div>
+                            <h1 class="page-title">Users & Roles</h1>
+                        </div>
+                        <button class="action-btn primary">Invite User</button>
+                    </div>
+                    <div class="data-table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr><th>User Name</th><th>Role</th><th>Last Active</th><th>Actions</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Admin User</td>
+                                    <td>Super Admin</td>
+                                    <td>Just now</td>
+                                    <td><button class="table-icon-btn action-edit">Edit</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- SCREEN 14: Settings -->
+                <section id="screen-settings" class="admin-screen">
+                    <div class="admin-page-header">
+                        <div>
+                            <h1 class="page-title">Settings</h1>
+                        </div>
+                    </div>
+                    <div class="admin-form-section">
+                        <h3>Brand Settings</h3>
+                        <div class="form-grid">
+                            <div class="form-group"><label class="form-label">Primary Color</label><input type="color" value="#E94C17" class="input-field"></div>
+                        </div>
+                    </div>
+                    <div class="save-action-bar">
+                        <button class="action-btn primary"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>Save Settings</button>
+                    </div>
+                </section>
+                        <!-- SCREEN: Practices Management -->
+                <section id="screen-practices" class="admin-screen">
+                    <div class="admin-page-header">
+                        <div>
+                            <h1 class="page-title">Practices</h1>
+                            <p class="page-subtitle">Add, edit, organize, and publish practice guidelines and frameworks.</p>
+                        </div>
+                        <button class="action-btn primary action-add" data-form-target="screen-practice-form"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>Add Practice</button>
+                    </div>
+
+                    <div style="display:flex; gap:10px; margin-bottom:var(--space-4);">
+                        <button class="btn-ghost" style="padding:6px 12px; height:auto; font-size:12px;">All</button>
+                        <button class="btn-ghost" style="padding:6px 12px; height:auto; font-size:12px; border-color:transparent;">Published</button>
+                        <button class="btn-ghost" style="padding:6px 12px; height:auto; font-size:12px; border-color:transparent;">Draft</button>
+                    </div>
+
+                    <div class="data-table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Practice Name</th>
+                                    <th>Status</th>
+                                    <th>Last Updated</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>AI Integration Practice</strong><br><span style="color:var(--color-text-secondary); font-size:12px;">Guidelines for AI adoption...</span></td>
+                                    <td><span class="status-badge status-published">Published</span></td>
+                                    <td>Today</td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="table-icon-btn action-edit" data-form-target="screen-practice-form">Edit</button>
+                                            <button class="table-icon-btn action-delete">Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- SCREEN: Add / Edit Practice -->
+                <section id="screen-practice-form" class="admin-screen">
+                    <div class="admin-page-header">
+                        <div><h1 class="page-title">Add / Edit Practice</h1></div>
+                    </div>
+
+                    <div class="admin-form-section">
+                        <h3>Practices</h3>
+                        <div class="form-grid">
+                            <div class="form-group" style="grid-column: span 2;">
+                                <label class="form-label">Title</label>
+                                <input type="text" class="input-field">
+                            </div>
+                            <div class="form-group" style="grid-column: span 2;">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-textarea"></textarea>
+                            </div>
+                            <div class="form-group" style="grid-column: span 2;">
+                                <label class="form-label">Member Card (Image/Details)</label>
+                                <div class="media-upload-area">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:24px; height:24px; margin-bottom:8px; color:var(--color-text-secondary);"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                                    <div>Click or drag to upload member card image</div>
+                                    <div style="font-size:12px; color:var(--color-text-secondary); margin-top:4px;">JPG, PNG, WebP up to 2MB</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Tabs -->
+                        <div class="admin-tabs" style="margin-top: var(--space-6);">
+                            <button class="tab-item active" data-tab-target="tab-prac-frameworks">Frameworks</button>
+                            <button class="tab-item" data-tab-target="tab-prac-bestpractices">Best Practices</button>
+                            <button class="tab-item" data-tab-target="tab-prac-aiinfusion">AI Infusion</button>
+                        </div>
+
+                        <!-- Tab: Frameworks -->
+                        <div id="tab-prac-frameworks" class="tab-pane active">
+                            <div class="form-grid">
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <label class="form-label">Frameworks Title</label>
+                                    <input type="text" class="input-field" value="Frameworks">
+                                </div>
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <label class="form-label">Frameworks Description</label>
+                                    <textarea class="form-textarea"></textarea>
+                                </div>
+                            </div>
+                            
+                            <h4 style="margin-top: var(--space-4); margin-bottom: var(--space-2);">Framework Cards</h4>
+                            <div class="ui-card" style="padding: var(--space-4); border: 1px dashed var(--color-border-medium); background: transparent;">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label class="form-label">Number</label>
+                                        <input type="text" class="input-field" placeholder="e.g. 01">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Title</label>
+                                        <input type="text" class="input-field">
+                                    </div>
+                                    <div class="form-group" style="grid-column: span 2;">
+                                        <label class="form-label">Description</label>
+                                        <textarea class="form-textarea" style="min-height:80px;"></textarea>
+                                    </div>
+                                </div>
+                                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top: var(--space-3);">
+                                    <button class="btn-ghost" style="color:#ef4444; border-color:transparent; padding:4px 8px;">Remove</button>
+                                </div>
+                            </div>
+                            <button class="btn-ghost" style="margin-top: var(--space-3);">+ Add Another Framework Card</button>
+                        </div>
+
+                        <!-- Tab: Best Practices -->
+                        <div id="tab-prac-bestpractices" class="tab-pane hidden">
+                            <div class="form-grid">
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <label class="form-label">Best Practices Title</label>
+                                    <input type="text" class="input-field" value="Best Practices">
+                                </div>
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <label class="form-label">Best Practices Description</label>
+                                    <textarea class="form-textarea"></textarea>
+                                </div>
+                            </div>
+                            
+                            <h4 style="margin-top: var(--space-4); margin-bottom: var(--space-2);">Best Practice Cards</h4>
+                            <div class="ui-card" style="padding: var(--space-4); border: 1px dashed var(--color-border-medium); background: transparent;">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label class="form-label" style="display:flex; align-items:center; gap:8px;">
+                                            <input type="checkbox" checked> Checked Status
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Title</label>
+                                        <input type="text" class="input-field">
+                                    </div>
+                                    <div class="form-group" style="grid-column: span 2;">
+                                        <label class="form-label">Description</label>
+                                        <textarea class="form-textarea" style="min-height:80px;"></textarea>
+                                    </div>
+                                </div>
+                                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top: var(--space-3);">
+                                    <button class="btn-ghost" style="color:#ef4444; border-color:transparent; padding:4px 8px;">Remove</button>
+                                </div>
+                            </div>
+                            <button class="btn-ghost" style="margin-top: var(--space-3);">+ Add Another Best Practice Card</button>
+                        </div>
+
+                        <!-- Tab: AI Infusion -->
+                        <div id="tab-prac-aiinfusion" class="tab-pane hidden">
+                            <div class="form-grid">
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <label class="form-label">AI Infusion Tab Title</label>
+                                    <input type="text" class="input-field" value="AI Infusion">
+                                </div>
+                            </div>
+                            
+                            <h4 style="margin-top: var(--space-4); margin-bottom: var(--space-2);">Cards</h4>
+                            <div class="ui-card" style="padding: var(--space-4); border: 1px dashed var(--color-border-medium); background: transparent;">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label class="form-label">Matrix / Number</label>
+                                        <input type="text" class="input-field" placeholder="e.g. 85%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Small Title</label>
+                                        <input type="text" class="input-field">
+                                    </div>
+                                    <div class="form-group" style="grid-column: span 2;">
+                                        <label class="form-label">Description</label>
+                                        <textarea class="form-textarea" style="min-height:80px;"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h4 style="margin-top: var(--space-6); margin-bottom: var(--space-2);">AI Infusion Section</h4>
+                            <div class="ui-card" style="padding: var(--space-4);">
+                                <div class="form-grid">
+                                    <div class="form-group" style="grid-column: span 2;">
+                                        <label class="form-label">Title</label>
+                                        <input type="text" class="input-field">
+                                    </div>
+                                    <div class="form-group" style="grid-column: span 2;">
+                                        <label class="form-label">Description</label>
+                                        <textarea class="form-textarea"></textarea>
+                                    </div>
+                                    <div class="form-group" style="grid-column: span 2;">
+                                        <label class="form-label">Image</label>
+                                        <div class="media-upload-area">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:24px; height:24px; margin-bottom:8px; color:var(--color-text-secondary);"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                                            <div>Click or drag to upload image</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="save-action-bar">
+                        <button class="btn-ghost action-cancel-form" data-back-target="screen-practices">Cancel</button>
+                        <button class="action-btn primary"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>Save Practice</button>
+                    </div>
+                </section>
+            </div>
+    </div>
+    <!-- Modals -->
+    <div class="modal-overlay" id="delete-modal">
+        <div class="modal-content">
+            <h3 class="modal-title">Confirm Deletion</h3>
+            <p class="modal-desc">Are you sure you want to delete this item? This action cannot be undone.</p>
+            <div class="modal-actions">
+                <button class="btn-ghost" id="btn-cancel-delete">Cancel</button>
+                <button class="action-btn primary btn-danger" id="btn-confirm-delete">Delete</button>
+            </div>
         </div>
     </div>
 
-    <!-- Global Modals Container -->
-    <div id="modal-container"></div>
-
-    <!-- Admin Application Logic -->
     <script src="js/admin.js"></script>
+    <script src="../js/main.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
