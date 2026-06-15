@@ -129,12 +129,17 @@ class DelphiMultiSelect {
 
     render() {
         this.container.innerHTML = `
-            <div class="multi-select-container">
-                <div class="multi-select-input-wrapper" id="${this.container.id}-wrapper">
-                    <div class="multi-select-chips" id="${this.container.id}-chips"></div>
-                    <input type="text" class="multi-select-search" id="${this.container.id}-search" placeholder="Search and select...">
+            <div class="multi-select-container" style="position: relative;">
+                <div class="multi-select-input-wrapper input-field" id="${this.container.id}-wrapper" style="background: var(--input-bg, rgba(255,255,255,0.05)); border: 1px solid var(--input-border, rgba(255,255,255,0.1)); border-radius: var(--input-radius, 8px); min-height: 48px; padding: 6px 12px; display: flex; align-items: center; cursor: pointer; transition: border-color 0.3s ease;">
+                    <div class="multi-select-chips" id="${this.container.id}-chips" style="display: flex; flex-wrap: wrap; gap: 6px; flex: 1;"></div>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px; color: var(--color-text-secondary, #aaa); margin-left: 12px; flex-shrink: 0;"><polyline points="6 9 12 15 18 9"></polyline></svg>
                 </div>
-                <div class="multi-select-dropdown" id="${this.container.id}-dropdown"></div>
+                <div class="multi-select-dropdown" id="${this.container.id}-dropdown" style="display: none; position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: var(--surface-light, #2a2a2a); border: 1px solid var(--border-color, #444); border-radius: 8px; padding: 8px; z-index: 1000; box-shadow: 0 8px 24px rgba(0,0,0,0.2);">
+                    <div style="position: sticky; top: -8px; background: var(--surface-light, #2a2a2a); padding: 8px 0; z-index: 2; margin-bottom: 8px; border-bottom: 1px solid var(--border-color, #444);">
+                        <input type="text" class="multi-select-search input-field" id="${this.container.id}-search" placeholder="Filter..." style="width: 100%; min-height: 36px; height: 36px; padding: 0 12px; box-sizing: border-box;">
+                    </div>
+                    <div class="multi-select-options-list" style="max-height: 250px; overflow-y: auto; display: flex; flex-direction: column; gap: 2px;"></div>
+                </div>
             </div>
         `;
         
@@ -142,6 +147,7 @@ class DelphiMultiSelect {
         this.chipsContainer = this.container.querySelector('.multi-select-chips');
         this.searchInput = this.container.querySelector('.multi-select-search');
         this.dropdown = this.container.querySelector('.multi-select-dropdown');
+        this.optionsList = this.container.querySelector('.multi-select-options-list');
         
         this.updateChips();
         this.updateDropdown();
@@ -149,6 +155,10 @@ class DelphiMultiSelect {
 
     updateChips() {
         this.chipsContainer.innerHTML = '';
+        if (this.selected.length === 0) {
+            this.chipsContainer.innerHTML = '<span style="color: var(--color-text-muted, #888); font-size: 14px;">Select options...</span>';
+            return;
+        }
         this.selected.forEach(val => {
             const opt = this.options.find(o => o.value === val);
             if (!opt) return;
@@ -166,11 +176,11 @@ class DelphiMultiSelect {
     }
 
     updateDropdown(filterText = '') {
-        this.dropdown.innerHTML = '';
+        this.optionsList.innerHTML = '';
         const filtered = this.options.filter(o => o.label.toLowerCase().includes(filterText.toLowerCase()));
         
         if (filtered.length === 0) {
-            this.dropdown.innerHTML = '<div class="multi-option" style="cursor:default; color:var(--color-text-muted);">No options found.</div>';
+            this.optionsList.innerHTML = '<div class="multi-option" style="cursor:default; color:var(--color-text-muted);">No options found.</div>';
             return;
         }
 
@@ -179,6 +189,7 @@ class DelphiMultiSelect {
             const el = document.createElement('div');
             el.className = `multi-option ${isSelected ? 'selected' : ''}`;
             el.innerHTML = `
+                <input type="checkbox" ${isSelected ? 'checked' : ''} style="margin-right: 8px; pointer-events: none;">
                 <span>${opt.label}</span>
             `;
             
@@ -189,13 +200,11 @@ class DelphiMultiSelect {
                 } else {
                     this.selected.push(opt.value);
                 }
-                this.searchInput.value = '';
                 this.updateChips();
-                this.updateDropdown();
-                // trigger change event
+                this.updateDropdown(this.searchInput.value);
                 this.container.dispatchEvent(new CustomEvent('change', { detail: this.selected }));
             });
-            this.dropdown.appendChild(el);
+            this.optionsList.appendChild(el);
         });
     }
 
@@ -209,19 +218,26 @@ class DelphiMultiSelect {
                 this.container.dispatchEvent(new CustomEvent('change', { detail: this.selected }));
                 return;
             }
-            this.dropdown.classList.add('open');
-            this.isOpen = true;
-            this.searchInput.focus();
+            this.isOpen = !this.isOpen;
+            if (this.isOpen) {
+                this.dropdown.style.display = 'block';
+                this.searchInput.focus();
+            } else {
+                this.dropdown.style.display = 'none';
+            }
+        });
+
+        this.dropdown.addEventListener('click', (e) => {
+            e.stopPropagation();
         });
 
         this.searchInput.addEventListener('input', (e) => {
-            this.dropdown.classList.add('open');
             this.updateDropdown(e.target.value);
         });
 
         document.addEventListener('click', (e) => {
             if (!this.container.contains(e.target)) {
-                this.dropdown.classList.remove('open');
+                this.dropdown.style.display = 'none';
                 this.isOpen = false;
             }
         });
